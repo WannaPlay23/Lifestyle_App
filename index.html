@@ -14,7 +14,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Firebase SDK (Compat Version) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -96,38 +96,18 @@
     }
 
     .login-logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      margin-bottom: 12px;
+      width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px;
     }
 
     .auth-error {
-      color: var(--red);
-      font-size: 12px;
-      margin-top: 10px;
-      display: none;
-      word-break: break-word;
+      color: var(--red); font-size: 12px; margin-top: 10px; display: none; word-break: break-word;
     }
 
     .divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      margin: 16px 0;
-      color: var(--text-muted);
-      font-size: 12px;
+      display: flex; align-items: center; text-align: center; margin: 16px 0; color: var(--text-muted); font-size: 12px;
     }
-
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .divider span {
-      padding: 0 10px;
-    }
+    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); }
+    .divider span { padding: 0 10px; }
 
     /* --- HEADER --- */
     .app-header {
@@ -142,94 +122,61 @@
       z-index: 100;
     }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .logo-container { display: flex; align-items: center; gap: 8px; }
     .logo-title {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 18px; font-weight: 600;
       background: linear-gradient(45deg, var(--purple), var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .header-controls { display: flex; align-items: center; gap: 8px; }
     .control-select, .control-btn {
-      background: var(--input-bg);
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      padding: 5px 8px;
-      border-radius: 8px;
-      font-size: 12px;
-      cursor: pointer;
-      outline: none;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color);
+      padding: 5px 8px; border-radius: 8px; font-size: 12px; cursor: pointer; outline: none;
+      display: flex; align-items: center; gap: 4px;
     }
 
     /* --- LAYOUT & CARDS --- */
-    .container {
-      padding: 16px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
+    .container { padding: 16px; max-width: 600px; margin: 0 auto; }
     .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 16px;
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 16px; margin-bottom: 16px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
+    .card-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 
-    .card-title {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* --- LEVEL & EXP GAMIFICATION CARD --- */
+    .gamification-card {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white; border-radius: 16px; padding: 18px; margin-bottom: 16px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
     }
+    .lvl-badge {
+      background: rgba(255,255,255,0.2); font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 6px; letter-spacing: 0.5px;
+    }
+    .rank-title { font-size: 20px; font-weight: 700; margin: 4px 0 2px 0; }
+    .xp-text { font-size: 12px; opacity: 0.9; }
+    .total-streak-box { text-align: right; }
+    .total-streak-num { font-size: 30px; font-weight: 800; line-height: 1; }
 
     /* --- INPUTS & BUTTONS --- */
     .form-group { margin-bottom: 12px; text-align: left; }
     label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px; }
     input, textarea, select {
-      width: 100%;
-      padding: 10px 12px;
-      background: var(--input-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-main);
-      font-size: 14px;
-      outline: none;
+      width: 100%; padding: 10px 12px; background: var(--input-bg);
+      border: 1px solid var(--border-color); border-radius: 8px;
+      color: var(--text-main); font-size: 14px; outline: none;
     }
     input:focus, textarea:focus { border-color: var(--primary); }
     .form-row { display: flex; gap: 8px; }
     .form-row .form-group { flex: 1; }
 
     .btn {
-      width: 100%;
-      padding: 11px;
-      border: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      width: 100%; padding: 11px; border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .btn-primary { background: linear-gradient(45deg, var(--primary), var(--purple)); color: white; }
     .btn-secondary { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); }
@@ -239,102 +186,65 @@
     .btn-undo { background: #475569; color: white; }
     .btn-del { background: rgba(239, 68, 68, 0.15); color: var(--red); padding: 6px 10px; }
 
-    /* --- HABIT LIST & STREAK --- */
-    .habit-item {
+    /* --- HABIT CARD WITH SHORT NOTE --- */
+    .habit-card-item {
       background: var(--input-bg);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 12px;
       margin-bottom: 10px;
+    }
+    .habit-top-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
     }
-    .streak-tag {
-      display: inline-flex;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--amber);
-      margin-top: 4px;
+    .habit-title-text { font-size: 14px; font-weight: 500; flex: 1; }
+    .streak-tag { font-size: 13px; font-weight: 700; color: var(--amber); white-space: nowrap; }
+    .habit-note-input {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1px dashed var(--border-color);
+      color: var(--text-muted); font-size: 12px; padding: 4px 0; margin-top: 6px; outline: none;
     }
+    .habit-note-input:focus { border-bottom-color: var(--cyan); color: var(--text-main); }
 
     /* --- PROGRESS BAR --- */
     .progress-bar-bg {
-      background: var(--input-bg);
-      height: 10px;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 6px;
-      border: 1px solid var(--border-color);
+      background: var(--input-bg); height: 10px; border-radius: 10px;
+      overflow: hidden; margin-top: 6px; border: 1px solid var(--border-color);
     }
     .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--purple), var(--cyan));
-      width: 0%;
-      transition: width 0.4s ease;
+      height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan));
+      width: 0%; transition: width 0.4s ease;
     }
 
     /* --- CALENDAR GRID --- */
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      text-align: center;
-    }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
     .cal-day-name { font-size: 11px; color: var(--text-muted); font-weight: 500; padding-bottom: 4px; }
     .cal-date {
-      padding: 10px 0;
-      background: var(--input-bg);
-      border-radius: 8px;
-      font-size: 13px;
-      border: 1px solid transparent;
-      cursor: pointer;
+      padding: 10px 0; background: var(--input-bg); border-radius: 8px; font-size: 13px;
+      border: 1px solid transparent; cursor: pointer;
     }
-    .cal-date.today {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      font-weight: bold;
-      background: rgba(56, 189, 248, 0.12);
-    }
+    .cal-date.today { border-color: var(--cyan); color: var(--cyan); font-weight: bold; background: rgba(56, 189, 248, 0.12); }
 
     /* --- HOMEWORK LIST --- */
     .hw-item {
-      background: var(--input-bg);
-      border-left: 4px solid var(--primary);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 10px;
+      background: var(--input-bg); border-left: 4px solid var(--primary);
+      border-radius: 10px; padding: 12px; margin-bottom: 10px;
     }
 
     /* --- BOTTOM NAVIGATION --- */
     .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: var(--nav-bg);
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0;
-      z-index: 100;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--nav-bg); border-top: 1px solid var(--border-color);
+      display: flex; justify-content: space-around; padding: 8px 0; z-index: 100;
     }
     .nav-tab {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      color: var(--text-muted);
-      font-size: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      width: 16%;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      color: var(--text-muted); font-size: 10px; background: none; border: none;
+      cursor: pointer; width: 16%;
     }
     .nav-tab.active { color: var(--cyan); font-weight: 600; }
     .nav-icon { font-size: 17px; }
@@ -345,7 +255,7 @@
 </head>
 <body>
 
-  <!-- ==================== LOGIN OVERLAY ==================== -->
+  <!-- LOGIN OVERLAY -->
   <div id="loginScreen">
     <div class="login-card">
       <img src="icon.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/64/6366f1/fff?text=LP'">
@@ -377,7 +287,7 @@
     </div>
   </div>
 
-  <!-- ==================== MAIN APPLICATION ==================== -->
+  <!-- HEADER -->
   <header class="app-header">
     <div class="logo-container">
       <div class="logo-title">LifePulse</div>
@@ -425,21 +335,31 @@
       </div>
     </section>
 
-    <!-- TAB 2: DISCIPLINE & STREAK -->
+    <!-- TAB 2: DISCIPLINE & STREAK + GAMIFICATION -->
     <section id="tab-discipline" class="tab-content">
+      
+      <!-- LVL / EXP / RANK CARD -->
+      <div class="gamification-card">
+        <div>
+          <span class="lvl-badge" id="lvlBadge">LVL 1</span>
+          <div class="rank-title" id="rankTitle">Habit Master</div>
+          <div class="xp-text" id="xpText">XP: 0 / 100</div>
+        </div>
+        <div class="total-streak-box">
+          <div class="total-streak-num"><span id="totalStreakVal">0</span> 🔥</div>
+          <div style="font-size:11px; opacity:0.8;">วันติดต่อกัน</div>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-title">🎯 เพิ่มเป้าหมายวินัยประจำวัน</div>
         <div class="form-group">
-          <label>ชื่อกิจกรรม/นิสัยที่ต้องการทำทุกวัน</label>
-          <input type="text" id="habitInput" placeholder="เช่น อ่านหนังสือ 15 นาที, ดื่มน้ำ 2 ลิตร">
+          <input type="text" id="habitInput" placeholder="เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที" onkeypress="if(event.key==='Enter') addHabit()">
         </div>
         <button class="btn btn-primary" onclick="addHabit()">+ เพิ่มเป้าหมาย</button>
       </div>
 
-      <h4 style="font-size: 14px; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
-        <span>รายการวินัยและ Streak 🔥</span>
-      </h4>
-      
+      <h4 style="font-size: 14px; margin-bottom: 10px;">นิสัยประจำวันนี้</h4>
       <div id="habitList"></div>
     </section>
 
@@ -544,7 +464,7 @@
 
   </div>
 
-  <!-- Bottom Navigation Bar -->
+  <!-- BOTTOM NAV BAR -->
   <nav class="bottom-nav">
     <button class="nav-tab active" onclick="switchTab('stats', this)">
       <span class="nav-icon">📊</span><span>สถิติ</span>
@@ -566,122 +486,86 @@
     </button>
   </nav>
 
-  <!-- JavaScript Application Script -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ==========================================
-    // 🔑 1. FIREBASE CONFIGURATION & INIT
-    // ==========================================
+    // 🔑 1. FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyALRDLXx5alOIl-PikR4bSg06MZaUg5avI",
       authDomain: "lifestyle-app-13867.firebaseapp.com",
       projectId: "lifestyle-app-13867",
       storageBucket: "lifestyle-app-13867.firebasestorage.app",
       messagingSenderId: "623783309157",
-      appId: "1:623783309157:web:eae222bd76692edf6e7b8c",
-      measurementId: "G-4DEG457F42"
+      appId: "1:623783309157:web:eae222bd76692edf6e7b8c"
     };
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // --- AUTHENTICATION HANDLERS ---
     function handleGoogleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(() => hideError())
-        .catch((error) => showError("Google Sign-In Error: " + error.message));
+      auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e => showError(e.message));
     }
-
     function handleEmailLogin() {
-      const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value.trim();
-
-      if (!email || !password) {
-        showError("กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน");
-        return;
-      }
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => hideError())
-        .catch((error) => showError(error.message));
+      const e = document.getElementById('authEmail').value, p = document.getElementById('authPassword').value;
+      if (e && p) auth.signInWithEmailAndPassword(e, p).catch(err => showError(err.message));
     }
-
     function handleEmailSignUp() {
-      const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value.trim();
-
-      if (!email || !password) {
-        showError("กรุณากรอกอีเมลและรหัสผ่านเพื่อสมัคร");
-        return;
-      }
-
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => hideError())
-        .catch((error) => showError(error.message));
+      const e = document.getElementById('authEmail').value, p = document.getElementById('authPassword').value;
+      if (e && p) auth.createUserWithEmailAndPassword(e, p).catch(err => showError(err.message));
     }
-
     function handleLogout() {
-      auth.signOut().then(() => {
-        document.getElementById('loginScreen').style.display = 'flex';
-      });
+      auth.signOut().then(() => document.getElementById('loginScreen').style.display = 'flex');
     }
+    function showError(m) { const d = document.getElementById('authError'); if (d) { d.innerText = m; d.style.display = 'block'; } }
 
-    function showError(msg) {
-      const errDiv = document.getElementById('authError');
-      if (errDiv) {
-        errDiv.innerText = msg;
-        errDiv.style.display = 'block';
-      }
-    }
-
-    function hideError() {
-      const errDiv = document.getElementById('authError');
-      if (errDiv) {
-        errDiv.style.display = 'none';
-        errDiv.innerText = '';
-      }
-    }
-
-    auth.onAuthStateChanged((user) => {
-      const loginScreen = document.getElementById('loginScreen');
+    auth.onAuthStateChanged(user => {
+      const ls = document.getElementById('loginScreen');
       if (user) {
-        if (loginScreen) loginScreen.style.display = 'none';
-        const userTag = document.getElementById('settingsUserTag');
-        if (userTag) userTag.innerText = user.email || user.displayName || 'ผู้ใช้งาน';
-      } else {
-        if (loginScreen) loginScreen.style.display = 'flex';
-      }
+        if (ls) ls.style.display = 'none';
+        const ut = document.getElementById('settingsUserTag');
+        if (ut) ut.innerText = user.email || 'ผู้ใช้งาน';
+      } else if (ls) ls.style.display = 'flex';
     });
 
-    // ==========================================
-    // 🎨 2. UI & NAVIGATION
-    // ==========================================
+    // 🎨 2. NAVIGATION & THEME
     function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
-
-      const targetTab = document.getElementById('tab-' + tabId);
-      if (targetTab) targetTab.classList.add('active');
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
       if (btn) btn.classList.add('active');
     }
 
     function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      const themeIcon = document.getElementById('themeIcon');
-      if (themeIcon) themeIcon.innerText = newTheme === 'dark' ? '☀️' : '🌙';
+      const curr = document.documentElement.getAttribute('data-theme');
+      const next = curr === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
     }
 
-    // ==========================================
-    // 🎯 3. HABIT & STREAK SYSTEM (วินัยประจำวัน + 🔥 STREAK)
-    // ==========================================
+    // 🎯 3. HABITS + GAMIFICATION (LVL, XP, STREAK & NOTES)
     let habits = JSON.parse(localStorage.getItem('user_habits')) || [];
+    let userStats = JSON.parse(localStorage.getItem('user_stats')) || { level: 1, xp: 0 };
 
-    function saveHabits() {
+    function saveData() {
       localStorage.setItem('user_habits', JSON.stringify(habits));
+      localStorage.setItem('user_stats', JSON.stringify(userStats));
+    }
+
+    function getRankTitle(lvl) {
+      if (lvl < 3) return "Habit Master";
+      if (lvl < 5) return "Discipline Pro";
+      if (lvl < 10) return "Routine Legend";
+      return "Life Pulse God";
+    }
+
+    function updateGamificationUI() {
+      const maxXp = userStats.level * 100;
+      document.getElementById('lvlBadge').innerText = `LVL ${userStats.level}`;
+      document.getElementById('rankTitle').innerText = getRankTitle(userStats.level);
+      document.getElementById('xpText').innerText = `XP: ${userStats.xp} / ${maxXp}`;
+
+      const maxStreak = habits.length > 0 ? Math.max(...habits.map(h => h.streak || 0)) : 0;
+      document.getElementById('totalStreakVal').innerText = maxStreak;
     }
 
     function renderHabits() {
@@ -689,35 +573,37 @@
       if (!list) return;
 
       if (habits.length === 0) {
-        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px; background:var(--card-bg); border-radius:12px; border:1px solid var(--border-color);">ยังไม่มีเป้าหมายวินัย เพิ่มด้านบนได้เลย!</p>`;
+        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">ยังไม่มีเป้าหมาย เพิ่มรายการด้านบนได้เลย!</p>`;
+        updateGamificationUI();
         return;
       }
 
       const todayStr = new Date().toISOString().split('T')[0];
 
-      list.innerHTML = habits.map((h, index) => {
+      list.innerHTML = habits.map((h, i) => {
         const isDoneToday = h.lastDoneDate === todayStr;
-        const streakCount = h.streak || 0;
-
         return `
-          <div class="habit-item" style="opacity: ${isDoneToday ? '0.75' : '1'};">
-            <div>
-              <div style="font-weight:500; font-size:14px; text-decoration: ${isDoneToday ? 'line-through' : 'none'};">
-                ${h.text}
+          <div class="habit-card-item" style="opacity: ${isDoneToday ? '0.8' : '1'};">
+            <div class="habit-top-row">
+              <div class="habit-title-text" style="text-decoration: ${isDoneToday ? 'line-through' : 'none'};">
+                ${escapeHtml(h.text)}
               </div>
-              <div class="streak-tag">
-                🔥 ทำต่อเนื่อง ${streakCount} วัน
-              </div>
-            </div>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <button class="btn-sm ${isDoneToday ? 'btn-undo' : 'btn-done'}" onclick="toggleHabit(${index})">
+              <div class="streak-tag">🔥 ${h.streak || 0} วัน</div>
+              <button class="btn-sm ${isDoneToday ? 'btn-undo' : 'btn-done'}" onclick="toggleHabit(${i})">
                 ${isDoneToday ? 'เช็คอินแล้ว' : '✓ เช็คอิน'}
               </button>
-              <button class="btn-sm btn-del" onclick="deleteHabit(${index})">✕</button>
+              <button class="btn-sm btn-del" onclick="deleteHabit(${i})">✕</button>
+            </div>
+            <div>
+              <input type="text" class="habit-note-input" placeholder="+ แนบโน้ตสั้นๆ" 
+                value="${escapeHtml(h.note || '')}" 
+                onchange="updateNote(${i}, this.value)">
             </div>
           </div>
         `;
       }).join('');
+
+      updateGamificationUI();
     }
 
     function addHabit() {
@@ -725,120 +611,100 @@
       const val = input.value.trim();
       if (!val) return;
 
-      habits.push({
-        text: val,
-        streak: 0,
-        lastDoneDate: ''
-      });
-
-      saveHabits();
+      habits.push({ text: val, streak: 0, lastDoneDate: '', note: '' });
+      saveData();
       renderHabits();
       input.value = '';
     }
 
     function toggleHabit(index) {
-      const habit = habits[index];
+      const h = habits[index];
       const todayStr = new Date().toISOString().split('T')[0];
-
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-      if (habit.lastDoneDate === todayStr) {
-        // ยกเลิกการเช็คอินวันนี้
-        habit.lastDoneDate = '';
-        if (habit.streak > 0) habit.streak--;
+      if (h.lastDoneDate === todayStr) {
+        // Uncheck
+        h.lastDoneDate = '';
+        if (h.streak > 0) h.streak--;
+        userStats.xp = Math.max(0, userStats.xp - 25);
       } else {
-        // เช็คอินสำเร็จสำหรับวันนี้
-        if (habit.lastDoneDate === yesterdayStr) {
-          habit.streak = (habit.streak || 0) + 1; // ทำต่อเนื่องจากเมื่อวาน
+        // Checkin
+        if (h.lastDoneDate === yesterdayStr) {
+          h.streak = (h.streak || 0) + 1;
         } else {
-          habit.streak = 1; // ขาดช่วง เริ่ม 1 ใหม่
+          h.streak = 1;
         }
-        habit.lastDoneDate = todayStr;
+        h.lastDoneDate = todayStr;
+
+        // Add EXP
+        userStats.xp += 25;
+        const maxXp = userStats.level * 100;
+        if (userStats.xp >= maxXp) {
+          userStats.xp -= maxXp;
+          userStats.level++;
+          alert(`🎉 เลเวลอัป! คุณบรรลุ Level ${userStats.level} แล้ว!`);
+        }
       }
 
-      saveHabits();
+      saveData();
       renderHabits();
+    }
+
+    function updateNote(index, text) {
+      habits[index].note = text;
+      saveData();
     }
 
     function deleteHabit(index) {
       if (confirm('คุณต้องการลบเป้าหมายนี้หรือไม่?')) {
         habits.splice(index, 1);
-        saveHabits();
+        saveData();
         renderHabits();
       }
     }
 
-    // ==========================================
-    // 📅 4. CALENDAR SYSTEM (ปฏิทิน)
-    // ==========================================
-    let currentDate = new Date();
-    let currentYear = currentDate.getFullYear();
-    let currentMonth = currentDate.getMonth();
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    }
 
-    const monthNamesTh = [
-      "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
-      "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
-    ];
+    // 📅 4. CALENDAR
+    let currentDate = new Date(), currentYear = currentDate.getFullYear(), currentMonth = currentDate.getMonth();
+    const monthNamesTh = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
     function renderCalendar() {
-      const daysHeader = document.getElementById('calendarDaysHeader');
-      const daysGrid = document.getElementById('calendarDays');
-      const monthYearLabel = document.getElementById('calMonthYear');
+      const header = document.getElementById('calendarDaysHeader'), grid = document.getElementById('calendarDays'), label = document.getElementById('calMonthYear');
+      if (!header || !grid || !label) return;
 
-      if (!daysHeader || !daysGrid || !monthYearLabel) return;
+      label.innerText = `${monthNamesTh[currentMonth]} ${currentYear}`;
+      header.innerHTML = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'].map(d => `<div class="cal-day-name">${d}</div>`).join('');
 
-      monthYearLabel.innerText = `${monthNamesTh[currentMonth]} ${currentYear}`;
-
-      const dayNames = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
-      daysHeader.innerHTML = dayNames.map(d => `<div class="cal-day-name">${d}</div>`).join('');
-
-      const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
       const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+      let html = '';
 
-      let gridHtml = '';
-
-      for (let i = 0; i < firstDayIndex; i++) {
-        gridHtml += `<div></div>`;
-      }
-
+      for (let i = 0; i < firstDay; i++) html += `<div></div>`;
       const today = new Date();
       for (let day = 1; day <= totalDays; day++) {
-        const isToday = (
-          day === today.getDate() &&
-          currentMonth === today.getMonth() &&
-          currentYear === today.getFullYear()
-        ) ? 'today' : '';
-
-        gridHtml += `<div class="cal-date ${isToday}">${day}</div>`;
+        const isToday = (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) ? 'today' : '';
+        html += `<div class="cal-date ${isToday}">${day}</div>`;
       }
-
-      daysGrid.innerHTML = gridHtml;
+      grid.innerHTML = html;
     }
 
     function changeMonth(dir) {
       currentMonth += dir;
-      if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      } else if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      }
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      else if (currentMonth > 11) { currentMonth = 0; currentYear++; }
       renderCalendar();
     }
 
-    // ==========================================
-    // 📚 5. HOMEWORK SYSTEM
-    // ==========================================
-    let hwPending = 0;
-    let hwDone = 0;
-
+    // 📚 5. HOMEWORK
+    let hwPending = 0, hwDone = 0;
     function addHomework() {
-      const subjInput = document.getElementById('hwSubject');
-      const detailInput = document.getElementById('hwDetail');
-      const subj = subjInput.value.trim();
+      const subj = document.getElementById('hwSubject').value.trim();
+      const detail = document.getElementById('hwDetail').value;
       if (!subj) return;
 
       const list = document.getElementById('homeworkList');
@@ -847,17 +713,15 @@
       item.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
-            <strong>${subj}</strong>
-            <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${detailInput.value}</p>
+            <strong>${escapeHtml(subj)}</strong>
+            <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(detail)}</p>
           </div>
           <button class="btn-sm btn-done" onclick="toggleHomework(this)">ส่งงาน</button>
         </div>
       `;
-
       list.appendChild(item);
-      subjInput.value = '';
-      detailInput.value = '';
-
+      document.getElementById('hwSubject').value = '';
+      document.getElementById('hwDetail').value = '';
       hwPending++;
       updateHwStats();
     }
@@ -865,104 +729,65 @@
     function toggleHomework(btn) {
       const item = btn.parentElement.parentElement;
       if (btn.classList.contains('btn-done')) {
-        btn.classList.remove('btn-done');
-        btn.classList.add('btn-undo');
-        btn.innerText = 'ยกเลิก';
-        item.style.opacity = '0.5';
-        item.style.textDecoration = 'line-through';
-        hwPending--;
-        hwDone++;
+        btn.className = 'btn-sm btn-undo'; btn.innerText = 'ยกเลิก';
+        item.style.opacity = '0.5'; item.style.textDecoration = 'line-through';
+        hwPending--; hwDone++;
       } else {
-        btn.classList.remove('btn-undo');
-        btn.classList.add('btn-done');
-        btn.innerText = 'ส่งงาน';
-        item.style.opacity = '1';
-        item.style.textDecoration = 'none';
-        hwPending++;
-        hwDone--;
+        btn.className = 'btn-sm btn-done'; btn.innerText = 'ส่งงาน';
+        item.style.opacity = '1'; item.style.textDecoration = 'none';
+        hwPending++; hwDone--;
       }
       updateHwStats();
     }
 
     function updateHwStats() {
-      const pendingEl = document.getElementById('statPendingCount');
-      const doneEl = document.getElementById('statDoneCount');
-      const percentEl = document.getElementById('statHwPercent');
-      const barEl = document.getElementById('statHwBar');
-
-      if (pendingEl) pendingEl.innerText = hwPending;
-      if (doneEl) doneEl.innerText = hwDone;
-
+      document.getElementById('statPendingCount').innerText = hwPending;
+      document.getElementById('statDoneCount').innerText = hwDone;
       const total = hwPending + hwDone;
       const percent = total > 0 ? Math.round((hwDone / total) * 100) : 0;
-
-      if (percentEl) percentEl.innerText = `${percent}%`;
-      if (barEl) barEl.style.width = `${percent}%`;
+      document.getElementById('statHwPercent').innerText = `${percent}%`;
+      document.getElementById('statHwBar').style.width = `${percent}%`;
     }
 
-    // ==========================================
-    // 💰 6. FINANCE SYSTEM
-    // ==========================================
+    // 💰 6. FINANCE
     let totalBalance = 0;
-
     function addFinanceTransaction() {
-      const titleInput = document.getElementById('finTitle');
-      const amountInput = document.getElementById('finAmount');
-      const typeSelect = document.getElementById('finType');
-
-      const title = titleInput.value.trim();
-      const amount = parseFloat(amountInput.value);
+      const title = document.getElementById('finTitle').value.trim();
+      const amount = parseFloat(document.getElementById('finAmount').value);
+      const type = document.getElementById('finType').value;
       if (!title || isNaN(amount)) return;
 
-      const type = typeSelect.value;
-      if (type === 'income') {
-        totalBalance += amount;
-      } else {
-        totalBalance -= amount;
-      }
-
-      const list = document.getElementById('financeList');
+      totalBalance += (type === 'income' ? amount : -amount);
       const color = type === 'income' ? 'var(--green)' : 'var(--red)';
       const sign = type === 'income' ? '+' : '-';
 
-      list.innerHTML += `
+      document.getElementById('financeList').innerHTML += `
         <div style="display:flex; justify-content:space-between; margin-bottom:8px; padding-bottom:4px; border-bottom:1px solid var(--border-color);">
-          <span>${title}</span>
+          <span>${escapeHtml(title)}</span>
           <strong style="color:${color}">${sign}฿${amount.toFixed(2)}</strong>
         </div>
       `;
-
-      const balanceEl = document.getElementById('financeBalance');
-      if (balanceEl) balanceEl.innerText = `฿${totalBalance.toFixed(2)}`;
-
-      titleInput.value = '';
-      amountInput.value = '';
+      document.getElementById('financeBalance').innerText = `฿${totalBalance.toFixed(2)}`;
+      document.getElementById('finTitle').value = '';
+      document.getElementById('finAmount').value = '';
     }
 
-    // ==========================================
-    // ⚙️ 7. SETTINGS & CLEAR DATA
-    // ==========================================
+    // ⚙️ 7. CLEAR ALL DATA
     function clearAllData() {
-      if (confirm('คุณต้องการล้างข้อมูลแอปทั้งหมดหรือไม่?')) {
+      if (confirm('คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?')) {
+        localStorage.clear();
+        habits = []; userStats = { level: 1, xp: 0 };
+        totalBalance = 0; hwPending = 0; hwDone = 0;
         document.getElementById('homeworkList').innerHTML = '';
         document.getElementById('financeList').innerHTML = '';
-        localStorage.clear();
-        habits = [];
-        totalBalance = 0;
-        hwPending = 0;
-        hwDone = 0;
-
-        const balanceEl = document.getElementById('financeBalance');
-        if (balanceEl) balanceEl.innerText = '฿0.00';
+        document.getElementById('financeBalance').innerText = '฿0.00';
         updateHwStats();
         renderHabits();
-        alert('ล้างข้อมูลเรียบร้อยแล้ว');
+        alert('ล้างข้อมูลเรียบร้อย');
       }
     }
 
-    // ==========================================
-    // 🚀 8. PAGE INITIALIZATION
-    // ==========================================
+    // INIT
     document.addEventListener("DOMContentLoaded", () => {
       renderCalendar();
       renderHabits();
