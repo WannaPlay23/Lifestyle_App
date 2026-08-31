@@ -201,7 +201,7 @@
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0;
       background: var(--nav-bg); border-top: 1px solid var(--border-color);
-      display: flex; justify-around: space-around; padding: 8px 0; z-index: 100;
+      display: flex; justify-content: space-around; padding: 8px 0; z-index: 100;
     }
     .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 11px; background: none; border: none; cursor: pointer; width: 20%; }
     .nav-tab.active { color: var(--cyan); font-weight: 600; }
@@ -363,7 +363,7 @@
         <div class="form-row">
           <div class="form-group">
             <label data-i18n="fin_amount_label">จำนวนเงิน (บาท)</label>
-            <input type="number" id="finAmount" placeholder="0.00">
+            <input type="number" id="finAmount" placeholder="0.00" step="0.01">
           </div>
           <div class="form-group">
             <label data-i18n="fin_type_label">ประเภท</label>
@@ -467,6 +467,14 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    // 🌐 DATE HELPER (Local Timezone Fix)
+    function getLocalDateStr(d = new Date()) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
     // 🌐 DICTIONARY FOR I18N
     const translations = {
       th: {
@@ -667,7 +675,7 @@
       } else if (ls) ls.style.display = 'flex';
     });
 
-    // 🎨 2. NAVIGATION & THEME
+    // 🎨 2. NAVIGATION & THEME Persistence
     function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
@@ -678,10 +686,17 @@
     }
 
     function toggleTheme() {
-      const curr = document.documentElement.getAttribute('data-theme');
+      const curr = document.documentElement.getAttribute('data-theme') || 'dark';
       const next = curr === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('user_theme', next);
       document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('user_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.getElementById('themeIcon').innerText = savedTheme === 'dark' ? '☀️' : '🌙';
     }
 
     // 💾 STORAGE SYSTEM
@@ -756,8 +771,8 @@
         } else if (permission === "denied") {
           const isEn = currentLang === 'en';
           alert(isEn 
-            ? 'Notification permission was denied. Please allow notifications for wannaplay23.github.io in browser site settings.' 
-            : 'การแจ้งเตือนถูกปฏิเสธ กรุณาเข้าไปเปิดอนุญาตการแจ้งเตือนสำหรับเว็บ wannaplay23.github.io ในการตั้งค่าเบราว์เซอร์');
+            ? 'Notification permission was denied. Please allow notifications in browser site settings.' 
+            : 'การแจ้งเตือนถูกปฏิเสธ กรุณาเข้าไปเปิดอนุญาตการแจ้งเตือนในการตั้งค่าเบราว์เซอร์');
         }
       });
     }
@@ -809,7 +824,7 @@
     function checkAndTriggerDailyNotifications() {
       if (!("Notification" in window) || Notification.permission !== "granted") return;
 
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = getLocalDateStr();
       const pendingHw = homeworks.filter(h => h.dueDate === todayStr && !h.done);
       const pendingHabits = habits.filter(h => h.lastDoneDate !== todayStr);
 
@@ -860,7 +875,7 @@
         return;
       }
 
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = getLocalDateStr();
       list.innerHTML = habits.map((h) => {
         const isDoneToday = h.lastDoneDate === todayStr;
         const streakLabel = isEn ? 'days' : 'วัน';
@@ -901,9 +916,11 @@
     function toggleHabit(id) {
       const h = habits.find(item => item.id === id);
       if (!h) return;
-      const todayStr = new Date().toISOString().split('T')[0];
-      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayStr = yesterday.toISOString().split('T')[0];
+      
+      const todayStr = getLocalDateStr();
+      const yesterday = new Date(); 
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = getLocalDateStr(yesterday);
 
       if (h.lastDoneDate === todayStr) {
         h.lastDoneDate = '';
@@ -1133,6 +1150,8 @@
 
       document.getElementById('hwSubject').value = '';
       document.getElementById('hwDetail').value = '';
+      document.getElementById('hwAssignDate').value = getLocalDateStr();
+      document.getElementById('hwDueDate').value = getLocalDateStr();
     }
 
     function toggleHomework(id) {
@@ -1210,11 +1229,11 @@
       const type = document.getElementById('finType').value;
       let date = document.getElementById('finDate').value;
 
-      if (!title || isNaN(amount)) { 
-        alert(currentLang === 'en' ? 'Please fill in item title and valid amount' : 'กรุณากรอกข้อมูลรายการและจำนวนเงินให้ถูกต้อง'); 
+      if (!title || isNaN(amount) || amount <= 0) { 
+        alert(currentLang === 'en' ? 'Please fill in item title and valid positive amount' : 'กรุณากรอกข้อมูลรายการและจำนวนเงินให้ถูกต้อง'); 
         return; 
       }
-      if (!date) date = new Date().toISOString().split('T')[0];
+      if (!date) date = getLocalDateStr();
 
       transactions.push({
         id: Date.now() + Math.random(),
@@ -1230,6 +1249,7 @@
 
       document.getElementById('finTitle').value = '';
       document.getElementById('finAmount').value = '';
+      document.getElementById('finDate').value = getLocalDateStr();
     }
 
     function deleteTransaction(id) {
@@ -1250,6 +1270,7 @@
         habits = []; userStats = { level: 1, xp: 0 }; homeworks = []; transactions = [];
         saveData();
         applyLanguage();
+        initTheme();
         alert(currentLang === 'en' ? 'All data cleared successfully.' : 'ล้างข้อมูลเรียบร้อย');
       }
     }
@@ -1260,9 +1281,10 @@
 
     // INITIALIZATION
     document.addEventListener("DOMContentLoaded", () => {
+      initTheme();
       loadData();
 
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = getLocalDateStr();
       document.getElementById('hwAssignDate').value = todayStr;
       document.getElementById('hwDueDate').value = todayStr;
       document.getElementById('finDate').value = todayStr;
