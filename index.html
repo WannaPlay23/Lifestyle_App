@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifePulse - Finance & Habit Tracker</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#4f46e5" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Firebase App & Services (Compat SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen pb-20 transition-colors duration-200">
+
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+        <i class="fa-solid fa-chart-line mr-2"></i>LifePulse
+      </h1>
+      <div class="flex items-center space-x-3">
+        <button id="langBtn" onclick="toggleLanguage()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-sm font-semibold">TH / EN</button>
+        <button id="themeBtn" onclick="toggleTheme()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700"><i id="themeIcon" class="fa-solid fa-moon"></i></button>
+        <button id="authBtn" onclick="handleAuth()" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">
+          <span id="authBtnText" data-i18n="login">เข้าสู่ระบบ</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-4xl mx-auto p-4">
+    <!-- TAB 1: FINANCE TRACKER -->
+    <section id="tab-finance" class="tab-content space-y-6">
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-emerald-500 text-white p-4 rounded-xl shadow">
+          <p class="text-xs opacity-80 uppercase font-semibold" data-i18n="income">รายรับ</p>
+          <p id="totalIncome" class="text-xl font-bold">฿0</p>
+        </div>
+        <div class="bg-rose-500 text-white p-4 rounded-xl shadow">
+          <p class="text-xs opacity-80 uppercase font-semibold" data-i18n="expense">รายจ่าย</p>
+          <p id="totalExpense" class="text-xl font-bold">฿0</p>
+        </div>
+        <div class="bg-indigo-600 text-white p-4 rounded-xl shadow">
+          <p class="text-xs opacity-80 uppercase font-semibold" data-i18n="balance">คงเหลือ</p>
+          <p id="netBalance" class="text-xl font-bold">฿0</p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="font-semibold text-sm" data-i18n="monthlyBudget">งบประมาณรายเดือน</span>
+          <button onclick="setBudgetPrompt()" class="text-indigo-600 dark:text-indigo-400 text-xs hover:underline" data-i18n="edit">แก้ไข</button>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+          <div id="budgetProgressBar" class="bg-indigo-600 h-3 transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-gray-500">
+          <span id="budgetSpentText">ใช้ไป: ฿0</span>
+          <span id="budgetLimitText">งบ: ฿0</span>
+        </div>
+      </div>
+
+      <form id="financeForm" onsubmit="addTransaction(event)" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow space-y-4">
+        <h2 class="font-semibold text-md" data-i18n="addTransaction">เพิ่มรายการ</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <input type="text" id="txTitle" placeholder="ชื่อรายการ" required class="p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm" />
+          <input type="number" id="txAmount" placeholder="จำนวนเงิน" required class="p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm" />
+          <select id="txType" class="p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm">
+            <option value="expense" data-i18n="expense">รายจ่าย</option>
+            <option value="income" data-i18n="income">รายรับ</option>
+          </select>
+          <select id="txCategory" class="p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm">
+            <option value="food" data-i18n="food">อาหาร</option>
+            <option value="transport" data-i18n="transport">เดินทาง</option>
+            <option value="shopping" data-i18n="shopping">ช้อปปิ้ง</option>
+            <option value="bills" data-i18n="bills">บิล/ที่พัก</option>
+            <option value="other" data-i18n="other">อื่นๆ</option>
+          </select>
+        </div>
+        <div class="flex items-center space-x-2">
+          <input type="checkbox" id="txRecurring" class="rounded text-indigo-600" />
+          <label for="txRecurring" class="text-xs" data-i18n="recurringItem">รายการประจำทุกเดือน (Recurring)</label>
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700">
+          <span data-i18n="add">บันทึกข้อมูล</span>
+        </button>
+      </form>
+
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <h2 class="font-semibold text-md mb-2" data-i18n="chartTitle">สัดส่วนรายจ่าย</h2>
+        <div class="w-full max-w-xs mx-auto">
+          <canvas id="financeChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <h2 class="font-semibold text-md mb-3" data-i18n="history">ประวัติรายการ</h2>
+        <ul id="txList" class="divide-y divide-gray-200 dark:divide-gray-700 text-sm"></ul>
+      </div>
+    </section>
+
+    <!-- TAB 2: HABIT TRACKER -->
+    <section id="tab-habits" class="tab-content hidden space-y-6">
+      <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 rounded-xl shadow flex justify-between items-center">
+        <div>
+          <span id="userLevel" class="text-xs bg-white/20 px-2 py-1 rounded font-bold">LVL 1</span>
+          <h2 class="text-lg font-bold mt-1" id="userTitle">Habit Master</h2>
+          <p class="text-xs opacity-90 mt-1">XP: <span id="userXP">0</span> / <span id="nextLevelXP">100</span></p>
+        </div>
+        <div class="text-right">
+          <p class="text-3xl font-extrabold" id="streakCounter">0 🔥</p>
+          <p class="text-xs opacity-80" data-i18n="dayStreak">วันติดต่อกัน</p>
+        </div>
+      </div>
+
+      <form id="habitForm" onsubmit="addHabit(event)" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow flex gap-2">
+        <input type="text" id="habitName" placeholder="เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที" required class="flex-grow p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm" />
+        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-purple-700" data-i18n="add">เพิ่ม</button>
+      </form>
+
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow space-y-3">
+        <h2 class="font-semibold text-md" data-i18n="todayHabits">นิสัยประจำวันนี้</h2>
+        <div id="habitList" class="space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: STATS -->
+    <section id="tab-stats" class="tab-content hidden space-y-6">
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow space-y-4">
+        <h2 class="font-semibold text-md" data-i18n="monthlyStats">สถิตินิสัยรายเดือน</h2>
+        <div id="habitStatsList" class="space-y-4"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-2 z-50">
+    <button onclick="switchTab('finance')" id="nav-finance" class="flex flex-col items-center text-indigo-600 dark:text-indigo-400">
+      <i class="fa-solid fa-wallet text-lg"></i>
+      <span class="text-xs mt-1" data-i18n="tabFinance">การเงิน</span>
+    </button>
+    <button onclick="switchTab('habits')" id="nav-habits" class="flex flex-col items-center text-gray-400">
+      <i class="fa-solid fa-check-circle text-lg"></i>
+      <span class="text-xs mt-1" data-i18n="tabHabits">วินัยประจำวัน</span>
+    </button>
+    <button onclick="switchTab('stats')" id="nav-stats" class="flex flex-col items-center text-gray-400">
+      <i class="fa-solid fa-chart-pie text-lg"></i>
+      <span class="text-xs mt-1" data-i18n="tabStats">สถิติ</span>
+    </button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
