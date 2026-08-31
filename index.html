@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#0f172a">
-  <title data-i18n="app_title">LifePulse - Personal Management</title>
+  <title>LifePulse - Personal Management</title>
 
   <!-- PWA Settings & App Icons -->
   <link rel="manifest" href="manifest.json">
@@ -105,8 +105,28 @@
     .auth-error {
       color: var(--red);
       font-size: 12px;
-      margin-top: 8px;
+      margin-top: 10px;
       display: none;
+      word-break: break-word;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 16px 0;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .divider span {
+      padding: 0 10px;
     }
 
     /* --- HEADER --- */
@@ -213,6 +233,7 @@
     }
     .btn-primary { background: linear-gradient(45deg, var(--primary), var(--purple)); color: white; }
     .btn-secondary { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); }
+    .btn-google { background: #ffffff; color: #1f2937; font-weight: 600; border: 1px solid #e5e7eb; }
     .btn-notify { background: rgba(56, 189, 248, 0.1); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 14px; }
     .btn-sm { padding: 4px 10px; border-radius: 6px; font-size: 11px; border: none; cursor: pointer; }
     .btn-done { background: var(--green); color: white; }
@@ -235,7 +256,7 @@
       transition: width 0.4s ease;
     }
 
-    /* --- HABIT / DISCIPLINE LIST --- */
+    /* --- HABIT LIST --- */
     .habit-item {
       background: var(--input-bg);
       border: 1px solid var(--border-color);
@@ -245,16 +266,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-    .habit-info { display: flex; flex-direction: column; gap: 2px; }
-    .habit-name { font-size: 14px; font-weight: 500; }
-    .streak-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: var(--amber);
-      font-weight: 600;
     }
 
     /* --- CALENDAR GRID --- */
@@ -280,7 +291,6 @@
       cursor: pointer;
     }
     .cal-date.today { border-color: var(--cyan); color: var(--cyan); font-weight: bold; }
-    .cal-date.has-event { border-bottom: 3px solid var(--purple); }
 
     /* --- HOMEWORK LIST --- */
     .hw-item {
@@ -290,8 +300,6 @@
       padding: 12px;
       margin-bottom: 10px;
     }
-    .hw-item.urgent { border-left-color: var(--red); }
-    .hw-item.completed { border-left-color: var(--green); opacity: 0.6; }
 
     /* --- BOTTOM NAVIGATION --- */
     .bottom-nav {
@@ -325,27 +333,35 @@
 </head>
 <body>
 
-  <!-- ==================== 1. EMAIL LOGIN OVERLAY ==================== -->
+  <!-- ==================== LOGIN OVERLAY ==================== -->
   <div id="loginScreen">
     <div class="login-card">
       <img src="icon.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/64/6366f1/fff?text=LP'">
       <h2 style="font-size: 22px; margin-bottom: 4px; background: linear-gradient(45deg, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">LifePulse</h2>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;" data-i18n="login_subtitle">เข้าสู่ระบบด้วยอีเมลเพื่อจัดการชีวิตประจำวัน</p>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน</p>
       
+      <!-- ปุ่ม Google Login -->
+      <button class="btn btn-google" onclick="handleGoogleLogin()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        เข้าสู่ระบบด้วย Google
+      </button>
+
+      <div class="divider"><span>หรือใช้อีเมล</span></div>
+
       <div class="form-group">
-        <label data-i18n="login_email_label">อีเมล (Email)</label>
-        <input type="email" id="authEmail" data-i18n-placeholder="login_email_ph" placeholder="yourname@example.com">
+        <label>อีเมล (Email)</label>
+        <input type="email" id="authEmail" placeholder="yourname@example.com">
       </div>
       <div class="form-group">
-        <label data-i18n="login_pass_label">รหัสผ่าน (Password)</label>
+        <label>รหัสผ่าน (Password)</label>
         <input type="password" id="authPassword" placeholder="••••••••">
       </div>
 
       <div id="authError" class="auth-error"></div>
 
       <div style="display: flex; gap: 8px; margin-top: 14px;">
-        <button class="btn btn-primary" onclick="handleEmailLogin()" data-i18n="login_btn">เข้าสู่ระบบ 🚀</button>
-        <button class="btn btn-secondary" onclick="handleEmailSignUp()" data-i18n="signup_btn">สมัครสมาชิก</button>
+        <button class="btn btn-primary" onclick="handleEmailLogin()">เข้าสู่ระบบ 🚀</button>
+        <button class="btn btn-secondary" onclick="handleEmailSignUp()">สมัครสมาชิก</button>
       </div>
     </div>
   </div>
@@ -357,13 +373,10 @@
     </div>
 
     <div class="header-controls">
-      <!-- Language Selector -->
-      <select id="langSelect" class="control-select" onchange="setLanguage(this.value)">
+      <select id="langSelect" class="control-select">
         <option value="th">🇹🇭 TH</option>
         <option value="en">🇬🇧 EN</option>
       </select>
-
-      <!-- Theme Switcher Button -->
       <button id="themeBtn" class="control-btn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span>
       </button>
@@ -372,15 +385,15 @@
 
   <div class="container">
 
-    <!-- ===== TAB 1: สถิติ (STATS) ===== -->
+    <!-- TAB 1: STATS -->
     <section id="tab-stats" class="tab-content active">
       <div class="card" style="background: linear-gradient(135deg, var(--card-accent), var(--card-bg));">
-        <h3 style="font-size: 17px;" data-i18n="stats_title">📊 สถิติกิจกรรมประจำวัน</h3>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;" data-i18n="stats_subtitle">ภาพรวมความก้าวหน้าของคุณ</p>
+        <h3 style="font-size: 17px;">📊 สถิติกิจกรรมประจำวัน</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">ภาพรวมความก้าวหน้าของคุณ</p>
         
         <div style="margin-top: 14px;">
           <div style="display:flex; justify-content:space-between; font-size:12px;">
-            <span data-i18n="stats_hw_progress">ความสำเร็จการบ้าน</span>
+            <span>ความสำเร็จการบ้าน</span>
             <span id="statHwPercent">0%</span>
           </div>
           <div class="progress-bar-bg">
@@ -392,135 +405,124 @@
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
         <div class="card" style="margin:0; text-align:center;">
           <div style="font-size: 24px; font-weight: 600; color: var(--cyan);" id="statPendingCount">0</div>
-          <div style="font-size: 12px; color: var(--text-muted);" data-i18n="stats_pending">งานที่ค้างอยู่</div>
+          <div style="font-size: 12px; color: var(--text-muted);">งานที่ค้างอยู่</div>
         </div>
         <div class="card" style="margin:0; text-align:center;">
           <div style="font-size: 24px; font-weight: 600; color: var(--green);" id="statDoneCount">0</div>
-          <div style="font-size: 12px; color: var(--text-muted);" data-i18n="stats_completed">ส่งเรียบร้อยแล้ว</div>
+          <div style="font-size: 12px; color: var(--text-muted);">ส่งเรียบร้อยแล้ว</div>
         </div>
       </div>
     </section>
 
-    <!-- ===== TAB 2: วินัยประจำวัน (DISCIPLINE / HABITS) ===== -->
+    <!-- TAB 2: DISCIPLINE -->
     <section id="tab-discipline" class="tab-content">
       <div class="card">
-        <div class="card-title" data-i18n="habit_add_title">🎯 เพิ่มเป้าหมายวินัยประจำวัน</div>
+        <div class="card-title">🎯 เพิ่มเป้าหมายวินัยประจำวัน</div>
         <div class="form-group">
-          <label data-i18n="habit_name_label">ชื่อกิจกรรม/นิสัยที่ต้องการทำทุกวัน</label>
-          <input type="text" id="habitInput" data-i18n-placeholder="habit_name_ph" placeholder="เช่น อ่านหนังสือ 15 นาที, ออกกำลังกาย, ดื่มน้ำ 2 ลิตร">
+          <label>ชื่อกิจกรรม/นิสัยที่ต้องการทำทุกวัน</label>
+          <input type="text" id="habitInput" placeholder="เช่น อ่านหนังสือ 15 นาที, ออกกำลังกาย">
         </div>
-        <button class="btn btn-primary" onclick="addHabit()" data-i18n="habit_add_btn">+ เพิ่มเป้าหมาย</button>
+        <button class="btn btn-primary" onclick="addHabit()">+ เพิ่มเป้าหมาย</button>
       </div>
 
-      <h4 style="font-size: 14px; margin-bottom: 10px;" data-i18n="habit_list_title">รายการวินัยประจำวันของคุณ</h4>
+      <h4 style="font-size: 14px; margin-bottom: 10px;">รายการวินัยประจำวันของคุณ</h4>
       <div id="habitList"></div>
     </section>
 
-    <!-- ===== TAB 3: ปฏิทิน (CALENDAR) ===== -->
+    <!-- TAB 3: CALENDAR -->
     <section id="tab-calendar" class="tab-content">
       <div class="card">
         <div class="calendar-header">
-          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(-1)" data-i18n="cal_prev">◀ ก่อนหน้า</button>
+          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(-1)">◀ ก่อนหน้า</button>
           <strong id="calMonthYear" style="font-size: 15px;">มกราคม 2026</strong>
-          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(1)" data-i18n="cal_next">ถัดไป ▶</button>
+          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(1)">ถัดไป ▶</button>
         </div>
 
         <div class="calendar-grid" id="calendarDaysHeader"></div>
         <div class="calendar-grid" id="calendarDays" style="margin-top:6px;"></div>
       </div>
-
-      <div class="card">
-        <div class="card-title" data-i18n="cal_selected_title">📌 กิจกรรมในวันที่เลือก</div>
-        <div id="selectedDateEvents" style="font-size:13px; color:var(--text-muted);" data-i18n="cal_no_selected">
-          คลิกที่วันที่ในปฏิทินเพื่อดูรายการกำหนดส่งงาน
-        </div>
-      </div>
     </section>
 
-    <!-- ===== TAB 4: การบ้าน (HOMEWORK) ===== -->
+    <!-- TAB 4: HOMEWORK -->
     <section id="tab-homework" class="tab-content">
-      <button class="btn btn-notify" onclick="requestNotification()" data-i18n="hw_notify_btn">
-        🔔 เปิดการแจ้งเตือนเตือนความจำในเครื่องนี้
-      </button>
-
       <div class="card">
-        <div class="card-title" data-i18n="hw_add_title">📚 เพิ่มรายการการบ้าน</div>
+        <div class="card-title">📚 เพิ่มรายการการบ้าน</div>
 
         <div class="form-group">
-          <label data-i18n="hw_subject_label">ชื่อวิชา / หัวข้อ</label>
-          <input type="text" id="hwSubject" data-i18n-placeholder="hw_subject_ph" placeholder="เช่น คณิตศาสตร์, รายงานภาษาไทย">
+          <label>ชื่อวิชา / หัวข้อ</label>
+          <input type="text" id="hwSubject" placeholder="เช่น คณิตศาสตร์, รายงานภาษาไทย">
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label data-i18n="hw_assign_date_label">วันที่สั่ง</label>
+            <label>วันที่สั่ง</label>
             <input type="date" id="hwAssignDate">
           </div>
           <div class="form-group">
-            <label data-i18n="hw_due_date_label">กำหนดส่ง</label>
+            <label>กำหนดส่ง</label>
             <input type="date" id="hwDueDate">
           </div>
         </div>
 
         <div class="form-group">
-          <label data-i18n="hw_detail_label">รายละเอียดเพิ่มเติม</label>
-          <textarea id="hwDetail" rows="2" data-i18n-placeholder="hw_detail_ph" placeholder="รายละเอียดการบ้าน..."></textarea>
+          <label>รายละเอียดเพิ่มเติม</label>
+          <textarea id="hwDetail" rows="2" placeholder="รายละเอียดการบ้าน..."></textarea>
         </div>
 
-        <button class="btn btn-primary" onclick="addHomework()" data-i18n="hw_add_btn">+ บันทึกการบ้าน</button>
+        <button class="btn btn-primary" onclick="addHomework()">+ บันทึกการบ้าน</button>
       </div>
 
-      <h4 style="font-size: 14px; margin-bottom: 10px;" data-i18n="hw_list_title">รายการการบ้านทั้งหมด</h4>
+      <h4 style="font-size: 14px; margin-bottom: 10px;">รายการการบ้านทั้งหมด</h4>
       <div id="homeworkList"></div>
     </section>
 
-    <!-- ===== TAB 5: การเงิน (FINANCE) ===== -->
+    <!-- TAB 5: FINANCE -->
     <section id="tab-finance" class="tab-content">
       <div class="card" style="background: linear-gradient(135deg, #064e3b, var(--card-bg)); border-color: #059669;">
-        <div style="font-size: 12px; color: #a7f3d0;" data-i18n="fin_balance_label">ยอดเงินคงเหลือ</div>
+        <div style="font-size: 12px; color: #a7f3d0;">ยอดเงินคงเหลือ</div>
         <div style="font-size: 28px; font-weight: 600; color: #fff;" id="financeBalance">฿0.00</div>
       </div>
 
       <div class="card">
-        <div class="card-title" data-i18n="fin_add_title">💰 บันทึก รายรับ - รายจ่าย</div>
+        <div class="card-title">💰 บันทึก รายรับ - รายจ่าย</div>
         <div class="form-group">
-          <label data-i18n="fin_item_label">รายการ</label>
-          <input type="text" id="finTitle" data-i18n-placeholder="fin_item_ph" placeholder="เช่น ค่าอาหาร, ค่าขนม">
+          <label>รายการ</label>
+          <input type="text" id="finTitle" placeholder="เช่น ค่าอาหาร, ค่าขนม">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label data-i18n="fin_amount_label">จำนวนเงิน (บาท)</label>
+            <label>จำนวนเงิน (บาท)</label>
             <input type="number" id="finAmount" placeholder="0.00">
           </div>
           <div class="form-group">
-            <label data-i18n="fin_type_label">ประเภท</label>
+            <label>ประเภท</label>
             <select id="finType">
-              <option value="expense" data-i18n="fin_expense">รายจ่าย (-)</option>
-              <option value="income" data-i18n="fin_income">รายรับ (+)</option>
+              <option value="expense">รายจ่าย (-)</option>
+              <option value="income">รายรับ (+)</option>
             </select>
           </div>
         </div>
-        <button class="btn btn-primary" onclick="addFinanceTransaction()" data-i18n="fin_add_btn">+ บันทึกรายการ</button>
+        <button class="btn btn-primary" onclick="addFinanceTransaction()">+ บันทึกรายการ</button>
       </div>
 
       <div class="card">
-        <div class="card-title" data-i18n="fin_history_title">ประวัติการเงิน</div>
+        <div class="card-title">ประวัติการเงิน</div>
         <div id="financeList" style="font-size: 13px;"></div>
       </div>
     </section>
 
-    <!-- ===== TAB 6: ตั้งค่า (SETTINGS) ===== -->
+    <!-- TAB 6: SETTINGS -->
     <section id="tab-settings" class="tab-content">
       <div class="card">
-        <div class="card-title" data-i18n="settings_title">⚙️ ตั้งค่าแอปพลิเคชัน</div>
+        <div class="card-title">⚙️ ตั้งค่าแอปพลิเคชัน</div>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
-          <span data-i18n="settings_user_prefix">อีเมลผู้ใช้ปัจจุบัน:</span> <strong id="settingsUserTag" style="color:var(--text-main);">-</strong>
+          อีเมลผู้ใช้ปัจจุบัน: <strong id="settingsUserTag" style="color:var(--text-main);">-</strong>
         </p>
         
-        <button class="btn" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color); margin-bottom:10px;" onclick="handleLogout()" data-i18n="logout_btn">
+        <button class="btn" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color); margin-bottom:10px;" onclick="handleLogout()">
           🚪 ออกจากระบบ (Logout)
         </button>
-        <button class="btn btn-del" onclick="clearAllData()" data-i18n="clear_data_btn">
+        <button class="btn btn-del" onclick="clearAllData()">
           🗑️ ล้างข้อมูลแอปทั้งหมด
         </button>
       </div>
@@ -531,28 +533,22 @@
   <!-- Bottom Navigation Bar -->
   <nav class="bottom-nav">
     <button class="nav-tab active" onclick="switchTab('stats', this)">
-      <span class="nav-icon">📊</span>
-      <span data-i18n="nav_stats">สถิติ</span>
+      <span class="nav-icon">📊</span><span>สถิติ</span>
     </button>
     <button class="nav-tab" onclick="switchTab('discipline', this)">
-      <span class="nav-icon">🎯</span>
-      <span data-i18n="nav_discipline">วินัย</span>
+      <span class="nav-icon">🎯</span><span>วินัย</span>
     </button>
     <button class="nav-tab" onclick="switchTab('calendar', this)">
-      <span class="nav-icon">📅</span>
-      <span data-i18n="nav_calendar">ปฏิทิน</span>
+      <span class="nav-icon">📅</span><span>ปฏิทิน</span>
     </button>
     <button class="nav-tab" onclick="switchTab('homework', this)">
-      <span class="nav-icon">📚</span>
-      <span data-i18n="nav_homework">การบ้าน</span>
+      <span class="nav-icon">📚</span><span>การบ้าน</span>
     </button>
     <button class="nav-tab" onclick="switchTab('finance', this)">
-      <span class="nav-icon">💰</span>
-      <span data-i18n="nav_finance">การเงิน</span>
+      <span class="nav-icon">💰</span><span>การเงิน</span>
     </button>
     <button class="nav-tab" onclick="switchTab('settings', this)">
-      <span class="nav-icon">⚙️</span>
-      <span data-i18n="nav_settings">ตั้งค่า</span>
+      <span class="nav-icon">⚙️</span><span>ตั้งค่า</span>
     </button>
   </nav>
 
@@ -560,7 +556,7 @@
   <script>
     // ==========================================
     // 🔑 FIREBASE CONFIGURATION
-    // (นำ Keys จาก Firebase Console มาวางแทนที่ตรงนี้)
+    // (นำ Keys จาก Firebase Console ของคุณมาวางแทนที่ 6 บรรทัดนี้)
     // ==========================================
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -579,562 +575,137 @@ const firebaseConfig = {
     }
     const auth = firebase.auth();
 
-    // --- DICTIONARY FOR TRANSLATIONS (i18n) ---
-    const i18n = {
-      th: {
-        app_title: "LifePulse - เว็บแอปพลิเคชันส่วนตัว",
-        login_subtitle: "เข้าสู่ระบบด้วยอีเมลเพื่อจัดการชีวิตประจำวัน",
-        login_email_label: "อีเมล (Email)",
-        login_email_ph: "yourname@example.com",
-        login_pass_label: "รหัสผ่าน (Password)",
-        login_btn: "เข้าสู่ระบบ 🚀",
-        signup_btn: "สมัครสมาชิก",
-        stats_title: "📊 สถิติกิจกรรมประจำวัน",
-        stats_subtitle: "ภาพรวมความก้าวหน้าและการทำการบ้านของคุณ",
-        stats_hw_progress: "ความสำเร็จการบ้าน",
-        stats_pending: "งานที่ค้างอยู่",
-        stats_completed: "ส่งเรียบร้อยแล้ว",
-        habit_add_title: "🎯 เพิ่มเป้าหมายวินัยประจำวัน",
-        habit_name_label: "ชื่อกิจกรรม/นิสัยที่ต้องการทำทุกวัน",
-        habit_name_ph: "เช่น อ่านหนังสือ 15 นาที, ออกกำลังกาย, ดื่มน้ำ 2 ลิตร",
-        habit_add_btn: "+ เพิ่มเป้าหมายวินัย",
-        habit_list_title: "รายการวินัยประจำวันของคุณ",
-        habit_done_today: "✓ ทำแล้ววันนี้",
-        habit_not_done: "เช็คอินวันนี้",
-        habit_streak: "ต่อเนื่อง",
-        habit_days: "วัน",
-        cal_prev: "◀ ก่อนหน้า",
-        cal_next: "ถัดไป ▶",
-        cal_selected_title: "📌 กิจกรรมในวันที่เลือก",
-        cal_no_selected: "คลิกที่วันที่ในปฏิทินเพื่อดูรายการกำหนดส่งงาน",
-        cal_no_events: "ไม่มีกำหนดส่งงานในวันนี้",
-        hw_notify_btn: "🔔 เปิดการแจ้งเตือนในเครื่องนี้",
-        hw_add_title: "📚 เพิ่มรายการการบ้าน",
-        hw_subject_label: "ชื่อวิชา / หัวข้อ",
-        hw_subject_ph: "เช่น คณิตศาสตร์, รายงานภาษาไทย",
-        hw_assign_date_label: "วันที่สั่ง",
-        hw_due_date_label: "กำหนดส่ง",
-        hw_detail_label: "รายละเอียดเพิ่มเติม",
-        hw_detail_ph: "รายละเอียดการบ้าน...",
-        hw_add_btn: "+ บันทึกการบ้าน",
-        hw_list_title: "รายการการบ้านทั้งหมด",
-        hw_due_today: "🚨 ส่งวันนี้!",
-        hw_due_tomorrow: "⏰ ส่งพรุ่งนี้!",
-        hw_overdue: "⚠️ เลยกำหนด",
-        hw_due_date_prefix: "ส่ง:",
-        hw_assigned_prefix: "สั่งเมื่อ:",
-        hw_no_items: "ไม่มีการบ้านที่ค้างอยู่",
-        fin_balance_label: "ยอดเงินคงเหลือ",
-        fin_add_title: "💰 บันทึก รายรับ - รายจ่าย",
-        fin_item_label: "รายการ",
-        fin_item_ph: "เช่น ค่าอาหาร, ค่าขนม",
-        fin_amount_label: "จำนวนเงิน (บาท)",
-        fin_type_label: "ประเภท",
-        fin_expense: "รายจ่าย (-)",
-        fin_income: "รายรับ (+)",
-        fin_add_btn: "+ บันทึกรายการ",
-        fin_history_title: "ประวัติการเงิน",
-        fin_no_items: "ไม่มีรายการการเงิน",
-        settings_title: "⚙️ ตั้งค่าแอปพลิเคชัน",
-        settings_user_prefix: "อีเมลผู้ใช้ปัจจุบัน:",
-        logout_btn: "🚪 ออกจากระบบ (Logout)",
-        clear_data_btn: "🗑️ ล้างข้อมูลแอปทั้งหมด",
-        nav_stats: "สถิติ",
-        nav_discipline: "วินัย",
-        nav_calendar: "ปฏิทิน",
-        nav_homework: "การบ้าน",
-        nav_finance: "การเงิน",
-        nav_settings: "ตั้งค่า",
-        alert_fill_all: "กรุณากรอกข้อมูลให้ครบถ้วน!",
-        alert_confirm_del: "ต้องการลบรายการนี้ใช่หรือไม่?",
-        alert_confirm_clear: "คำเตือน: ข้อมูลทั้งหมดจะถูกลบ!"
-      },
-      en: {
-        app_title: "LifePulse - Personal Management App",
-        login_subtitle: "Log in with email to manage your daily life",
-        login_email_label: "Email Address",
-        login_email_ph: "yourname@example.com",
-        login_pass_label: "Password",
-        login_btn: "Login 🚀",
-        signup_btn: "Sign Up",
-        stats_title: "📊 Daily Activity Statistics",
-        stats_subtitle: "Overview of your progress and homework completion",
-        stats_hw_progress: "Homework Progress",
-        stats_pending: "Pending Tasks",
-        stats_completed: "Completed",
-        habit_add_title: "🎯 Add Daily Discipline Goal",
-        habit_name_label: "Habit or activity you want to do daily",
-        habit_name_ph: "e.g. Read 15 mins, Exercise, Drink 2L water",
-        habit_add_btn: "+ Add Habit Goal",
-        habit_list_title: "Your Daily Habits & Discipline",
-        habit_done_today: "✓ Done Today",
-        habit_not_done: "Check-in Today",
-        habit_streak: "Streak",
-        habit_days: "days",
-        cal_prev: "◀ Prev",
-        cal_next: "Next ▶",
-        cal_selected_title: "📌 Selected Date Events",
-        cal_no_selected: "Click a date on the calendar to see due events",
-        cal_no_events: "No due tasks for this date",
-        hw_notify_btn: "🔔 Enable Notifications on this device",
-        hw_add_title: "📚 Add New Homework",
-        hw_subject_label: "Subject / Topic",
-        hw_subject_ph: "e.g. Mathematics, History Report",
-        hw_assign_date_label: "Assigned Date",
-        hw_due_date_label: "Due Date",
-        hw_detail_label: "Additional Details",
-        hw_detail_ph: "Homework details...",
-        hw_add_btn: "+ Save Homework",
-        hw_list_title: "All Homework List",
-        hw_due_today: "🚨 Due Today!",
-        hw_due_tomorrow: "⏰ Due Tomorrow!",
-        hw_overdue: "⚠️ Overdue",
-        hw_due_date_prefix: "Due:",
-        hw_assigned_prefix: "Assigned:",
-        hw_no_items: "No pending homework",
-        fin_balance_label: "Current Balance",
-        fin_add_title: "💰 Record Income / Expense",
-        fin_item_label: "Transaction Title",
-        fin_item_ph: "e.g. Lunch, Coffee, Salary",
-        fin_amount_label: "Amount (THB)",
-        fin_type_label: "Type",
-        fin_expense: "Expense (-)",
-        fin_income: "Income (+)",
-        fin_add_btn: "+ Record Transaction",
-        fin_history_title: "Financial History",
-        fin_no_items: "No financial records",
-        settings_title: "⚙️ Application Settings",
-        settings_user_prefix: "Current Email:",
-        logout_btn: "🚪 Logout",
-        clear_data_btn: "🗑️ Clear All App Data",
-        nav_stats: "Stats",
-        nav_discipline: "Habits",
-        nav_calendar: "Calendar",
-        nav_homework: "Homework",
-        nav_finance: "Finance",
-        nav_settings: "Settings",
-        alert_fill_all: "Please fill in all required fields!",
-        alert_confirm_del: "Are you sure you want to delete this item?",
-        alert_confirm_clear: "Warning: All application data will be deleted!"
-      }
-    };
+    // --- AUTHENTICATION HANDLERS ---
+    
+    // 1. ล็อกอินด้วย Google (Gmail)
+    function handleGoogleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          hideError();
+        })
+        .catch((error) => {
+          showError("Google Sign-In Error: " + error.message);
+        });
+    }
 
-    // --- GLOBAL STATE ---
-    let currentLang = localStorage.getItem('lifepulse_lang') || 'th';
-    let currentTheme = localStorage.getItem('lifepulse_theme') || 'dark';
-    let currentCalDate = new Date();
-
-    // --- 1. FIREBASE EMAIL AUTHENTICATION ---
-    auth.onAuthStateChanged(user => {
-      const loginOverlay = document.getElementById('loginScreen');
-      if (user) {
-        loginOverlay.style.display = 'none';
-        document.getElementById('settingsUserTag').innerText = user.email;
-        renderAll();
-      } else {
-        loginOverlay.style.display = 'flex';
-      }
-    });
-
+    // 2. ล็อกอินด้วย Email/Password
     function handleEmailLogin() {
       const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value;
-      const errDiv = document.getElementById('authError');
+      const password = document.getElementById('authPassword').value.trim();
 
       if (!email || !password) {
-        errDiv.innerText = i18n[currentLang].alert_fill_all;
-        errDiv.style.display = 'block';
+        showError("กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน");
         return;
       }
 
       auth.signInWithEmailAndPassword(email, password)
-        .then(() => { errDiv.style.display = 'none'; })
-        .catch(error => {
-          errDiv.innerText = error.message;
-          errDiv.style.display = 'block';
-        });
+        .then(() => hideError())
+        .catch((error) => showError(error.message));
     }
 
+    // 3. สมัครสมาชิกด้วย Email/Password
     function handleEmailSignUp() {
       const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value;
-      const errDiv = document.getElementById('authError');
+      const password = document.getElementById('authPassword').value.trim();
 
       if (!email || !password) {
-        errDiv.innerText = i18n[currentLang].alert_fill_all;
-        errDiv.style.display = 'block';
+        showError("กรุณากรอกอีเมลและรหัสผ่านเพื่อสมัคร");
         return;
       }
 
       auth.createUserWithEmailAndPassword(email, password)
-        .then(() => { errDiv.style.display = 'none'; })
-        .catch(error => {
-          errDiv.innerText = error.message;
-          errDiv.style.display = 'block';
-        });
+        .then(() => hideError())
+        .catch((error) => showError(error.message));
     }
 
+    // 4. ออกจากระบบ
     function handleLogout() {
-      auth.signOut();
+      auth.signOut().then(() => {
+        document.getElementById('loginScreen').style.display = 'flex';
+      });
     }
 
-    // --- 2. LANGUAGE & THEME SYSTEM ---
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('lifepulse_lang', lang);
-      document.getElementById('langSelect').value = lang;
-      document.documentElement.lang = lang;
+    function showError(msg) {
+      const errDiv = document.getElementById('authError');
+      errDiv.innerText = msg;
+      errDiv.style.display = 'block';
+    }
 
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (i18n[lang][key]) el.textContent = i18n[lang][key];
-      });
+    function hideError() {
+      const errDiv = document.getElementById('authError');
+      errDiv.style.display = 'none';
+      errDiv.innerText = '';
+    }
 
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (i18n[lang][key]) el.placeholder = i18n[lang][key];
-      });
+    // ตรวจสอบสถานะการเข้าสู่ระบบ
+    auth.onAuthStateChanged((user) => {
+      const loginScreen = document.getElementById('loginScreen');
+      if (user) {
+        loginScreen.style.display = 'none';
+        document.getElementById('settingsUserTag').innerText = user.email || user.displayName || 'ผู้ใช้งาน';
+      } else {
+        loginScreen.style.display = 'flex';
+      }
+    });
 
-      renderAll();
+    // --- UI & TAB SWITCHING ---
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabId).classList.add('active');
+      btn.classList.add('active');
     }
 
     function toggleTheme() {
-      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      setTheme(currentTheme);
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      document.getElementById('themeIcon').innerText = newTheme === 'dark' ? '☀️' : '🌙';
     }
 
-    function setTheme(theme) {
-      currentTheme = theme;
-      localStorage.setItem('lifepulse_theme', theme);
-      document.documentElement.setAttribute('data-theme', theme);
-      document.getElementById('themeIcon').textContent = theme === 'dark' ? '☀️' : '🌙';
-    }
-
-    // --- 3. TAB NAVIGATION ---
-    function switchTab(tabId, btnElement) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
-
-      document.getElementById(`tab-${tabId}`).classList.add('active');
-      btnElement.classList.add('active');
-
-      if(tabId === 'calendar') renderCalendar();
-      if(tabId === 'stats') renderStats();
-      if(tabId === 'discipline') renderHabits();
-    }
-
-    // --- 4. DISCIPLINE / HABIT TRACKER SYSTEM ---
-    function getHabits() { return JSON.parse(localStorage.getItem('lifepulse_habits') || '[]'); }
-    function saveHabits(data) { localStorage.setItem('lifepulse_habits', JSON.stringify(data)); }
-
+    // --- PLACEHOLDER DATA FUNCTIONS ---
     function addHabit() {
-      const name = document.getElementById('habitInput').value.trim();
-      if(!name) { alert(i18n[currentLang].alert_fill_all); return; }
-
-      const habits = getHabits();
-      habits.push({ id: Date.now(), name: name, streak: 0, lastCompletedDate: null });
-      saveHabits(habits);
+      const val = document.getElementById('habitInput').value.trim();
+      if (!val) return;
+      const list = document.getElementById('habitList');
+      list.innerHTML += `<div class="habit-item"><span>${val}</span><button class="btn-sm btn-done" onclick="this.parentElement.remove()">✓ สำเร็จ</button></div>`;
       document.getElementById('habitInput').value = '';
-      renderHabits();
     }
-
-    function toggleHabit(id) {
-      const habits = getHabits();
-      const habit = habits.find(h => h.id === id);
-      if(!habit) return;
-
-      const todayStr = new Date().toISOString().split('T')[0];
-      
-      if(habit.lastCompletedDate === todayStr) {
-        habit.lastCompletedDate = null;
-        habit.streak = Math.max(0, habit.streak - 1);
-      } else {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-        if(habit.lastCompletedDate === yesterdayStr) {
-          habit.streak += 1;
-        } else {
-          habit.streak = 1;
-        }
-        habit.lastCompletedDate = todayStr;
-      }
-
-      saveHabits(habits);
-      renderHabits();
-    }
-
-    function deleteHabit(id) {
-      if(confirm(i18n[currentLang].alert_confirm_del)) {
-        saveHabits(getHabits().filter(h => h.id !== id));
-        renderHabits();
-      }
-    }
-
-    function renderHabits() {
-      const listDiv = document.getElementById('habitList');
-      const habits = getHabits();
-      const todayStr = new Date().toISOString().split('T')[0];
-
-      if(habits.length === 0) {
-        listDiv.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">${i18n[currentLang].hw_no_items}</p>`;
-        return;
-      }
-
-      listDiv.innerHTML = habits.map(h => {
-        const isDoneToday = h.lastCompletedDate === todayStr;
-        return `
-          <div class="habit-item">
-            <div class="habit-info">
-              <div class="habit-name">${escapeHtml(h.name)}</div>
-              <div class="streak-badge">
-                🔥 ${i18n[currentLang].habit_streak}: ${h.streak} ${i18n[currentLang].habit_days}
-              </div>
-            </div>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <button onclick="toggleHabit(${h.id})" class="btn-sm ${isDoneToday ? 'btn-done' : 'btn-undo'}">
-                ${isDoneToday ? i18n[currentLang].habit_done_today : i18n[currentLang].habit_not_done}
-              </button>
-              <button onclick="deleteHabit(${h.id})" class="btn-sm btn-del">🗑️</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // --- 5. HOMEWORK SYSTEM ---
-    function getHomeworks() { return JSON.parse(localStorage.getItem('lifepulse_hw') || '[]'); }
-    function saveHomeworks(data) { localStorage.setItem('lifepulse_hw', JSON.stringify(data)); }
 
     function addHomework() {
-      const subject = document.getElementById('hwSubject').value.trim();
-      const assignDate = document.getElementById('hwAssignDate').value;
-      const dueDate = document.getElementById('hwDueDate').value;
-      const detail = document.getElementById('hwDetail').value.trim();
-
-      if (!subject || !dueDate) { alert(i18n[currentLang].alert_fill_all); return; }
-
-      const homeworks = getHomeworks();
-      homeworks.push({
-        id: Date.now(), subject,
-        assignDate: assignDate || new Date().toISOString().split('T')[0],
-        dueDate, detail, completed: false, notified: false
-      });
-      saveHomeworks(homeworks);
-
+      const subj = document.getElementById('hwSubject').value.trim();
+      if (!subj) return;
+      const list = document.getElementById('homeworkList');
+      list.innerHTML += `<div class="hw-item"><strong>${subj}</strong><p style="font-size:12px; color:var(--text-muted);">${document.getElementById('hwDetail').value}</p></div>`;
       document.getElementById('hwSubject').value = '';
       document.getElementById('hwDetail').value = '';
-
-      renderHomeworks();
-      renderStats();
     }
 
-    function toggleHW(id) {
-      const homeworks = getHomeworks();
-      const item = homeworks.find(h => h.id === id);
-      if (item) {
-        item.completed = !item.completed;
-        saveHomeworks(homeworks);
-        renderHomeworks();
-        renderStats();
-      }
-    }
-
-    function deleteHW(id) {
-      if (confirm(i18n[currentLang].alert_confirm_del)) {
-        saveHomeworks(getHomeworks().filter(h => h.id !== id));
-        renderHomeworks();
-        renderStats();
-      }
-    }
-
-    function renderHomeworks() {
-      const listDiv = document.getElementById('homeworkList');
-      const homeworks = getHomeworks();
-
-      if (homeworks.length === 0) {
-        listDiv.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">${i18n[currentLang].hw_no_items}</p>`;
-        return;
-      }
-
-      homeworks.sort((a, b) => (a.completed - b.completed) || new Date(a.dueDate) - new Date(b.dueDate));
-      const today = new Date(); today.setHours(0,0,0,0);
-
-      listDiv.innerHTML = homeworks.map(item => {
-        const due = new Date(item.dueDate); due.setHours(0,0,0,0);
-        const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-        let isUrgent = diffDays <= 1 && !item.completed;
-        
-        let badgeText = `${i18n[currentLang].hw_due_date_prefix} ${item.dueDate}`;
-        if (diffDays === 0) badgeText = i18n[currentLang].hw_due_today;
-        else if (diffDays === 1) badgeText = i18n[currentLang].hw_due_tomorrow;
-        else if (diffDays < 0) badgeText = i18n[currentLang].hw_overdue;
-
-        return `
-          <div class="hw-item ${item.completed ? 'completed' : (isUrgent ? 'urgent' : '')}">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <strong style="font-size:14px; ${item.completed ? 'text-decoration:line-through;' : ''}">${escapeHtml(item.subject)}</strong>
-              <span style="font-size:11px; padding:2px 6px; border-radius:10px; background:rgba(239,68,68,0.15); color:var(--red);">${badgeText}</span>
-            </div>
-            ${item.detail ? `<div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">${escapeHtml(item.detail)}</div>` : ''}
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); margin-top:6px;">
-              <span>${i18n[currentLang].hw_assigned_prefix} ${item.assignDate}</span>
-              <div style="display:flex; gap:4px;">
-                <button onclick="toggleHW(${item.id})" class="btn-sm ${item.completed ? 'btn-undo' : 'btn-done'}">${item.completed ? 'Undo' : '✓ Done'}</button>
-                <button onclick="deleteHW(${item.id})" class="btn-sm btn-del">🗑️</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function requestNotification() {
-      if ('Notification' in window) {
-        Notification.requestPermission().then(p => alert(p === 'granted' ? 'Notifications Enabled!' : 'Notifications Blocked'));
-      }
-    }
-
-    // --- 6. STATS SYSTEM ---
-    function renderStats() {
-      const homeworks = getHomeworks();
-      const total = homeworks.length;
-      const done = homeworks.filter(h => h.completed).length;
-      const pending = total - done;
-
-      document.getElementById('statPendingCount').innerText = pending;
-      document.getElementById('statDoneCount').innerText = done;
-      
-      const percent = total === 0 ? 100 : Math.round((done / total) * 100);
-      document.getElementById('statHwPercent').innerText = `${percent}%`;
-      document.getElementById('statHwBar').style.width = `${percent}%`;
-    }
-
-    // --- 7. CALENDAR SYSTEM ---
-    function renderCalendar() {
-      const year = currentCalDate.getFullYear();
-      const month = currentCalDate.getMonth();
-      
-      const monthNamesTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
-      const monthNamesEN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      const dayNamesTH = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
-      const dayNamesEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-      const monthName = currentLang === 'th' ? monthNamesTH[month] : monthNamesEN[month];
-      const yearDisplay = currentLang === 'th' ? year + 543 : year;
-      
-      document.getElementById('calMonthYear').innerText = `${monthName} ${yearDisplay}`;
-
-      const daysHeaderDiv = document.getElementById('calendarDaysHeader');
-      const dayNames = currentLang === 'th' ? dayNamesTH : dayNamesEN;
-      daysHeaderDiv.innerHTML = dayNames.map(d => `<div class="cal-day-name">${d}</div>`).join('');
-      
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const homeworks = getHomeworks();
-
-      let html = '';
-      for (let i = 0; i < firstDay; i++) { html += `<div></div>`; }
-
-      const today = new Date();
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
-        const hasEvent = homeworks.some(h => h.dueDate === dateStr);
-
-        html += `<div class="cal-date ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" onclick="selectCalDate('${dateStr}')">${day}</div>`;
-      }
-      document.getElementById('calendarDays').innerHTML = html;
-    }
-
-    function changeMonth(delta) {
-      currentCalDate.setMonth(currentCalDate.getMonth() + delta);
-      renderCalendar();
-    }
-
-    function selectCalDate(dateStr) {
-      const homeworks = getHomeworks().filter(h => h.dueDate === dateStr);
-      const div = document.getElementById('selectedDateEvents');
-      if (homeworks.length === 0) {
-        div.innerHTML = `<span style="color:var(--text-muted);">${i18n[currentLang].cal_no_events} (${dateStr})</span>`;
-      } else {
-        div.innerHTML = homeworks.map(h => `
-          <div style="background:var(--input-bg); padding:8px; border-radius:6px; margin-top:6px; border:1px solid var(--border-color);">
-            📌 <strong>${escapeHtml(h.subject)}</strong> (${h.completed ? 'Done' : 'Pending'})
-          </div>
-        `).join('');
-      }
-    }
-
-    // --- 8. FINANCE SYSTEM ---
-    function getFinance() { return JSON.parse(localStorage.getItem('lifepulse_fin') || '[]'); }
     function addFinanceTransaction() {
       const title = document.getElementById('finTitle').value.trim();
       const amount = parseFloat(document.getElementById('finAmount').value);
+      if (!title || isNaN(amount)) return;
+      const list = document.getElementById('financeList');
       const type = document.getElementById('finType').value;
-
-      if(!title || isNaN(amount)) { alert(i18n[currentLang].alert_fill_all); return; }
-
-      const list = getFinance();
-      list.push({ id: Date.now(), title, amount, type });
-      localStorage.setItem('lifepulse_fin', JSON.stringify(list));
-
+      const color = type === 'income' ? 'var(--green)' : 'var(--red)';
+      const sign = type === 'income' ? '+' : '-';
+      list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${title}</span><strong style="color:${color}">${sign}฿${amount.toFixed(2)}</strong></div>`;
       document.getElementById('finTitle').value = '';
       document.getElementById('finAmount').value = '';
-      renderFinance();
-    }
-
-    function renderFinance() {
-      const list = getFinance();
-      let balance = 0;
-      const listDiv = document.getElementById('financeList');
-
-      if(list.length === 0) {
-        listDiv.innerHTML = `<span style="color:var(--text-muted);">${i18n[currentLang].fin_no_items}</span>`;
-      } else {
-        listDiv.innerHTML = list.map(item => {
-          if(item.type === 'income') balance += item.amount;
-          else balance -= item.amount;
-
-          return `
-            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border-color);">
-              <span>${escapeHtml(item.title)}</span>
-              <strong style="color:${item.type === 'income' ? 'var(--green)' : 'var(--red)'}">
-                ${item.type === 'income' ? '+' : '-'}${item.amount.toLocaleString()} ฿
-              </strong>
-            </div>
-          `;
-        }).join('');
-      }
-      document.getElementById('financeBalance').innerText = `฿${balance.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-    }
-
-    // --- HELPER & INITIALIZATION ---
-    function escapeHtml(text) {
-      return text.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
     }
 
     function clearAllData() {
-      if(confirm(i18n[currentLang].alert_confirm_clear)) {
-        localStorage.clear();
-        location.reload();
+      if (confirm('คุณต้องการล้างข้อมูลแอปทั้งหมดหรือไม่?')) {
+        document.getElementById('habitList').innerHTML = '';
+        document.getElementById('homeworkList').innerHTML = '';
+        document.getElementById('financeList').innerHTML = '';
+        alert('ล้างข้อมูลเรียบร้อยแล้ว');
       }
     }
 
-    function renderAll() {
-      renderCalendar();
-      renderHabits();
-      renderHomeworks();
-      renderFinance();
-      renderStats();
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      setTheme(currentTheme);
-      setLanguage(currentLang);
-      document.getElementById('hwAssignDate').value = new Date().toISOString().split('T')[0];
-    });
+    function changeMonth(dir) {}
   </script>
 </body>
 </html>
