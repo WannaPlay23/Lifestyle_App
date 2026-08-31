@@ -164,7 +164,7 @@
     .progress-bar-bg { background: var(--input-bg); height: 10px; border-radius: 10px; overflow: hidden; margin-top: 6px; border: 1px solid var(--border-color); }
     .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan)); width: 0%; transition: width 0.4s ease; }
 
-    /* --- CALENDAR ENHANCED --- */
+    /* --- CALENDAR --- */
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
     .cal-day-name { font-size: 11px; color: var(--text-muted); font-weight: 500; padding-bottom: 4px; }
@@ -224,7 +224,7 @@
       <h2 style="font-size: 22px; margin-bottom: 4px; background: linear-gradient(45deg, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">LifePulse</h2>
       <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน</p>
       
-      <button class="btn btn-google" onclick="handleGoogleLogin()">
+      <button type="button" class="btn btn-google" onclick="handleGoogleLogin()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
         เข้าสู่ระบบด้วย Google
       </button>
@@ -243,8 +243,8 @@
       <div id="authError" class="auth-error"></div>
 
       <div style="display: flex; gap: 8px; margin-top: 14px;">
-        <button class="btn btn-primary" onclick="handleEmailLogin()">เข้าสู่ระบบ 🚀</button>
-        <button class="btn btn-secondary" onclick="handleEmailSignUp()">สมัครสมาชิก</button>
+        <button type="button" class="btn btn-primary" onclick="handleEmailLogin()">เข้าสู่ระบบ 🚀</button>
+        <button type="button" class="btn btn-secondary" onclick="handleEmailSignUp()">สมัครสมาชิก</button>
       </div>
     </div>
   </div>
@@ -260,7 +260,7 @@
         <option value="th">🇹🇭 TH</option>
         <option value="en">🇬🇧 EN</option>
       </select>
-      <button id="themeBtn" class="control-btn" onclick="toggleTheme()">
+      <button type="button" id="themeBtn" class="control-btn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span>
       </button>
     </div>
@@ -316,27 +316,26 @@
         <div class="form-group">
           <input type="text" id="habitInput" placeholder="เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที" onkeypress="if(event.key==='Enter') addHabit()">
         </div>
-        <button class="btn btn-primary" onclick="addHabit()">+ เพิ่มเป้าหมาย</button>
+        <button type="button" class="btn btn-primary" onclick="addHabit()">+ เพิ่มเป้าหมาย</button>
       </div>
 
       <h4 style="font-size: 14px; margin-bottom: 10px;">นิสัยประจำวันนี้</h4>
       <div id="habitList"></div>
     </section>
 
-    <!-- TAB 3: CALENDAR (ENHANCED) -->
+    <!-- TAB 3: CALENDAR -->
     <section id="tab-calendar" class="tab-content">
       <div class="card">
         <div class="calendar-header">
-          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(-1)">◀ ก่อนหน้า</button>
+          <button type="button" class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(-1)">◀ ก่อนหน้า</button>
           <strong id="calMonthYear" style="font-size: 15px;">มกราคม 2026</strong>
-          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(1)">ถัดไป ▶</button>
+          <button type="button" class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(1)">ถัดไป ▶</button>
         </div>
 
         <div class="calendar-grid" id="calendarDaysHeader"></div>
         <div class="calendar-grid" id="calendarDays" style="margin-top:6px;"></div>
       </div>
 
-      <!-- TIP BOX -->
       <div style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 0 8px;">
         💡 <em>คลิกที่ช่องวันที่ในปฏิทินเพื่อดูการบ้านกำหนดส่ง และสรุปรายรับ-รายจ่ายของวันนั้น</em>
       </div>
@@ -368,7 +367,7 @@
           <textarea id="hwDetail" rows="2" placeholder="รายละเอียดการบ้าน..."></textarea>
         </div>
 
-        <button class="btn btn-primary" onclick="addHomework()">+ บันทึกการบ้าน</button>
+        <button type="button" class="btn btn-primary" onclick="addHomework()">+ บันทึกการบ้าน</button>
       </div>
 
       <h4 style="font-size: 14px; margin-bottom: 10px;">รายการการบ้านทั้งหมด</h4>
@@ -405,7 +404,7 @@
           <label>วันที่ทำรายการ</label>
           <input type="date" id="finDate">
         </div>
-        <button class="btn btn-primary" onclick="addFinanceTransaction()">+ บันทึกรายการ</button>
+        <button type="button" class="btn btn-primary" onclick="addFinanceTransaction()">+ บันทึกรายการ</button>
       </div>
 
       <div class="card">
@@ -422,10 +421,10 @@
           อีเมลผู้ใช้ปัจจุบัน: <strong id="settingsUserTag" style="color:var(--text-main);">-</strong>
         </p>
         
-        <button class="btn" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color); margin-bottom:10px;" onclick="handleLogout()">
+        <button type="button" class="btn" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color); margin-bottom:10px;" onclick="handleLogout()">
           🚪 ออกจากระบบ (Logout)
         </button>
-        <button class="btn btn-del" style="width:100%; font-size:14px; padding:10px;" onclick="clearAllData()">
+        <button type="button" class="btn btn-del" style="width:100%; font-size:14px; padding:10px;" onclick="clearAllData()">
           🗑️ ล้างข้อมูลแอปทั้งหมด
         </button>
       </div>
@@ -438,44 +437,42 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 style="font-size: 16px; color: var(--text-main);" id="modalDateTitle">รายละเอียดประจำวัน</h3>
-        <button class="btn-sm btn-del" onclick="closeDayModal()">✕</button>
+        <button type="button" class="btn-sm btn-del" onclick="closeDayModal()">✕</button>
       </div>
 
-      <!-- HOMEWORK SECTION -->
       <div class="modal-section">
         <div class="modal-section-title">📚 กำหนดส่งการบ้าน (Deadline)</div>
         <div id="modalHwList"></div>
       </div>
 
-      <!-- FINANCE SECTION -->
       <div class="modal-section">
         <div class="modal-section-title">💰 รายการการเงินประจำวัน</div>
         <div id="modalFinSummary" style="font-size:12px; margin-bottom:6px; color:var(--text-muted);"></div>
         <div id="modalFinList"></div>
       </div>
 
-      <button class="btn btn-secondary" style="margin-top: 10px;" onclick="closeDayModal()">ปิดหน้าต่าง</button>
+      <button type="button" class="btn btn-secondary" style="margin-top: 10px;" onclick="closeDayModal()">ปิดหน้าต่าง</button>
     </div>
   </div>
 
   <!-- BOTTOM NAV BAR -->
   <nav class="bottom-nav">
-    <button class="nav-tab active" onclick="switchTab('stats', this)">
+    <button type="button" class="nav-tab active" onclick="switchTab('stats', this)">
       <span class="nav-icon">📊</span><span>สถิติ</span>
     </button>
-    <button class="nav-tab" onclick="switchTab('discipline', this)">
+    <button type="button" class="nav-tab" onclick="switchTab('discipline', this)">
       <span class="nav-icon">🎯</span><span>วินัย</span>
     </button>
-    <button class="nav-tab" onclick="switchTab('calendar', this)">
+    <button type="button" class="nav-tab" onclick="switchTab('calendar', this)">
       <span class="nav-icon">📅</span><span>ปฏิทิน</span>
     </button>
-    <button class="nav-tab" onclick="switchTab('homework', this)">
+    <button type="button" class="nav-tab" onclick="switchTab('homework', this)">
       <span class="nav-icon">📚</span><span>การบ้าน</span>
     </button>
-    <button class="nav-tab" onclick="switchTab('finance', this)">
+    <button type="button" class="nav-tab" onclick="switchTab('finance', this)">
       <span class="nav-icon">💰</span><span>การเงิน</span>
     </button>
-    <button class="nav-tab" onclick="switchTab('settings', this)">
+    <button type="button" class="nav-tab" onclick="switchTab('settings', this)">
       <span class="nav-icon">⚙️</span><span>ตั้งค่า</span>
     </button>
   </nav>
@@ -537,17 +534,32 @@
       document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
     }
 
-    // 💾 STORAGE DATA STORES
-    let habits = JSON.parse(localStorage.getItem('user_habits')) || [];
-    let userStats = JSON.parse(localStorage.getItem('user_stats')) || { level: 1, xp: 0 };
-    let homeworks = JSON.parse(localStorage.getItem('user_hw_list')) || [];
-    let transactions = JSON.parse(localStorage.getItem('user_fin_list')) || [];
+    // 💾 STORAGE SYSTEM WITH ERROR HANDLING
+    let habits = [];
+    let userStats = { level: 1, xp: 0 };
+    let homeworks = [];
+    let transactions = [];
+
+    function loadData() {
+      try {
+        habits = JSON.parse(localStorage.getItem('user_habits')) || [];
+        userStats = JSON.parse(localStorage.getItem('user_stats')) || { level: 1, xp: 0 };
+        homeworks = JSON.parse(localStorage.getItem('user_hw_list')) || [];
+        transactions = JSON.parse(localStorage.getItem('user_fin_list')) || [];
+      } catch (e) {
+        console.error("โหลดข้อมูลจาก LocalStorage ไม่สำเร็จ:", e);
+      }
+    }
 
     function saveData() {
-      localStorage.setItem('user_habits', JSON.stringify(habits));
-      localStorage.setItem('user_stats', JSON.stringify(userStats));
-      localStorage.setItem('user_hw_list', JSON.stringify(homeworks));
-      localStorage.setItem('user_fin_list', JSON.stringify(transactions));
+      try {
+        localStorage.setItem('user_habits', JSON.stringify(habits));
+        localStorage.setItem('user_stats', JSON.stringify(userStats));
+        localStorage.setItem('user_hw_list', JSON.stringify(homeworks));
+        localStorage.setItem('user_fin_list', JSON.stringify(transactions));
+      } catch (e) {
+        console.error("บันทึกข้อมูลลง LocalStorage ไม่สำเร็จ:", e);
+      }
     }
 
     // 🎯 3. HABITS + GAMIFICATION
@@ -579,7 +591,7 @@
       }
 
       const todayStr = new Date().toISOString().split('T')[0];
-      list.innerHTML = habits.map((h, i) => {
+      list.innerHTML = habits.map((h) => {
         const isDoneToday = h.lastDoneDate === todayStr;
         return `
           <div class="habit-card-item" style="opacity: ${isDoneToday ? '0.8' : '1'};">
@@ -588,15 +600,15 @@
                 ${escapeHtml(h.text)}
               </div>
               <div class="streak-tag">🔥 ${h.streak || 0} วัน</div>
-              <button class="btn-sm ${isDoneToday ? 'btn-undo' : 'btn-done'}" onclick="toggleHabit(${i})">
+              <button type="button" class="btn-sm ${isDoneToday ? 'btn-undo' : 'btn-done'}" onclick="toggleHabit(${h.id})">
                 ${isDoneToday ? 'เช็คอินแล้ว' : '✓ เช็คอิน'}
               </button>
-              <button class="btn-sm btn-del" onclick="deleteHabit(${i})">✕</button>
+              <button type="button" class="btn-sm btn-del" onclick="deleteHabit(${h.id})">✕</button>
             </div>
             <div>
               <input type="text" class="habit-note-input" placeholder="+ แนบโน้ตสั้นๆ" 
                 value="${escapeHtml(h.note || '')}" 
-                onchange="updateNote(${i}, this.value)">
+                onchange="updateNote(${h.id}, this.value)">
             </div>
           </div>
         `;
@@ -608,12 +620,13 @@
       const input = document.getElementById('habitInput');
       const val = input.value.trim();
       if (!val) return;
-      habits.push({ text: val, streak: 0, lastDoneDate: '', note: '' });
+      habits.push({ id: Date.now(), text: val, streak: 0, lastDoneDate: '', note: '' });
       saveData(); renderHabits(); input.value = '';
     }
 
-    function toggleHabit(index) {
-      const h = habits[index];
+    function toggleHabit(id) {
+      const h = habits.find(item => item.id === id);
+      if (!h) return;
       const todayStr = new Date().toISOString().split('T')[0];
       const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayStr = yesterday.toISOString().split('T')[0];
@@ -636,14 +649,19 @@
       saveData(); renderHabits();
     }
 
-    function updateNote(index, text) { habits[index].note = text; saveData(); }
-    function deleteHabit(index) {
+    function updateNote(id, text) {
+      const h = habits.find(item => item.id === id);
+      if (h) { h.note = text; saveData(); }
+    }
+
+    function deleteHabit(id) {
       if (confirm('คุณต้องการลบเป้าหมายนี้หรือไม่?')) {
-        habits.splice(index, 1); saveData(); renderHabits();
+        habits = habits.filter(h => h.id !== id);
+        saveData(); renderHabits();
       }
     }
 
-    // 📅 4. ENHANCED CALENDAR LOGIC
+    // 📅 4. CALENDAR
     let currentDate = new Date(), currentYear = currentDate.getFullYear(), currentMonth = currentDate.getMonth();
     const monthNamesTh = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
@@ -664,12 +682,10 @@
       for (let day = 1; day <= totalDays; day++) {
         const isToday = (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) ? 'today' : '';
         
-        // Format ISO Date String: YYYY-MM-DD
         const monthStr = String(currentMonth + 1).padStart(2, '0');
         const dayStr = String(day).padStart(2, '0');
         const formattedDate = `${currentYear}-${monthStr}-${dayStr}`;
 
-        // Filter Homework & Finance for this date
         const dueHwList = homeworks.filter(h => h.dueDate === formattedDate);
         const dayFinList = transactions.filter(t => t.date === formattedDate);
 
@@ -701,11 +717,9 @@
       renderCalendar();
     }
 
-    // 🔍 MODAL DAY DETAIL
     function openDayModal(dateStr, dayNum) {
       document.getElementById('modalDateTitle').innerText = `📅 รายละเอียดวันที่ ${dayNum} ${monthNamesTh[currentMonth]} ${currentYear}`;
       
-      // Filter HW
       const dayHw = homeworks.filter(h => h.dueDate === dateStr);
       const hwContainer = document.getElementById('modalHwList');
       if (dayHw.length === 0) {
@@ -724,7 +738,6 @@
         `).join('');
       }
 
-      // Filter Finance
       const dayFin = transactions.filter(t => t.date === dateStr);
       const finContainer = document.getElementById('modalFinList');
       const finSummary = document.getElementById('modalFinSummary');
@@ -769,19 +782,19 @@
         return;
       }
 
-      list.innerHTML = homeworks.map((h, i) => `
+      list.innerHTML = homeworks.map((h) => `
         <div class="hw-item" style="border-left-color: ${h.done ? 'var(--green)' : 'var(--primary)'}; opacity: ${h.done ? '0.6' : '1'};">
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
             <div>
               <strong style="text-decoration: ${h.done ? 'line-through' : 'none'}">${escapeHtml(h.subject)}</strong>
-              <div style="font-size:11px; color:var(--cyan); margin-top:2px;">⏱️ ส่งวันที่: ${h.dueDate || 'ไม่ระบุ'}</div>
+              <div style="font-size:11px; color:var(--cyan); margin-top:2px;">⏱️ กำหนดส่ง: ${h.dueDate || 'ไม่ระบุ'}</div>
               ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(h.detail)}</p>` : ''}
             </div>
             <div style="display:flex; gap:4px;">
-              <button class="btn-sm ${h.done ? 'btn-undo' : 'btn-done'}" onclick="toggleHomework(${i})">
+              <button type="button" class="btn-sm ${h.done ? 'btn-undo' : 'btn-done'}" onclick="toggleHomework(${h.id})">
                 ${h.done ? 'ยกเลิก' : 'ส่งงาน'}
               </button>
-              <button class="btn-sm btn-del" onclick="deleteHomework(${i})">✕</button>
+              <button type="button" class="btn-sm btn-del" onclick="deleteHomework(${h.id})">✕</button>
             </div>
           </div>
         </div>
@@ -799,7 +812,7 @@
       if (!subj) { alert('กรุณาระบุชื่อวิชาหรือหัวข้อการบ้าน'); return; }
 
       homeworks.push({
-        id: Date.now(),
+        id: Date.now() + Math.random(),
         subject: subj,
         assignDate: assignDate,
         dueDate: dueDate,
@@ -815,16 +828,19 @@
       document.getElementById('hwDetail').value = '';
     }
 
-    function toggleHomework(index) {
-      homeworks[index].done = !homeworks[index].done;
-      saveData();
-      renderHomework();
-      renderCalendar();
+    function toggleHomework(id) {
+      const h = homeworks.find(item => item.id === id);
+      if (h) {
+        h.done = !h.done;
+        saveData();
+        renderHomework();
+        renderCalendar();
+      }
     }
 
-    function deleteHomework(index) {
+    function deleteHomework(id) {
       if (confirm('ต้องการลบรายการการบ้านนี้หรือไม่?')) {
-        homeworks.splice(index, 1);
+        homeworks = homeworks.filter(h => h.id !== id);
         saveData();
         renderHomework();
         renderCalendar();
@@ -849,31 +865,33 @@
       if (!list) return;
 
       let balance = 0;
+      transactions.forEach(t => {
+        if (t.type === 'income') balance += t.amount;
+        else balance -= t.amount;
+      });
+
       if (transactions.length === 0) {
         list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">ยังไม่มีบันทึกรายรับ-รายจ่าย</p>`;
         document.getElementById('financeBalance').innerText = '฿0.00';
         return;
       }
 
-      list.innerHTML = transactions.map((t, i) => {
-        if (t.type === 'income') balance += t.amount;
-        else balance -= t.amount;
+      const reversedList = [...transactions].reverse();
 
-        return `
-          <div class="fin-item">
-            <div>
-              <div style="font-weight:500;">${escapeHtml(t.title)}</div>
-              <div style="font-size:10px; color:var(--text-muted);">${t.date || 'ไม่ระบุวันที่'}</div>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <strong style="color: ${t.type === 'income' ? 'var(--green)' : 'var(--red)'};">
-                ${t.type === 'income' ? '+' : '-'}฿${t.amount.toFixed(2)}
-              </strong>
-              <button class="btn-sm btn-del" onclick="deleteTransaction(${i})">✕</button>
-            </div>
+      list.innerHTML = reversedList.map((t) => `
+        <div class="fin-item">
+          <div>
+            <div style="font-weight:500;">${escapeHtml(t.title)}</div>
+            <div style="font-size:10px; color:var(--text-muted);">${t.date || 'ไม่ระบุวันที่'}</div>
           </div>
-        `;
-      }).reverse().join('');
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong style="color: ${t.type === 'income' ? 'var(--green)' : 'var(--red)'};">
+              ${t.type === 'income' ? '+' : '-'}฿${t.amount.toFixed(2)}
+            </strong>
+            <button type="button" class="btn-sm btn-del" onclick="deleteTransaction(${t.id})">✕</button>
+          </div>
+        </div>
+      `).join('');
 
       document.getElementById('financeBalance').innerText = `฿${balance.toFixed(2)}`;
     }
@@ -888,7 +906,7 @@
       if (!date) date = new Date().toISOString().split('T')[0];
 
       transactions.push({
-        id: Date.now(),
+        id: Date.now() + Math.random(),
         title: title,
         amount: amount,
         type: type,
@@ -903,9 +921,9 @@
       document.getElementById('finAmount').value = '';
     }
 
-    function deleteTransaction(index) {
+    function deleteTransaction(id) {
       if (confirm('ต้องการลบรายการนี้หรือไม่?')) {
-        transactions.splice(transactions.length - 1 - index, 1);
+        transactions = transactions.filter(t => t.id !== id);
         saveData();
         renderFinance();
         renderCalendar();
@@ -917,6 +935,7 @@
       if (confirm('คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?')) {
         localStorage.clear();
         habits = []; userStats = { level: 1, xp: 0 }; homeworks = []; transactions = [];
+        saveData();
         renderHabits(); renderHomework(); renderFinance(); renderCalendar();
         alert('ล้างข้อมูลเรียบร้อย');
       }
@@ -928,6 +947,8 @@
 
     // INITIALIZATION
     document.addEventListener("DOMContentLoaded", () => {
+      loadData();
+
       const todayStr = new Date().toISOString().split('T')[0];
       document.getElementById('hwAssignDate').value = todayStr;
       document.getElementById('hwDueDate').value = todayStr;
