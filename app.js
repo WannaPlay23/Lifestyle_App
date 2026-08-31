@@ -172,12 +172,12 @@ function updateFinanceUI() {
   const list = document.getElementById('txList');
   if (list) {
     list.innerHTML = transactions.map(t => `
-      <li class="py-2 flex justify-between items-center text-gray-200">
+      <li class="py-2 flex justify-between items-center text-slate-700 dark:text-gray-200">
         <div>
-          <span class="font-medium">${t.title}</span> ${t.recurring ? '<span class="text-[10px] bg-indigo-900 text-indigo-300 px-1 py-0.5 rounded">Recurring</span>' : ''}
-          <p class="text-[10px] text-gray-400">${t.category}</p>
+          <span class="font-medium">${t.title}</span> ${t.recurring ? '<span class="text-[10px] bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 px-1 py-0.5 rounded">Recurring</span>' : ''}
+          <p class="text-[10px] text-slate-400 dark:text-gray-400">${t.category}</p>
         </div>
-        <span class="font-bold ${t.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">
+        <span class="font-bold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
           ${t.type === 'income' ? '+' : '-'}฿${t.amount.toLocaleString()}
         </span>
       </li>
@@ -197,6 +197,8 @@ function renderChart() {
   const canvas = document.getElementById('financeChart');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const isDark = document.documentElement.classList.contains('dark');
+
   chartInstance = new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -206,7 +208,15 @@ function renderChart() {
         backgroundColor: ['#f59e0b', '#3b82f6', '#ec4899', '#8b5cf6', '#6b7280']
       }]
     },
-    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#ccc' } } } }
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: isDark ? '#ccc' : '#333' }
+        }
+      }
+    }
   });
 }
 
@@ -278,15 +288,15 @@ function updateHabitsUI() {
     if (h.streak > maxStreak) maxStreak = h.streak;
 
     return `
-      <div class="p-3 border rounded-lg border-gray-700 flex flex-col space-y-2 bg-gray-700/50">
+      <div class="p-3 border rounded-lg border-slate-200 dark:border-slate-700 flex flex-col space-y-2 bg-slate-50 dark:bg-slate-700/50">
         <div class="flex items-center justify-between">
           <label class="flex items-center space-x-3 cursor-pointer">
             <input type="checkbox" ${h.completedToday ? 'checked' : ''} onchange="toggleHabit('${h.id}')" class="w-5 h-5 text-purple-600 rounded">
-            <span class="${h.completedToday ? 'line-through text-gray-500' : 'font-medium text-gray-100'}">${h.name}</span>
+            <span class="${h.completedToday ? 'line-through text-slate-400 dark:text-gray-500' : 'font-medium text-slate-800 dark:text-gray-100'}">${h.name}</span>
           </label>
-          <span class="text-xs font-bold text-amber-400">🔥 ${h.streak} วัน</span>
+          <span class="text-xs font-bold text-amber-500 dark:text-amber-400">🔥 ${h.streak} วัน</span>
         </div>
-        <input type="text" value="${h.note || ''}" onchange="saveNote('${h.id}', this.value)" placeholder="+ แนบโน้ตสั้นๆ" class="text-xs p-1 bg-transparent border-b border-gray-600 focus:outline-none text-gray-200 placeholder-gray-500" />
+        <input type="text" value="${h.note || ''}" onchange="saveNote('${h.id}', this.value)" placeholder="+ แนบโน้ตสั้นๆ" class="text-xs p-1 bg-transparent border-b border-slate-300 dark:border-slate-600 focus:outline-none text-slate-700 dark:text-gray-200 placeholder-slate-400 dark:placeholder-gray-500" />
       </div>
     `;
   }).join('');
@@ -296,11 +306,13 @@ function updateHabitsUI() {
   const elXp = document.getElementById('userXP');
   const elNext = document.getElementById('nextLevelXP');
   const elStrk = document.getElementById('streakCounter');
+  const xpBar = document.getElementById('xpProgressBar');
 
   if (elLvl) elLvl.innerText = `LVL ${level}`;
   if (elXp) elXp.innerText = totalXP;
   if (elNext) elNext.innerText = level * 100;
   if (elStrk) elStrk.innerText = `${maxStreak} 🔥`;
+  if (xpBar) xpBar.style.width = `${totalXP % 100}%`;
 
   renderStatsUI();
 }
@@ -312,11 +324,11 @@ function renderStatsUI() {
     const rate = h.streak > 0 ? Math.min(100, h.streak * 3.3).toFixed(0) : 0;
     return `
       <div>
-        <div class="flex justify-between text-xs mb-1 text-gray-200">
+        <div class="flex justify-between text-xs mb-1 text-slate-700 dark:text-gray-200">
           <span>${h.name}</span>
           <span class="font-bold">${rate}% ความสำเร็จเดือนนี้</span>
         </div>
-        <div class="w-full bg-gray-700 rounded-full h-2">
+        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
           <div class="bg-purple-600 h-2 rounded-full" style="width: ${rate}%"></div>
         </div>
       </div>
@@ -368,12 +380,12 @@ function renderCalendar() {
 
     grid.innerHTML += `
       <div onclick="selectCalDate('${dateStr}')" 
-           class="h-14 p-1 border rounded-lg flex flex-col justify-between cursor-pointer transition ${isToday ? 'border-purple-500 bg-purple-900/40' : 'border-gray-700/60 bg-gray-800/80 hover:bg-gray-700'}">
-        <div class="text-[10px] font-bold text-left ${isToday ? 'text-purple-300' : 'text-gray-300'}">${day}</div>
+           class="h-14 p-1 border rounded-lg flex flex-col justify-between cursor-pointer transition ${isToday ? 'border-purple-500 bg-purple-100 dark:bg-purple-900/40' : 'border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700'}">
+        <div class="text-[10px] font-bold text-left ${isToday ? 'text-purple-700 dark:text-purple-300' : 'text-slate-700 dark:text-gray-300'}">${day}</div>
         <div class="text-[8px] leading-tight text-right space-y-0.5">
-          ${dayInc > 0 ? `<div class="text-emerald-400 font-semibold">+${dayInc >= 1000 ? (dayInc/1000).toFixed(1)+'k' : dayInc}</div>` : ''}
-          ${dayExp > 0 ? `<div class="text-rose-400 font-semibold">-${dayExp >= 1000 ? (dayExp/1000).toFixed(1)+'k' : dayExp}</div>` : ''}
-          ${habitsDone > 0 ? `<div class="text-amber-400 font-semibold">✔ ${habitsDone}</div>` : ''}
+          ${dayInc > 0 ? `<div class="text-emerald-600 dark:text-emerald-400 font-semibold">+${dayInc >= 1000 ? (dayInc/1000).toFixed(1)+'k' : dayInc}</div>` : ''}
+          ${dayExp > 0 ? `<div class="text-rose-600 dark:text-rose-400 font-semibold">-${dayExp >= 1000 ? (dayExp/1000).toFixed(1)+'k' : dayExp}</div>` : ''}
+          ${habitsDone > 0 ? `<div class="text-amber-500 dark:text-amber-400 font-semibold">✔ ${habitsDone}</div>` : ''}
         </div>
       </div>
     `;
@@ -394,27 +406,27 @@ function selectCalDate(dateStr) {
 
   let html = '';
 
-  html += `<div class="font-bold text-gray-300 border-b border-gray-700 pb-1 mt-1">💰 รายการการเงิน</div>`;
+  html += `<div class="font-bold text-slate-700 dark:text-gray-300 border-b border-slate-200 dark:border-slate-700 pb-1 mt-1">💰 รายการการเงิน</div>`;
   if (dayTxs.length === 0) {
-    html += `<div class="text-gray-500 py-1">ไม่มีรายการบันทึก</div>`;
+    html += `<div class="text-slate-400 dark:text-gray-500 py-1">ไม่มีรายการบันทึก</div>`;
   } else {
     dayTxs.forEach(t => {
       html += `
-        <div class="flex justify-between py-1 border-b border-gray-700/40">
-          <span>${t.title} (${t.category})</span>
-          <span class="font-bold ${t.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">
+        <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-700/40">
+          <span class="text-slate-700 dark:text-gray-300">${t.title} (${t.category})</span>
+          <span class="font-bold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
             ${t.type === 'income' ? '+' : '-'}฿${t.amount.toLocaleString()}
           </span>
         </div>`;
     });
   }
 
-  html += `<div class="font-bold text-gray-300 border-b border-gray-700 pb-1 mt-3">✅ วินัยที่ทำสำเร็จ</div>`;
+  html += `<div class="font-bold text-slate-700 dark:text-gray-300 border-b border-slate-200 dark:border-slate-700 pb-1 mt-3">✅ วินัยที่ทำสำเร็จ</div>`;
   if (dayHabits.length === 0) {
-    html += `<div class="text-gray-500 py-1">ไม่มีนิสัยที่เช็กอินวันนี้</div>`;
+    html += `<div class="text-slate-400 dark:text-gray-500 py-1">ไม่มีนิสัยที่เช็กอินวันนี้</div>`;
   } else {
     dayHabits.forEach(h => {
-      html += `<div class="text-amber-400 py-0.5">✔ ${h.name}</div>`;
+      html += `<div class="text-amber-500 dark:text-amber-400 py-0.5">✔ ${h.name}</div>`;
     });
   }
 
@@ -428,9 +440,9 @@ function switchTab(tabName) {
   const targetTab = document.getElementById(`tab-${tabName}`);
   if (targetTab) targetTab.classList.remove('hidden');
 
-  document.querySelectorAll('nav button').forEach(btn => btn.className = 'flex flex-col items-center text-gray-400');
+  document.querySelectorAll('nav button').forEach(btn => btn.className = 'flex flex-col items-center text-slate-400 dark:text-gray-400');
   const activeNav = document.getElementById(`nav-${tabName}`);
-  if (activeNav) activeNav.className = 'flex flex-col items-center text-indigo-400';
+  if (activeNav) activeNav.className = 'flex flex-col items-center text-indigo-600 dark:text-indigo-400';
 
   if (tabName === 'calendar') {
     renderCalendar();
@@ -442,6 +454,11 @@ function toggleTheme() {
   const isDark = html.classList.toggle('dark');
   const icon = document.getElementById('themeIcon');
   if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+
+  if (chartInstance) {
+    chartInstance.options.plugins.legend.labels.color = isDark ? '#ccc' : '#333';
+    chartInstance.update();
+  }
 }
 
 function toggleLanguage() {
