@@ -1,237 +1,625 @@
 <!DOCTYPE html>
-<html lang="th" class="dark">
+<html lang="th">
 <head>
-  <link rel="apple-touch-icon" href="icon.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <title>LifePulse - App</title>
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LifePulse - Finance & Habit Tracker</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0f172a" />
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            darkbg: '#0b0f19',
-            cardbg: '#111827'
-          }
-        }
-      }
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="icon" href="icon.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: #0f172a;
+      --card-accent: #1e1b4b;
+      --border-color: #312e81;
+      --primary: #6366f1;
+      --purple: #a855f7;
+      --cyan: #38bdf8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
     }
-  </script>
-</head>
-<body class="bg-slate-100 text-slate-800 dark:bg-darkbg dark:text-gray-100 min-h-screen pb-20 font-sans antialiased transition-colors duration-300">
 
-  <!-- HEADER -->
-  <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between transition-colors">
-    <div class="flex items-center space-x-2">
-      <i class="fa-solid fa-chart-line text-indigo-600 dark:text-indigo-500 text-lg"></i>
-      <span class="font-bold text-lg tracking-wide text-slate-900 dark:text-white">LifePulse</span>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kanit', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding-bottom: 80px; /* เว้นที่ให้ Bottom Nav */
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .app-header {
+      background: linear-gradient(135deg, #1e1b4b, #0f172a);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .logo-title {
+      font-size: 20px;
+      font-weight: 600;
+      background: linear-gradient(45deg, var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Container & Cards */
+    .container {
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 12px;
+      background: #070a12;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .btn:active {
+      opacity: 0.8;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, var(--primary), var(--purple));
+      color: white;
+    }
+
+    .btn-notify {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-bottom: 16px;
+    }
+
+    /* Homework List Items */
+    .hw-item {
+      background: #070a12;
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-top: 1px solid #1e293b;
+      border-right: 1px solid #1e293b;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .hw-item.urgent {
+      border-left-color: var(--red);
+    }
+
+    .hw-item.completed {
+      border-left-color: var(--green);
+      opacity: 0.6;
+    }
+
+    .hw-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .hw-subject {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .hw-subject.done {
+      text-decoration: line-through;
+    }
+
+    .hw-due-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+    }
+
+    .hw-due-badge.normal {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--purple);
+    }
+
+    .hw-detail {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      white-space: pre-line;
+    }
+
+    .hw-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #64748b;
+      padding-top: 6px;
+      border-top: 1px dashed #1e293b;
+    }
+
+    .hw-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-done { background: var(--green); color: white; }
+    .btn-undo { background: #475569; color: white; }
+    .btn-del { background: rgba(239, 68, 68, 0.2); color: var(--red); }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0f172a;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 100;
+    }
+
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 25%;
+    }
+
+    .nav-tab.active {
+      color: var(--cyan);
+    }
+
+    .nav-icon {
+      font-size: 18px;
+    }
+
+    /* Tab Sections */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="logo-container">
+      <img src="icon.png" alt="Logo" class="logo-img" onerror="this.style.display='none'">
+      <div class="logo-title">LifePulse</div>
     </div>
-    
-    <div class="flex items-center space-x-3 text-xs">
-      <button onclick="toggleLanguage()" class="px-2 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 rounded border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-gray-300 font-medium">
-        TH / EN
-      </button>
-      <button onclick="toggleTheme()" class="text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white p-1">
-        <i id="themeIcon" class="fa-solid fa-sun"></i>
-      </button>
-      <button onclick="handleAuth()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium flex items-center space-x-1 shadow-sm">
-        <i class="fa-solid fa-user text-[10px]"></i>
-        <span id="authBtnText">เข้าสู่ระบบ</span>
-      </button>
-    </div>
+    <div id="currentDate" style="font-size: 12px; color: var(--text-muted);"></div>
   </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-md mx-auto p-4 space-y-4">
+  <div class="container">
 
-    <!-- USER LEVEL STATUS CARD -->
-    <div class="bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900/60 dark:to-indigo-900/60 border border-purple-200 dark:border-purple-500/30 rounded-2xl p-4 shadow-sm dark:shadow-lg">
-      <div class="flex justify-between items-center mb-2">
-        <div>
-          <span id="userLevel" class="text-[10px] font-bold bg-purple-200 dark:bg-purple-500/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full uppercase tracking-wider">LVL 1</span>
-          <h2 class="text-base font-bold text-slate-900 dark:text-white mt-1">Habit Master</h2>
-        </div>
-        <div class="text-right">
-          <span class="text-xs text-slate-500 dark:text-gray-400">Streak ติดต่อกัน</span>
-          <p id="streakCounter" class="text-lg font-black text-amber-500 dark:text-amber-400">0 🔥</p>
-        </div>
-      </div>
-      <div class="w-full bg-slate-200 dark:bg-slate-950/60 rounded-full h-2 overflow-hidden border border-purple-300 dark:border-purple-500/20">
-        <div id="xpProgressBar" class="bg-gradient-to-r from-purple-500 to-indigo-500 h-full w-0 transition-all duration-500"></div>
-      </div>
-      <div class="flex justify-between text-[10px] text-slate-500 dark:text-gray-400 mt-1">
-        <span>XP: <span id="userXP">0</span></span>
-        <span>ถัดไป: <span id="nextLevelXP">100</span> XP</span>
-      </div>
-    </div>
-
-    <!-- TAB 1: FINANCE (การเงิน) -->
-    <section id="tab-finance" class="tab-content space-y-4">
-      <div class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
-        <div class="flex justify-between items-center">
-          <span class="text-xs text-slate-500 dark:text-gray-400" data-i18n="monthlyBudget">งบประมาณรายเดือน</span>
-          <button onclick="setBudgetPrompt()" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline" data-i18n="edit">แก้ไข</button>
-        </div>
-        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
-          <div id="budgetProgressBar" class="h-full bg-indigo-600 transition-all duration-300" style="width: 0%"></div>
-        </div>
-        <div class="flex justify-between text-xs text-slate-500 dark:text-gray-400">
-          <span id="budgetSpentText">ใช้ไป: ฿0</span>
-          <span id="budgetLimitText">งบ: ฿15,000</span>
-        </div>
-        
-        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80 text-center">
-          <div>
-            <p class="text-[10px] text-slate-500 dark:text-gray-400" data-i18n="income">รายรับ</p>
-            <p id="totalIncome" class="text-sm font-bold text-emerald-600 dark:text-emerald-400">฿0</p>
-          </div>
-          <div>
-            <p class="text-[10px] text-slate-500 dark:text-gray-400" data-i18n="expense">รายจ่าย</p>
-            <p id="totalExpense" class="text-sm font-bold text-rose-600 dark:text-rose-400">฿0</p>
-          </div>
-          <div>
-            <p class="text-[10px] text-slate-500 dark:text-gray-400" data-i18n="balance">คงเหลือ</p>
-            <p id="netBalance" class="text-sm font-bold text-indigo-600 dark:text-indigo-400">฿0</p>
-          </div>
-        </div>
+    <section id="tab-overview" class="tab-content active">
+      <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #0f172a);">
+        <h3 style="font-size: 18px; margin-bottom: 6px;">ยินดีต้อนรับกลับ! 👋</h3>
+        <p style="font-size: 13px; color: var(--text-muted);">สรุปรายการกิจกรรมและการบ้านของคุณวันนี้</p>
       </div>
 
-      <!-- ADD TRANSACTION FORM -->
-      <form id="financeForm" onsubmit="addTransaction(event)" class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
-        <h3 class="text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider" data-i18n="addTransaction">เพิ่มรายการ</h3>
-        <div class="grid grid-cols-2 gap-2">
-          <input type="text" id="txTitle" placeholder="ชื่อรายการ" required class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs rounded-lg p-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500" />
-          <input type="number" id="txAmount" placeholder="จำนวนเงิน" required class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs rounded-lg p-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500" />
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+        <div class="card" style="margin: 0; text-align: center;">
+          <div style="font-size: 24px; font-weight: 600; color: var(--cyan);" id="statPendingHW">0</div>
+          <div style="font-size: 12px; color: var(--text-muted);">การบ้านที่ค้างอยู่</div>
         </div>
-        <div class="grid grid-cols-2 gap-2">
-          <select id="txType" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs rounded-lg p-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">
-            <option value="expense" data-i18n="expense">รายจ่าย</option>
-            <option value="income" data-i18n="income">รายรับ</option>
-          </select>
-          <select id="txCategory" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs rounded-lg p-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">
-            <option value="food" data-i18n="food">อาหาร</option>
-            <option value="transport" data-i18n="transport">เดินทาง</option>
-            <option value="shopping" data-i18n="shopping">ช้อปปิ้ง</option>
-            <option value="bills" data-i18n="bills">บิล/ที่พัก</option>
-            <option value="other" data-i18n="other">อื่นๆ</option>
-          </select>
+        <div class="card" style="margin: 0; text-align: center;">
+          <div style="font-size: 24px; font-weight: 600; color: var(--green);" id="statDoneHW">0</div>
+          <div style="font-size: 12px; color: var(--text-muted);">ส่งเรียบร้อยแล้ว</div>
         </div>
-        <label class="flex items-center space-x-2 text-xs text-slate-600 dark:text-gray-400 cursor-pointer">
-          <input type="checkbox" id="txRecurring" class="rounded bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-0" />
-          <span data-i18n="recurringItem">รายการประจำทุกเดือน (Recurring)</span>
-        </label>
-        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg text-xs shadow-md" data-i18n="add">
-          บันทึกข้อมูล
+      </div>
+    </section>
+
+    <section id="tab-homework" class="tab-content">
+
+      <button class="btn btn-notify" onclick="requestNotification()">
+        🔔 เปิดการแจ้งเตือนเตือนความจำในเครื่องนี้
+      </button>
+
+      <div class="card">
+        <div class="card-title">
+          <span>📚</span> เพิ่มรายการการบ้าน
+        </div>
+
+        <div class="form-group">
+          <label for="hwSubject">ชื่อวิชา / หัวข้อ</label>
+          <input type="text" id="hwSubject" placeholder="เช่น คณิตศาสตร์, รายงานภาษาไทย" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="hwAssignDate">วันที่สั่ง</label>
+            <input type="date" id="hwAssignDate">
+          </div>
+          <div class="form-group">
+            <label for="hwDueDate">กำหนดส่ง</label>
+            <input type="date" id="hwDueDate" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="hwDetail">รายละเอียดเพิ่มเติม</label>
+          <textarea id="hwDetail" rows="2" placeholder="เช่น ทำหน้า 45-48, ทำใส่กระดาษรายงาน..."></textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="addHomework()">
+          + บันทึกการบ้าน
         </button>
-      </form>
-
-      <!-- CHART -->
-      <div class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
-        <h3 class="text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-3" data-i18n="chartTitle">สัดส่วนรายจ่าย</h3>
-        <canvas id="financeChart" class="max-h-48"></canvas>
       </div>
 
-      <!-- HISTORY -->
-      <div class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
-        <h3 class="text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-2" data-i18n="history">ประวัติรายการ</h3>
-        <ul id="txList" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs"></ul>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h4 style="font-size: 15px; font-weight: 500;">รายการการบ้านทั้งหมด</h4>
       </div>
-    </section>
 
-    <!-- TAB 2: HABITS (วินัยประจำวัน) -->
-    <section id="tab-habits" class="tab-content hidden space-y-4">
-      <form id="habitForm" onsubmit="addHabit(event)" class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex gap-2">
-        <input type="text" id="habitName" placeholder="เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที" required class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs rounded-lg p-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-purple-500" />
-        <button type="submit" class="px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg text-xs">เพิ่ม</button>
-      </form>
-
-      <div class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
-        <h3 class="text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider" data-i18n="todayHabits">นิสัยประจำวันนี้</h3>
-        <div id="habitList" class="space-y-2"></div>
-      </div>
-    </section>
-
-    <!-- TAB 3: CALENDAR (ปฏิทิน) -->
-    <section id="tab-calendar" class="tab-content hidden space-y-4">
-      <div class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
-        <div class="flex justify-between items-center mb-4">
-          <button onclick="changeMonth(-1)" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-gray-300 rounded-lg text-xs">
-            <i class="fa-solid fa-chevron-left"></i>
-          </button>
-          <h3 id="calendarMonthYear" class="text-sm font-bold text-purple-700 dark:text-purple-300">เดือน ปี</h3>
-          <button onclick="changeMonth(1)" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-gray-300 rounded-lg text-xs">
-            <i class="fa-solid fa-chevron-right"></i>
-          </button>
+      <div id="homeworkList">
         </div>
+    </section>
 
-        <div class="grid grid-cols-7 gap-1 text-center font-bold text-[10px] text-slate-500 dark:text-gray-400 mb-2">
-          <div class="text-rose-500">อา</div>
-          <div>จ</div>
-          <div>อ</div>
-          <div>พ</div>
-          <div>พฤ</div>
-          <div>ศ</div>
-          <div class="text-sky-500">ส</div>
-        </div>
-
-        <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-center"></div>
-      </div>
-
-      <div id="dayDetailPanel" class="hidden bg-white dark:bg-cardbg border border-purple-300 dark:border-purple-500/40 rounded-2xl p-4 shadow-lg space-y-2">
-        <h4 id="selectedDateTitle" class="text-xs font-bold text-purple-700 dark:text-purple-300 border-b border-slate-200 dark:border-slate-800 pb-2"></h4>
-        <div id="selectedDateContent" class="text-xs space-y-1"></div>
+    <section id="tab-finance" class="tab-content">
+      <div class="card">
+        <div class="card-title">💰 บันทึกการเงิน</div>
+        <p style="font-size: 13px; color: var(--text-muted);">ฟังก์ชันการเงินกำลังเปิดใช้งาน...</p>
       </div>
     </section>
 
-    <!-- TAB 4: STATS (สถิติ) -->
-    <section id="tab-stats" class="tab-content hidden space-y-4">
-      <div class="bg-white dark:bg-cardbg border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
-        <h3 class="text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider" data-i18n="monthlyStats">สถิตินิสัยรายเดือน</h3>
-        <div id="habitStatsList" class="space-y-3"></div>
+    <section id="tab-settings" class="tab-content">
+      <div class="card">
+        <div class="card-title">⚙️ ตั้งค่าแอป</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">จัดการข้อมูล LifePulse</p>
+        <button class="btn btn-del" style="width:100%; padding:10px; border-radius:8px;" onclick="clearAllData()">
+          🗑️ ล้างข้อมูลการบ้านทั้งหมด
+        </button>
       </div>
     </section>
 
-  </main>
+  </div>
 
-  <!-- BOTTOM NAVIGATION BAR -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-t border-slate-200 dark:border-slate-800 py-2 px-4 z-50 transition-colors">
-    <div class="max-w-md mx-auto grid grid-cols-4 text-center">
-      <button id="nav-finance" onclick="switchTab('finance')" class="flex flex-col items-center text-indigo-600 dark:text-indigo-400">
-        <i class="fa-solid fa-wallet text-base"></i>
-        <span class="text-[10px] mt-1 font-medium" data-i18n="tabFinance">การเงิน</span>
-      </button>
-      <button id="nav-habits" onclick="switchTab('habits')" class="flex flex-col items-center text-slate-400 dark:text-gray-400">
-        <i class="fa-solid fa-circle-check text-base"></i>
-        <span class="text-[10px] mt-1 font-medium" data-i18n="tabHabits">วินัยประจำวัน</span>
-      </button>
-      <button id="nav-calendar" onclick="switchTab('calendar')" class="flex flex-col items-center text-slate-400 dark:text-gray-400">
-        <i class="fa-solid fa-calendar-days text-base"></i>
-        <span class="text-[10px] mt-1 font-medium" data-i18n="tabCalendar">ปฏิทิน</span>
-      </button>
-      <button id="nav-stats" onclick="switchTab('stats')" class="flex flex-col items-center text-slate-400 dark:text-gray-400">
-        <i class="fa-solid fa-chart-pie text-base"></i>
-        <span class="text-[10px] mt-1 font-medium" data-i18n="tabStats">สถิติ</span>
-      </button>
-    </div>
+  <nav class="bottom-nav">
+    <button class="nav-tab active" onclick="switchTab('overview', this)">
+      <span class="nav-icon">📊</span>
+      <span>ภาพรวม</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('homework', this)">
+      <span class="nav-icon">📚</span>
+      <span>การบ้าน</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('finance', this)">
+      <span class="nav-icon">💰</span>
+      <span>การเงิน</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('settings', this)">
+      <span class="nav-icon">⚙️</span>
+      <span>ตั้งค่า</span>
+    </button>
   </nav>
 
-  <script src="app.js"></script>
+  <script>
+    // --- 1. สลับหน้าแท็บ (Tab Navigation) ---
+    function switchTab(tabId, btnElement) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+      btnElement.classList.add('active');
+    }
+
+    // --- 2. ระบบจัดการการบ้าน (Homework System) ---
+    function addHomework() {
+      const subject = document.getElementById('hwSubject').value.trim();
+      const assignDate = document.getElementById('hwAssignDate').value;
+      const dueDate = document.getElementById('hwDueDate').value;
+      const detail = document.getElementById('hwDetail').value.trim();
+
+      if (!subject || !dueDate) {
+        alert('กรุณากรอกชื่อวิชาและกำหนดส่ง!');
+        return;
+      }
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      const newHW = {
+        id: Date.now(),
+        subject: subject,
+        assignDate: assignDate || todayStr,
+        dueDate: dueDate,
+        detail: detail,
+        completed: false,
+        notified: false
+      };
+
+      const homeworks = getHomeworks();
+      homeworks.push(newHW);
+      saveHomeworks(homeworks);
+
+      // ล้างค่าฟอร์ม
+      document.getElementById('hwSubject').value = '';
+      document.getElementById('hwDetail').value = '';
+
+      renderHomeworks();
+      checkDueDateNotifications();
+    }
+
+    function getHomeworks() {
+      return JSON.parse(localStorage.getItem('lifepulse_hw') || '[]');
+    }
+
+    function saveHomeworks(data) {
+      localStorage.setItem('lifepulse_hw', JSON.stringify(data));
+    }
+
+    function toggleHW(id) {
+      const homeworks = getHomeworks();
+      const item = homeworks.find(h => h.id === id);
+      if (item) {
+        item.completed = !item.completed;
+        saveHomeworks(homeworks);
+        renderHomeworks();
+      }
+    }
+
+    function deleteHW(id) {
+      if (confirm('คุณต้องการลบการบ้านนี้ใช่หรือไม่?')) {
+        let homeworks = getHomeworks();
+        homeworks = homeworks.filter(h => h.id !== id);
+        saveHomeworks(homeworks);
+        renderHomeworks();
+      }
+    }
+
+    function clearAllData() {
+      if (confirm('คำเตือน: ข้อมูลการบ้านทั้งหมดจะถูกลบ!')) {
+        localStorage.removeItem('lifepulse_hw');
+        renderHomeworks();
+      }
+    }
+
+    function renderHomeworks() {
+      const listDiv = document.getElementById('homeworkList');
+      const homeworks = getHomeworks();
+
+      // สรุปตัวเลขหน้า Dashboard
+      const pendingCount = homeworks.filter(h => !h.completed).length;
+      const doneCount = homeworks.filter(h => h.completed).length;
+      document.getElementById('statPendingHW').innerText = pendingCount;
+      document.getElementById('statDoneHW').innerText = doneCount;
+
+      if (homeworks.length === 0) {
+        listDiv.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:13px;">ยังไม่มีรายการการบ้าน กดเพิ่มด้านบนได้เลย! 📝</div>';
+        return;
+      }
+
+      // เรียงลำดับเอาอันที่ยังไม่ส่งขึ้นก่อน + เรียงตามวันส่งใกล้สุด
+      homeworks.sort((a, b) => (a.completed - b.completed) || new Date(a.dueDate) - new Date(b.dueDate));
+
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      listDiv.innerHTML = homeworks.map(item => {
+        const due = new Date(item.dueDate);
+        due.setHours(0,0,0,0);
+        const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+        
+        let isUrgent = diffDays <= 1 && !item.completed;
+        let badgeText = `ส่งวันที่: ${item.dueDate}`;
+        if (diffDays === 0) badgeText = '🚨 กำหนดส่งวันนี้!';
+        else if (diffDays === 1) badgeText = '⏰ ส่งพรุ่งนี้!';
+        else if (diffDays < 0) badgeText = '⚠️ เลยกำหนดส่ง';
+
+        return `
+          <div class="hw-item ${item.completed ? 'completed' : (isUrgent ? 'urgent' : '')}">
+            <div class="hw-header">
+              <span class="hw-subject ${item.completed ? 'done' : ''}">${escapeHtml(item.subject)}</span>
+              <span class="hw-due-badge ${isUrgent ? '' : 'normal'}">${badgeText}</span>
+            </div>
+            ${item.detail ? `<div class="hw-detail">${escapeHtml(item.detail)}</div>` : ''}
+            <div class="hw-footer">
+              <span>สั่งเมื่อ: ${item.assignDate}</span>
+              <div class="hw-actions">
+                <button onclick="toggleHW(${item.id})" class="btn-sm ${item.completed ? 'btn-undo' : 'btn-done'}">
+                  ${item.completed ? 'เลิกทำ' : '✓ ส่งแล้ว'}
+                </button>
+                <button onclick="deleteHW(${item.id})" class="btn-sm btn-del">ลบ</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
+    }
+
+    // --- 3. ระบบแจ้งเตือน (Notifications) ---
+    function requestNotification() {
+      if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            alert('เปิดการแจ้งเตือนสำเร็จ! ระบบจะเตือนเมื่อการบ้านใกล้ถึงกำหนดส่ง');
+          } else {
+            alert('คุณปฏิเสธการแจ้งเตือน สามารถเปิดได้ที่การตั้งค่าเบราว์เซอร์');
+          }
+        });
+      } else {
+        alert('เบราว์เซอร์นี้ไม่รองรับการส่งแจ้งเตือน');
+      }
+    }
+
+    function checkDueDateNotifications() {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+      const homeworks = getHomeworks();
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      homeworks.forEach(item => {
+        if (item.completed || item.notified) return;
+
+        const due = new Date(item.dueDate);
+        due.setHours(0,0,0,0);
+        const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+
+        if (diffDays <= 1 && diffDays >= 0) {
+          sendNotification(item, diffDays);
+          item.notified = true;
+        }
+      });
+
+      saveHomeworks(homeworks);
+    }
+
+    function sendNotification(item, diffDays) {
+      const title = diffDays === 0 
+        ? `🚨 กำหนดส่งวันนี้! วิชา ${item.subject}` 
+        : `⏰ พรุ่งนี้ต้องส่งการบ้านวิชา ${item.subject}`;
+
+      const options = {
+        body: `รายละเอียด: ${item.detail || 'ไม่มี'}\nอย่าลืมทำส่งนะ!`,
+        icon: 'icon.png'
+      };
+
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(reg => reg.showNotification(title, options));
+      } else {
+        new Notification(title, options);
+      }
+    }
+
+    // --- 4. โหลดข้อมูลเมื่อเปิดเว็บ ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // ตั้งค่าใส่วันที่ปัจจุบันในหน้า Header
+      const options = { weekday: 'short', day: 'numeric', month: 'short' };
+      document.getElementById('currentDate').innerText = new Date().toLocaleDateString('th-TH', options);
+
+      // วันที่สั่งการบ้านให้ตั้งเป็นวันนี้โดยอัตโนมัติ
+      document.getElementById('hwAssignDate').value = new Date().toISOString().split('T')[0];
+
+      renderHomeworks();
+      checkDueDateNotifications();
+    });
+  </script>
 </body>
 </html>
