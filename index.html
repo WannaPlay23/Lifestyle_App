@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#0f172a">
-  <title>LifePulse - App</title>
+  <title data-i18n="app_title">LifePulse - Ultimate Web App</title>
 
+  <!-- PWA Settings & App Icons -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
   <link rel="icon" href="icon.png" type="image/png">
 
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    :root {
+    /* --- CSS THEME VARIABLES --- */
+    :root[data-theme="dark"] {
       --bg-dark: #0b0f19;
       --card-bg: #0f172a;
       --card-accent: #1e1b4b;
@@ -25,8 +28,28 @@
       --cyan: #38bdf8;
       --green: #22c55e;
       --red: #ef4444;
+      --amber: #f59e0b;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --input-bg: #070a12;
+      --nav-bg: #0f172a;
+    }
+
+    :root[data-theme="light"] {
+      --bg-dark: #f1f5f9;
+      --card-bg: #ffffff;
+      --card-accent: #e2e8f0;
+      --border-color: #cbd5e1;
+      --primary: #4f46e5;
+      --purple: #9333ea;
+      --cyan: #0284c7;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --input-bg: #f8fafc;
+      --nav-bg: #ffffff;
     }
 
     * {
@@ -35,19 +58,50 @@
       padding: 0;
       font-family: 'Kanit', sans-serif;
       -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      padding-bottom: 80px; /* เว้นที่ให้ Bottom Nav */
+      padding-bottom: 85px;
       min-height: 100vh;
     }
 
-    /* Header */
+    /* --- LOGIN OVERLAY --- */
+    #loginScreen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg-dark);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 28px 20px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .login-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+    }
+
+    /* --- HEADER --- */
     .app-header {
-      background: linear-gradient(135deg, #1e1b4b, #0f172a);
-      padding: 16px 20px;
+      background: var(--card-bg);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -60,25 +114,38 @@
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-
-    .logo-img {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      object-fit: cover;
+      gap: 8px;
     }
 
     .logo-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       background: linear-gradient(45deg, var(--purple), var(--cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* Container & Cards */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-select, .control-btn {
+      background: var(--input-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 5px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* --- LAYOUT & CARDS --- */
     .container {
       padding: 16px;
       max-width: 600px;
@@ -91,11 +158,11 @@
       border-radius: 16px;
       padding: 16px;
       margin-bottom: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
 
     .card-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
       margin-bottom: 12px;
       display: flex;
@@ -103,47 +170,26 @@
       gap: 8px;
     }
 
-    /* Form Inputs */
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    label {
-      font-size: 13px;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 4px;
-    }
-
+    /* --- INPUTS & BUTTONS --- */
+    .form-group { margin-bottom: 12px; text-align: left; }
+    label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px; }
     input, textarea, select {
       width: 100%;
       padding: 10px 12px;
-      background: #070a12;
+      background: var(--input-bg);
       border: 1px solid var(--border-color);
       border-radius: 8px;
       color: var(--text-main);
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s;
     }
+    input:focus, textarea:focus { border-color: var(--primary); }
+    .form-row { display: flex; gap: 8px; }
+    .form-row .form-group { flex: 1; }
 
-    input:focus, textarea:focus {
-      border-color: var(--primary);
-    }
-
-    .form-row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .form-row .form-group {
-      flex: 1;
-    }
-
-    /* Buttons */
     .btn {
       width: 100%;
-      padding: 12px;
+      padding: 11px;
       border: none;
       border-radius: 10px;
       font-size: 14px;
@@ -153,319 +199,682 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: opacity 0.2s;
+    }
+    .btn-primary { background: linear-gradient(45deg, var(--primary), var(--purple)); color: white; }
+    .btn-notify { background: rgba(56, 189, 248, 0.1); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 14px; }
+    .btn-sm { padding: 4px 10px; border-radius: 6px; font-size: 11px; border: none; cursor: pointer; }
+    .btn-done { background: var(--green); color: white; }
+    .btn-undo { background: #64748b; color: white; }
+    .btn-del { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+
+    /* --- PROGRESS BAR --- */
+    .progress-bar-bg {
+      background: var(--input-bg);
+      height: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 6px;
+      border: 1px solid var(--border-color);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      width: 0%;
+      transition: width 0.4s ease;
     }
 
-    .btn:active {
-      opacity: 0.8;
+    /* --- HABIT / DISCIPLINE LIST --- */
+    .habit-item {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .habit-info { display: flex; flex-direction: column; gap: 2px; }
+    .habit-name { font-size: 14px; font-weight: 500; }
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--amber);
+      font-weight: 600;
     }
 
-    .btn-primary {
-      background: linear-gradient(45deg, var(--primary), var(--purple));
-      color: white;
+    /* --- CALENDAR GRID --- */
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
     }
-
-    .btn-notify {
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--cyan);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      margin-bottom: 16px;
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      text-align: center;
     }
+    .cal-day-name { font-size: 11px; color: var(--text-muted); font-weight: 500; padding-bottom: 4px; }
+    .cal-date {
+      padding: 8px 0;
+      background: var(--input-bg);
+      border-radius: 8px;
+      font-size: 12px;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .cal-date.today { border-color: var(--cyan); color: var(--cyan); font-weight: bold; }
+    .cal-date.has-event { border-bottom: 3px solid var(--purple); }
 
-    /* Homework List Items */
+    /* --- HOMEWORK LIST --- */
     .hw-item {
-      background: #070a12;
+      background: var(--input-bg);
       border-left: 4px solid var(--primary);
       border-radius: 10px;
       padding: 12px;
       margin-bottom: 10px;
-      border-top: 1px solid #1e293b;
-      border-right: 1px solid #1e293b;
-      border-bottom: 1px solid #1e293b;
     }
+    .hw-item.urgent { border-left-color: var(--red); }
+    .hw-item.completed { border-left-color: var(--green); opacity: 0.6; }
 
-    .hw-item.urgent {
-      border-left-color: var(--red);
-    }
-
-    .hw-item.completed {
-      border-left-color: var(--green);
-      opacity: 0.6;
-    }
-
-    .hw-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-    }
-
-    .hw-subject {
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    .hw-subject.done {
-      text-decoration: line-through;
-    }
-
-    .hw-due-badge {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      background: rgba(239, 68, 68, 0.15);
-      color: var(--red);
-    }
-
-    .hw-due-badge.normal {
-      background: rgba(168, 85, 247, 0.15);
-      color: var(--purple);
-    }
-
-    .hw-detail {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      white-space: pre-line;
-    }
-
-    .hw-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      color: #64748b;
-      padding-top: 6px;
-      border-top: 1px dashed #1e293b;
-    }
-
-    .hw-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn-sm {
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-done { background: var(--green); color: white; }
-    .btn-undo { background: #475569; color: white; }
-    .btn-del { background: rgba(239, 68, 68, 0.2); color: var(--red); }
-
-    /* Bottom Navigation Bar */
+    /* --- BOTTOM NAVIGATION --- */
     .bottom-nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #0f172a;
+      bottom: 0; left: 0; right: 0;
+      background: var(--nav-bg);
       border-top: 1px solid var(--border-color);
       display: flex;
       justify-content: space-around;
       padding: 8px 0;
       z-index: 100;
     }
-
     .nav-tab {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
       color: var(--text-muted);
-      font-size: 11px;
+      font-size: 10px;
       background: none;
       border: none;
       cursor: pointer;
-      width: 25%;
+      width: 16%;
     }
+    .nav-tab.active { color: var(--cyan); font-weight: 600; }
+    .nav-icon { font-size: 17px; }
 
-    .nav-tab.active {
-      color: var(--cyan);
-    }
-
-    .nav-icon {
-      font-size: 18px;
-    }
-
-    /* Tab Sections */
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
 
+  <!-- ==================== 1. LOGIN OVERLAY ==================== -->
+  <div id="loginScreen">
+    <div class="login-card">
+      <img src="icon.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/64/6366f1/fff?text=LP'">
+      <h2 style="font-size: 22px; margin-bottom: 4px; background: linear-gradient(45deg, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">LifePulse</h2>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;" data-i18n="login_subtitle">เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน</p>
+      
+      <div class="form-group">
+        <label data-i18n="login_user_label">ชื่อผู้ใช้งาน</label>
+        <input type="text" id="loginUsername" data-i18n-placeholder="login_user_ph" placeholder="กรอกชื่อของคุณ..." value="User">
+      </div>
+      <div class="form-group">
+        <label data-i18n="login_pass_label">รหัสผ่าน / PIN</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" value="1234">
+      </div>
+      <button class="btn btn-primary" style="margin-top: 10px;" onclick="handleLogin()" data-i18n="login_btn">เข้าสู่ระบบ 🚀</button>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN APPLICATION ==================== -->
+  <!-- Header Bar -->
   <header class="app-header">
     <div class="logo-container">
-      <img src="icon.png" alt="Logo" class="logo-img" onerror="this.style.display='none'">
       <div class="logo-title">LifePulse</div>
     </div>
-    <div id="currentDate" style="font-size: 12px; color: var(--text-muted);"></div>
+
+    <div class="header-controls">
+      <!-- Language Selector -->
+      <select id="langSelect" class="control-select" onchange="setLanguage(this.value)">
+        <option value="th">🇹🇭 TH</option>
+        <option value="en">🇬🇧 EN</option>
+      </select>
+
+      <!-- Theme Switcher Button -->
+      <button id="themeBtn" class="control-btn" onclick="toggleTheme()">
+        <span id="themeIcon">☀️</span>
+      </button>
+    </div>
   </header>
 
   <div class="container">
 
-    <section id="tab-overview" class="tab-content active">
-      <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #0f172a);">
-        <h3 style="font-size: 18px; margin-bottom: 6px;">ยินดีต้อนรับกลับ! 👋</h3>
-        <p style="font-size: 13px; color: var(--text-muted);">สรุปรายการกิจกรรมและการบ้านของคุณวันนี้</p>
+    <!-- ===== TAB 1: สถิติ (STATS) ===== -->
+    <section id="tab-stats" class="tab-content active">
+      <div class="card" style="background: linear-gradient(135deg, var(--card-accent), var(--card-bg));">
+        <h3 style="font-size: 17px;" data-i18n="stats_title">📊 สถิติกิจกรรมประจำวัน</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;" data-i18n="stats_subtitle">ภาพรวมความก้าวหน้าของคุณ</p>
+        
+        <div style="margin-top: 14px;">
+          <div style="display:flex; justify-between; font-size:12px;">
+            <span data-i18n="stats_hw_progress">ความสำเร็จการบ้าน</span>
+            <span id="statHwPercent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="statHwBar" class="progress-bar-fill"></div>
+          </div>
+        </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-        <div class="card" style="margin: 0; text-align: center;">
-          <div style="font-size: 24px; font-weight: 600; color: var(--cyan);" id="statPendingHW">0</div>
-          <div style="font-size: 12px; color: var(--text-muted);">การบ้านที่ค้างอยู่</div>
+        <div class="card" style="margin:0; text-align:center;">
+          <div style="font-size: 24px; font-weight: 600; color: var(--cyan);" id="statPendingCount">0</div>
+          <div style="font-size: 12px; color: var(--text-muted);" data-i18n="stats_pending">งานที่ค้างอยู่</div>
         </div>
-        <div class="card" style="margin: 0; text-align: center;">
-          <div style="font-size: 24px; font-weight: 600; color: var(--green);" id="statDoneHW">0</div>
-          <div style="font-size: 12px; color: var(--text-muted);">ส่งเรียบร้อยแล้ว</div>
+        <div class="card" style="margin:0; text-align:center;">
+          <div style="font-size: 24px; font-weight: 600; color: var(--green);" id="statDoneCount">0</div>
+          <div style="font-size: 12px; color: var(--text-muted);" data-i18n="stats_completed">ส่งเรียบร้อยแล้ว</div>
         </div>
       </div>
     </section>
 
-    <section id="tab-homework" class="tab-content">
+    <!-- ===== TAB 2: วินัยประจำวัน (DISCIPLINE / HABITS) ===== -->
+    <section id="tab-discipline" class="tab-content">
+      <div class="card">
+        <div class="card-title" data-i18n="habit_add_title">🎯 เพิ่มเป้าหมายวินัยประจำวัน</div>
+        <div class="form-group">
+          <label data-i18n="habit_name_label">ชื่อกิจกรรม/นิสัยที่ต้องการทำทุกวัน</label>
+          <input type="text" id="habitInput" data-i18n-placeholder="habit_name_ph" placeholder="เช่น อ่านหนังสือ 15 นาที, ออกกำลังกาย, ดื่มน้ำ 2 ลิตร">
+        </div>
+        <button class="btn btn-primary" onclick="addHabit()" data-i18n="habit_add_btn">+ เพิ่มเป้าหมาย</button>
+      </div>
 
-      <button class="btn btn-notify" onclick="requestNotification()">
+      <h4 style="font-size: 14px; margin-bottom: 10px;" data-i18n="habit_list_title">รายการวินัยประจำวันของคุณ</h4>
+      <div id="habitList"></div>
+    </section>
+
+    <!-- ===== TAB 3: ปฏิทิน (CALENDAR) ===== -->
+    <section id="tab-calendar" class="tab-content">
+      <div class="card">
+        <div class="calendar-header">
+          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(-1)" data-i18n="cal_prev">◀ ก่อนหน้า</button>
+          <strong id="calMonthYear" style="font-size: 15px;">มกราคม 2026</strong>
+          <button class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(1)" data-i18n="cal_next">ถัดไป ▶</button>
+        </div>
+
+        <div class="calendar-grid" id="calendarDaysHeader">
+          <!-- JS Render Day Names -->
+        </div>
+        <div class="calendar-grid" id="calendarDays" style="margin-top:6px;">
+          <!-- JS Render Days -->
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-i18n="cal_selected_title">📌 กิจกรรมในวันที่เลือก</div>
+        <div id="selectedDateEvents" style="font-size:13px; color:var(--text-muted);" data-i18n="cal_no_selected">
+          คลิกที่วันที่ในปฏิทินเพื่อดูรายการกำหนดส่งงาน
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB 4: การบ้าน (HOMEWORK) ===== -->
+    <section id="tab-homework" class="tab-content">
+      <button class="btn btn-notify" onclick="requestNotification()" data-i18n="hw_notify_btn">
         🔔 เปิดการแจ้งเตือนเตือนความจำในเครื่องนี้
       </button>
 
       <div class="card">
-        <div class="card-title">
-          <span>📚</span> เพิ่มรายการการบ้าน
-        </div>
+        <div class="card-title" data-i18n="hw_add_title">📚 เพิ่มรายการการบ้าน</div>
 
         <div class="form-group">
-          <label for="hwSubject">ชื่อวิชา / หัวข้อ</label>
-          <input type="text" id="hwSubject" placeholder="เช่น คณิตศาสตร์, รายงานภาษาไทย" required>
+          <label data-i18n="hw_subject_label">ชื่อวิชา / หัวข้อ</label>
+          <input type="text" id="hwSubject" data-i18n-placeholder="hw_subject_ph" placeholder="เช่น คณิตศาสตร์, รายงานภาษาไทย">
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="hwAssignDate">วันที่สั่ง</label>
+            <label data-i18n="hw_assign_date_label">วันที่สั่ง</label>
             <input type="date" id="hwAssignDate">
           </div>
           <div class="form-group">
-            <label for="hwDueDate">กำหนดส่ง</label>
-            <input type="date" id="hwDueDate" required>
+            <label data-i18n="hw_due_date_label">กำหนดส่ง</label>
+            <input type="date" id="hwDueDate">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="hwDetail">รายละเอียดเพิ่มเติม</label>
-          <textarea id="hwDetail" rows="2" placeholder="เช่น ทำหน้า 45-48, ทำใส่กระดาษรายงาน..."></textarea>
+          <label data-i18n="hw_detail_label">รายละเอียดเพิ่มเติม</label>
+          <textarea id="hwDetail" rows="2" data-i18n-placeholder="hw_detail_ph" placeholder="รายละเอียดการบ้าน..."></textarea>
         </div>
 
-        <button class="btn btn-primary" onclick="addHomework()">
-          + บันทึกการบ้าน
-        </button>
+        <button class="btn btn-primary" onclick="addHomework()" data-i18n="hw_add_btn">+ บันทึกการบ้าน</button>
       </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h4 style="font-size: 15px; font-weight: 500;">รายการการบ้านทั้งหมด</h4>
-      </div>
-
-      <div id="homeworkList">
-        </div>
+      <h4 style="font-size: 14px; margin-bottom: 10px;" data-i18n="hw_list_title">รายการการบ้านทั้งหมด</h4>
+      <div id="homeworkList"></div>
     </section>
 
+    <!-- ===== TAB 5: การเงิน (FINANCE) ===== -->
     <section id="tab-finance" class="tab-content">
+      <div class="card" style="background: linear-gradient(135deg, #064e3b, var(--card-bg)); border-color: #059669;">
+        <div style="font-size: 12px; color: #a7f3d0;" data-i18n="fin_balance_label">ยอดเงินคงเหลือ</div>
+        <div style="font-size: 28px; font-weight: 600; color: #fff;" id="financeBalance">฿0.00</div>
+      </div>
+
       <div class="card">
-        <div class="card-title">💰 บันทึกการเงิน</div>
-        <p style="font-size: 13px; color: var(--text-muted);">ฟังก์ชันการเงินกำลังเปิดใช้งาน...</p>
+        <div class="card-title" data-i18n="fin_add_title">💰 บันทึก รายรับ - รายจ่าย</div>
+        <div class="form-group">
+          <label data-i18n="fin_item_label">รายการ</label>
+          <input type="text" id="finTitle" data-i18n-placeholder="fin_item_ph" placeholder="เช่น ค่าอาหาร, ค่าขนม">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="fin_amount_label">จำนวนเงิน (บาท)</label>
+            <input type="number" id="finAmount" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label data-i18n="fin_type_label">ประเภท</label>
+            <select id="finType">
+              <option value="expense" data-i18n="fin_expense">รายจ่าย (-)</option>
+              <option value="income" data-i18n="fin_income">รายรับ (+)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addFinanceTransaction()" data-i18n="fin_add_btn">+ บันทึกรายการ</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-i18n="fin_history_title">ประวัติการเงิน</div>
+        <div id="financeList" style="font-size: 13px;"></div>
       </div>
     </section>
 
+    <!-- ===== TAB 6: ตั้งค่า (SETTINGS) ===== -->
     <section id="tab-settings" class="tab-content">
       <div class="card">
-        <div class="card-title">⚙️ ตั้งค่าแอป</div>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">จัดการข้อมูล LifePulse</p>
-        <button class="btn btn-del" style="width:100%; padding:10px; border-radius:8px;" onclick="clearAllData()">
-          🗑️ ล้างข้อมูลการบ้านทั้งหมด
+        <div class="card-title" data-i18n="settings_title">⚙️ ตั้งค่าแอปพลิเคชัน</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+          <span data-i18n="settings_user_prefix">บัญชีผู้ใช้ปัจจุบัน:</span> <strong id="settingsUserTag" style="color:var(--text-main);">-</strong>
+        </p>
+        
+        <button class="btn" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color); margin-bottom:10px;" onclick="handleLogout()" data-i18n="logout_btn">
+          🚪 ออกจากระบบ (Logout)
+        </button>
+        <button class="btn btn-del" onclick="clearAllData()" data-i18n="clear_data_btn">
+          🗑️ ล้างข้อมูลแอปทั้งหมด
         </button>
       </div>
     </section>
 
   </div>
 
+  <!-- Bottom Navigation Bar -->
   <nav class="bottom-nav">
-    <button class="nav-tab active" onclick="switchTab('overview', this)">
+    <button class="nav-tab active" onclick="switchTab('stats', this)">
       <span class="nav-icon">📊</span>
-      <span>ภาพรวม</span>
+      <span data-i18n="nav_stats">สถิติ</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('discipline', this)">
+      <span class="nav-icon">🎯</span>
+      <span data-i18n="nav_discipline">วินัย</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('calendar', this)">
+      <span class="nav-icon">📅</span>
+      <span data-i18n="nav_calendar">ปฏิทิน</span>
     </button>
     <button class="nav-tab" onclick="switchTab('homework', this)">
       <span class="nav-icon">📚</span>
-      <span>การบ้าน</span>
+      <span data-i18n="nav_homework">การบ้าน</span>
     </button>
     <button class="nav-tab" onclick="switchTab('finance', this)">
       <span class="nav-icon">💰</span>
-      <span>การเงิน</span>
+      <span data-i18n="nav_finance">การเงิน</span>
     </button>
     <button class="nav-tab" onclick="switchTab('settings', this)">
       <span class="nav-icon">⚙️</span>
-      <span>ตั้งค่า</span>
+      <span data-i18n="nav_settings">ตั้งค่า</span>
     </button>
   </nav>
 
+  <!-- JavaScript Code Base -->
   <script>
-    // --- 1. สลับหน้าแท็บ (Tab Navigation) ---
+    // --- DICTIONARY FOR FULL TRANSLATION (i18n) ---
+    const i18n = {
+      th: {
+        app_title: "LifePulse - เว็บแอปพลิเคชันส่วนตัว",
+        login_subtitle: "เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน",
+        login_user_label: "ชื่อผู้ใช้งาน",
+        login_user_ph: "กรอกชื่อของคุณ...",
+        login_pass_label: "รหัสผ่าน / PIN",
+        login_btn: "เข้าสู่ระบบ 🚀",
+        stats_title: "📊 สถิติกิจกรรมประจำวัน",
+        stats_subtitle: "ภาพรวมความก้าวหน้าและการทำการบ้านของคุณ",
+        stats_hw_progress: "ความสำเร็จการบ้าน",
+        stats_pending: "งานที่ค้างอยู่",
+        stats_completed: "ส่งเรียบร้อยแล้ว",
+        habit_add_title: "🎯 เพิ่มเป้าหมายวินัยประจำวัน",
+        habit_name_label: "ชื่อกิจกรรม/นิสัยที่ต้องการทำทุกวัน",
+        habit_name_ph: "เช่น อ่านหนังสือ 15 นาที, ออกกำลังกาย, ดื่มน้ำ 2 ลิตร",
+        habit_add_btn: "+ เพิ่มเป้าหมายวินัย",
+        habit_list_title: "รายการวินัยประจำวันของคุณ",
+        habit_done_today: "✓ ทำแล้ววันนี้",
+        habit_not_done: "เช็คอินวันนี้",
+        habit_streak: "ต่อเนื่อง",
+        habit_days: "วัน",
+        cal_prev: "◀ ก่อนหน้า",
+        cal_next: "ถัดไป ▶",
+        cal_selected_title: "📌 กิจกรรมในวันที่เลือก",
+        cal_no_selected: "คลิกที่วันที่ในปฏิทินเพื่อดูรายการกำหนดส่งงาน",
+        cal_no_events: "ไม่มีกำหนดส่งงานในวันนี้",
+        hw_notify_btn: "🔔 เปิดการแจ้งเตือนในเครื่องนี้",
+        hw_add_title: "📚 เพิ่มรายการการบ้าน",
+        hw_subject_label: "ชื่อวิชา / หัวข้อ",
+        hw_subject_ph: "เช่น คณิตศาสตร์, รายงานภาษาไทย",
+        hw_assign_date_label: "วันที่สั่ง",
+        hw_due_date_label: "กำหนดส่ง",
+        hw_detail_label: "รายละเอียดเพิ่มเติม",
+        hw_detail_ph: "รายละเอียดการบ้าน...",
+        hw_add_btn: "+ บันทึกการบ้าน",
+        hw_list_title: "รายการการบ้านทั้งหมด",
+        hw_due_today: "🚨 ส่งวันนี้!",
+        hw_due_tomorrow: "⏰ ส่งพรุ่งนี้!",
+        hw_overdue: "⚠️ เลยกำหนด",
+        hw_due_date_prefix: "ส่ง:",
+        hw_assigned_prefix: "สั่งเมื่อ:",
+        hw_no_items: "ไม่มีการบ้านที่ค้างอยู่",
+        fin_balance_label: "ยอดเงินคงเหลือ",
+        fin_add_title: "💰 บันทึก รายรับ - รายจ่าย",
+        fin_item_label: "รายการ",
+        fin_item_ph: "เช่น ค่าอาหาร, ค่าขนม",
+        fin_amount_label: "จำนวนเงิน (บาท)",
+        fin_type_label: "ประเภท",
+        fin_expense: "รายจ่าย (-)",
+        fin_income: "รายรับ (+)",
+        fin_add_btn: "+ บันทึกรายการ",
+        fin_history_title: "ประวัติการเงิน",
+        fin_no_items: "ไม่มีรายการการเงิน",
+        settings_title: "⚙️ ตั้งค่าแอปพลิเคชัน",
+        settings_user_prefix: "บัญชีผู้ใช้ปัจจุบัน:",
+        logout_btn: "🚪 ออกจากระบบ (Logout)",
+        clear_data_btn: "🗑️ ล้างข้อมูลแอปทั้งหมด",
+        nav_stats: "สถิติ",
+        nav_discipline: "วินัย",
+        nav_calendar: "ปฏิทิน",
+        nav_homework: "การบ้าน",
+        nav_finance: "การเงิน",
+        nav_settings: "ตั้งค่า",
+        alert_fill_all: "กรุณากรอกข้อมูลให้ครบถ้วน!",
+        alert_confirm_del: "ต้องการลบรายการนี้ใช่หรือไม่?",
+        alert_confirm_clear: "คำเตือน: ข้อมูลทั้งหมดจะถูกลบ!"
+      },
+      en: {
+        app_title: "LifePulse - Personal Management App",
+        login_subtitle: "Log in to manage your daily life",
+        login_user_label: "Username",
+        login_user_ph: "Enter your name...",
+        login_pass_label: "Password / PIN",
+        login_btn: "Login 🚀",
+        stats_title: "📊 Daily Activity Statistics",
+        stats_subtitle: "Overview of your progress and homework completion",
+        stats_hw_progress: "Homework Progress",
+        stats_pending: "Pending Tasks",
+        stats_completed: "Completed",
+        habit_add_title: "🎯 Add Daily Discipline / Habit Goal",
+        habit_name_label: "Habit or activity you want to do daily",
+        habit_name_ph: "e.g. Read 15 mins, Exercise, Drink 2L water",
+        habit_add_btn: "+ Add Habit Goal",
+        habit_list_title: "Your Daily Habits & Discipline",
+        habit_done_today: "✓ Done Today",
+        habit_not_done: "Check-in Today",
+        habit_streak: "Streak",
+        habit_days: "days",
+        cal_prev: "◀ Prev",
+        cal_next: "Next ▶",
+        cal_selected_title: "📌 Selected Date Events",
+        cal_no_selected: "Click a date on the calendar to see due events",
+        cal_no_events: "No due tasks for this date",
+        hw_notify_btn: "🔔 Enable Notifications on this device",
+        hw_add_title: "📚 Add New Homework",
+        hw_subject_label: "Subject / Topic",
+        hw_subject_ph: "e.g. Mathematics, History Report",
+        hw_assign_date_label: "Assigned Date",
+        hw_due_date_label: "Due Date",
+        hw_detail_label: "Additional Details",
+        hw_detail_ph: "Homework details...",
+        hw_add_btn: "+ Save Homework",
+        hw_list_title: "All Homework List",
+        hw_due_today: "🚨 Due Today!",
+        hw_due_tomorrow: "⏰ Due Tomorrow!",
+        hw_overdue: "⚠️ Overdue",
+        hw_due_date_prefix: "Due:",
+        hw_assigned_prefix: "Assigned:",
+        hw_no_items: "No pending homework",
+        fin_balance_label: "Current Balance",
+        fin_add_title: "💰 Record Income / Expense",
+        fin_item_label: "Transaction Title",
+        fin_item_ph: "e.g. Lunch, Coffee, Salary",
+        fin_amount_label: "Amount (THB)",
+        fin_type_label: "Type",
+        fin_expense: "Expense (-)",
+        fin_income: "Income (+)",
+        fin_add_btn: "+ Record Transaction",
+        fin_history_title: "Financial History",
+        fin_no_items: "No financial records",
+        settings_title: "⚙️ Application Settings",
+        settings_user_prefix: "Current Account:",
+        logout_btn: "🚪 Logout",
+        clear_data_btn: "🗑️ Clear All App Data",
+        nav_stats: "Stats",
+        nav_discipline: "Habits",
+        nav_calendar: "Calendar",
+        nav_homework: "Homework",
+        nav_finance: "Finance",
+        nav_settings: "Settings",
+        alert_fill_all: "Please fill in all required fields!",
+        alert_confirm_del: "Are you sure you want to delete this item?",
+        alert_confirm_clear: "Warning: All application data will be deleted!"
+      }
+    };
+
+    // --- GLOBAL STATE ---
+    let currentLang = localStorage.getItem('lifepulse_lang') || 'th';
+    let currentTheme = localStorage.getItem('lifepulse_theme') || 'dark';
+    let currentCalDate = new Date();
+
+    // --- 1. LANGUAGE & THEME SYSTEM ---
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lifepulse_lang', lang);
+      document.getElementById('langSelect').value = lang;
+      document.documentElement.lang = lang;
+
+      // Update text nodes
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang][key]) el.textContent = i18n[lang][key];
+      });
+
+      // Update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (i18n[lang][key]) el.placeholder = i18n[lang][key];
+      });
+
+      // Re-render components with localized dynamic content
+      renderCalendar();
+      renderHabits();
+      renderHomeworks();
+      renderFinance();
+      renderStats();
+    }
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(currentTheme);
+    }
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('lifepulse_theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('themeIcon').textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // --- 2. AUTHENTICATION ---
+    function checkAuth() {
+      const user = localStorage.getItem('lifepulse_user');
+      if (user) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('settingsUserTag').innerText = user;
+      } else {
+        document.getElementById('loginScreen').style.display = 'flex';
+      }
+    }
+
+    function handleLogin() {
+      const username = document.getElementById('loginUsername').value.trim() || 'User';
+      localStorage.setItem('lifepulse_user', username);
+      checkAuth();
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('lifepulse_user');
+      checkAuth();
+    }
+
+    // --- 3. TAB NAVIGATION ---
     function switchTab(tabId, btnElement) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
 
       document.getElementById(`tab-${tabId}`).classList.add('active');
       btnElement.classList.add('active');
+
+      if(tabId === 'calendar') renderCalendar();
+      if(tabId === 'stats') renderStats();
+      if(tabId === 'discipline') renderHabits();
     }
 
-    // --- 2. ระบบจัดการการบ้าน (Homework System) ---
+    // --- 4. DISCIPLINE / HABIT TRACKER SYSTEM ---
+    function getHabits() { return JSON.parse(localStorage.getItem('lifepulse_habits') || '[]'); }
+    function saveHabits(data) { localStorage.setItem('lifepulse_habits', JSON.stringify(data)); }
+
+    function addHabit() {
+      const name = document.getElementById('habitInput').value.trim();
+      if(!name) { alert(i18n[currentLang].alert_fill_all); return; }
+
+      const habits = getHabits();
+      habits.push({
+        id: Date.now(),
+        name: name,
+        streak: 0,
+        lastCompletedDate: null
+      });
+      saveHabits(habits);
+      document.getElementById('habitInput').value = '';
+      renderHabits();
+    }
+
+    function toggleHabit(id) {
+      const habits = getHabits();
+      const habit = habits.find(h => h.id === id);
+      if(!habit) return;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      
+      if(habit.lastCompletedDate === todayStr) {
+        // Undo today's completion
+        habit.lastCompletedDate = null;
+        habit.streak = Math.max(0, habit.streak - 1);
+      } else {
+        // Calculate Streak
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+        if(habit.lastCompletedDate === yesterdayStr) {
+          habit.streak += 1;
+        } else {
+          habit.streak = 1; // Streak reset or brand new
+        }
+        habit.lastCompletedDate = todayStr;
+      }
+
+      saveHabits(habits);
+      renderHabits();
+    }
+
+    function deleteHabit(id) {
+      if(confirm(i18n[currentLang].alert_confirm_del)) {
+        saveHabits(getHabits().filter(h => h.id !== id));
+        renderHabits();
+      }
+    }
+
+    function renderHabits() {
+      const listDiv = document.getElementById('habitList');
+      const habits = getHabits();
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      if(habits.length === 0) {
+        listDiv.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">${i18n[currentLang].hw_no_items}</p>`;
+        return;
+      }
+
+      listDiv.innerHTML = habits.map(h => {
+        const isDoneToday = h.lastCompletedDate === todayStr;
+        return `
+          <div class="habit-item">
+            <div class="habit-info">
+              <div class="habit-name">${escapeHtml(h.name)}</div>
+              <div class="streak-badge">
+                🔥 ${i18n[currentLang].habit_streak}: ${h.streak} ${i18n[currentLang].habit_days}
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button onclick="toggleHabit(${h.id})" class="btn-sm ${isDoneToday ? 'btn-done' : 'btn-undo'}">
+                ${isDoneToday ? i18n[currentLang].habit_done_today : i18n[currentLang].habit_not_done}
+              </button>
+              <button onclick="deleteHabit(${h.id})" class="btn-sm btn-del">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- 5. HOMEWORK & NOTIFICATION SYSTEM ---
+    function getHomeworks() { return JSON.parse(localStorage.getItem('lifepulse_hw') || '[]'); }
+    function saveHomeworks(data) { localStorage.setItem('lifepulse_hw', JSON.stringify(data)); }
+
     function addHomework() {
       const subject = document.getElementById('hwSubject').value.trim();
       const assignDate = document.getElementById('hwAssignDate').value;
       const dueDate = document.getElementById('hwDueDate').value;
       const detail = document.getElementById('hwDetail').value.trim();
 
-      if (!subject || !dueDate) {
-        alert('กรุณากรอกชื่อวิชาและกำหนดส่ง!');
-        return;
-      }
-
-      const todayStr = new Date().toISOString().split('T')[0];
-
-      const newHW = {
-        id: Date.now(),
-        subject: subject,
-        assignDate: assignDate || todayStr,
-        dueDate: dueDate,
-        detail: detail,
-        completed: false,
-        notified: false
-      };
+      if (!subject || !dueDate) { alert(i18n[currentLang].alert_fill_all); return; }
 
       const homeworks = getHomeworks();
-      homeworks.push(newHW);
+      homeworks.push({
+        id: Date.now(),
+        subject, assignDate: assignDate || new Date().toISOString().split('T')[0],
+        dueDate, detail, completed: false, notified: false
+      });
       saveHomeworks(homeworks);
 
-      // ล้างค่าฟอร์ม
       document.getElementById('hwSubject').value = '';
       document.getElementById('hwDetail').value = '';
 
       renderHomeworks();
+      renderStats();
       checkDueDateNotifications();
-    }
-
-    function getHomeworks() {
-      return JSON.parse(localStorage.getItem('lifepulse_hw') || '[]');
-    }
-
-    function saveHomeworks(data) {
-      localStorage.setItem('lifepulse_hw', JSON.stringify(data));
     }
 
     function toggleHW(id) {
@@ -475,22 +884,15 @@
         item.completed = !item.completed;
         saveHomeworks(homeworks);
         renderHomeworks();
+        renderStats();
       }
     }
 
     function deleteHW(id) {
-      if (confirm('คุณต้องการลบการบ้านนี้ใช่หรือไม่?')) {
-        let homeworks = getHomeworks();
-        homeworks = homeworks.filter(h => h.id !== id);
-        saveHomeworks(homeworks);
+      if (confirm(i18n[currentLang].alert_confirm_del)) {
+        saveHomeworks(getHomeworks().filter(h => h.id !== id));
         renderHomeworks();
-      }
-    }
-
-    function clearAllData() {
-      if (confirm('คำเตือน: ข้อมูลการบ้านทั้งหมดจะถูกลบ!')) {
-        localStorage.removeItem('lifepulse_hw');
-        renderHomeworks();
+        renderStats();
       }
     }
 
@@ -498,48 +900,36 @@
       const listDiv = document.getElementById('homeworkList');
       const homeworks = getHomeworks();
 
-      // สรุปตัวเลขหน้า Dashboard
-      const pendingCount = homeworks.filter(h => !h.completed).length;
-      const doneCount = homeworks.filter(h => h.completed).length;
-      document.getElementById('statPendingHW').innerText = pendingCount;
-      document.getElementById('statDoneHW').innerText = doneCount;
-
       if (homeworks.length === 0) {
-        listDiv.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:13px;">ยังไม่มีรายการการบ้าน กดเพิ่มด้านบนได้เลย! 📝</div>';
+        listDiv.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">${i18n[currentLang].hw_no_items}</p>`;
         return;
       }
 
-      // เรียงลำดับเอาอันที่ยังไม่ส่งขึ้นก่อน + เรียงตามวันส่งใกล้สุด
       homeworks.sort((a, b) => (a.completed - b.completed) || new Date(a.dueDate) - new Date(b.dueDate));
-
-      const today = new Date();
-      today.setHours(0,0,0,0);
+      const today = new Date(); today.setHours(0,0,0,0);
 
       listDiv.innerHTML = homeworks.map(item => {
-        const due = new Date(item.dueDate);
-        due.setHours(0,0,0,0);
+        const due = new Date(item.dueDate); due.setHours(0,0,0,0);
         const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-        
         let isUrgent = diffDays <= 1 && !item.completed;
-        let badgeText = `ส่งวันที่: ${item.dueDate}`;
-        if (diffDays === 0) badgeText = '🚨 กำหนดส่งวันนี้!';
-        else if (diffDays === 1) badgeText = '⏰ ส่งพรุ่งนี้!';
-        else if (diffDays < 0) badgeText = '⚠️ เลยกำหนดส่ง';
+        
+        let badgeText = `${i18n[currentLang].hw_due_date_prefix} ${item.dueDate}`;
+        if (diffDays === 0) badgeText = i18n[currentLang].hw_due_today;
+        else if (diffDays === 1) badgeText = i18n[currentLang].hw_due_tomorrow;
+        else if (diffDays < 0) badgeText = i18n[currentLang].hw_overdue;
 
         return `
           <div class="hw-item ${item.completed ? 'completed' : (isUrgent ? 'urgent' : '')}">
-            <div class="hw-header">
-              <span class="hw-subject ${item.completed ? 'done' : ''}">${escapeHtml(item.subject)}</span>
-              <span class="hw-due-badge ${isUrgent ? '' : 'normal'}">${badgeText}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <strong style="font-size:14px; ${item.completed ? 'text-decoration:line-through;' : ''}">${escapeHtml(item.subject)}</strong>
+              <span style="font-size:11px; padding:2px 6px; border-radius:10px; background:rgba(239,68,68,0.15); color:var(--red);">${badgeText}</span>
             </div>
-            ${item.detail ? `<div class="hw-detail">${escapeHtml(item.detail)}</div>` : ''}
-            <div class="hw-footer">
-              <span>สั่งเมื่อ: ${item.assignDate}</span>
-              <div class="hw-actions">
-                <button onclick="toggleHW(${item.id})" class="btn-sm ${item.completed ? 'btn-undo' : 'btn-done'}">
-                  ${item.completed ? 'เลิกทำ' : '✓ ส่งแล้ว'}
-                </button>
-                <button onclick="deleteHW(${item.id})" class="btn-sm btn-del">ลบ</button>
+            ${item.detail ? `<div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">${escapeHtml(item.detail)}</div>` : ''}
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); margin-top:6px;">
+              <span>${i18n[currentLang].hw_assigned_prefix} ${item.assignDate}</span>
+              <div style="display:flex; gap:4px;">
+                <button onclick="toggleHW(${item.id})" class="btn-sm ${item.completed ? 'btn-undo' : 'btn-done'}">${item.completed ? 'Undo' : '✓ Done'}</button>
+                <button onclick="deleteHW(${item.id})" class="btn-sm btn-del">🗑️</button>
               </div>
             </div>
           </div>
@@ -547,77 +937,166 @@
       }).join('');
     }
 
-    function escapeHtml(text) {
-      return text.replace(/[&<>"']/g, function(m) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-      });
-    }
-
-    // --- 3. ระบบแจ้งเตือน (Notifications) ---
     function requestNotification() {
       if ('Notification' in window) {
-        Notification.requestPermission().then(permission => {
-          if (permission === 'granted') {
-            alert('เปิดการแจ้งเตือนสำเร็จ! ระบบจะเตือนเมื่อการบ้านใกล้ถึงกำหนดส่ง');
-          } else {
-            alert('คุณปฏิเสธการแจ้งเตือน สามารถเปิดได้ที่การตั้งค่าเบราว์เซอร์');
-          }
-        });
-      } else {
-        alert('เบราว์เซอร์นี้ไม่รองรับการส่งแจ้งเตือน');
+        Notification.requestPermission().then(p => alert(p === 'granted' ? 'Notifications Enabled!' : 'Notifications Blocked'));
       }
     }
 
     function checkDueDateNotifications() {
       if (!('Notification' in window) || Notification.permission !== 'granted') return;
-
       const homeworks = getHomeworks();
-      const today = new Date();
-      today.setHours(0,0,0,0);
+      const today = new Date(); today.setHours(0,0,0,0);
 
       homeworks.forEach(item => {
         if (item.completed || item.notified) return;
-
-        const due = new Date(item.dueDate);
-        due.setHours(0,0,0,0);
+        const due = new Date(item.dueDate); due.setHours(0,0,0,0);
         const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-
         if (diffDays <= 1 && diffDays >= 0) {
-          sendNotification(item, diffDays);
+          new Notification(diffDays === 0 ? `🚨 Due Today: ${item.subject}` : `⏰ Due Tomorrow: ${item.subject}`, {
+            body: item.detail || 'Don\'t forget to complete it!', icon: 'icon.png'
+          });
           item.notified = true;
         }
       });
-
       saveHomeworks(homeworks);
     }
 
-    function sendNotification(item, diffDays) {
-      const title = diffDays === 0 
-        ? `🚨 กำหนดส่งวันนี้! วิชา ${item.subject}` 
-        : `⏰ พรุ่งนี้ต้องส่งการบ้านวิชา ${item.subject}`;
+    // --- 6. STATS SYSTEM ---
+    function renderStats() {
+      const homeworks = getHomeworks();
+      const total = homeworks.length;
+      const done = homeworks.filter(h => h.completed).length;
+      const pending = total - done;
 
-      const options = {
-        body: `รายละเอียด: ${item.detail || 'ไม่มี'}\nอย่าลืมทำส่งนะ!`,
-        icon: 'icon.png'
-      };
+      document.getElementById('statPendingCount').innerText = pending;
+      document.getElementById('statDoneCount').innerText = done;
+      
+      const percent = total === 0 ? 100 : Math.round((done / total) * 100);
+      document.getElementById('statHwPercent').innerText = `${percent}%`;
+      document.getElementById('statHwBar').style.width = `${percent}%`;
+    }
 
-      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-        navigator.serviceWorker.ready.then(reg => reg.showNotification(title, options));
+    // --- 7. CALENDAR SYSTEM ---
+    function renderCalendar() {
+      const year = currentCalDate.getFullYear();
+      const month = currentCalDate.getMonth();
+      
+      const monthNamesTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+      const monthNamesEN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const dayNamesTH = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
+      const dayNamesEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+      const monthName = currentLang === 'th' ? monthNamesTH[month] : monthNamesEN[month];
+      const yearDisplay = currentLang === 'th' ? year + 543 : year;
+      
+      document.getElementById('calMonthYear').innerText = `${monthName} ${yearDisplay}`;
+
+      // Render Day Headers
+      const daysHeaderDiv = document.getElementById('calendarDaysHeader');
+      const dayNames = currentLang === 'th' ? dayNamesTH : dayNamesEN;
+      daysHeaderDiv.innerHTML = dayNames.map(d => `<div class="cal-day-name">${d}</div>`).join('');
+      
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const homeworks = getHomeworks();
+
+      let html = '';
+      for (let i = 0; i < firstDay; i++) {
+        html += `<div></div>`;
+      }
+
+      const today = new Date();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        const hasEvent = homeworks.some(h => h.dueDate === dateStr);
+
+        html += `<div class="cal-date ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" onclick="selectCalDate('${dateStr}')">${day}</div>`;
+      }
+      document.getElementById('calendarDays').innerHTML = html;
+    }
+
+    function changeMonth(delta) {
+      currentCalDate.setMonth(currentCalDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function selectCalDate(dateStr) {
+      const homeworks = getHomeworks().filter(h => h.dueDate === dateStr);
+      const div = document.getElementById('selectedDateEvents');
+      if (homeworks.length === 0) {
+        div.innerHTML = `<span style="color:var(--text-muted);">${i18n[currentLang].cal_no_events} (${dateStr})</span>`;
       } else {
-        new Notification(title, options);
+        div.innerHTML = homeworks.map(h => `
+          <div style="background:var(--input-bg); padding:8px; border-radius:6px; margin-top:6px; border:1px solid var(--border-color);">
+            📌 <strong>${escapeHtml(h.subject)}</strong> (${h.completed ? 'Done' : 'Pending'})
+          </div>
+        `).join('');
       }
     }
 
-    // --- 4. โหลดข้อมูลเมื่อเปิดเว็บ ---
+    // --- 8. FINANCE SYSTEM ---
+    function getFinance() { return JSON.parse(localStorage.getItem('lifepulse_fin') || '[]'); }
+    function addFinanceTransaction() {
+      const title = document.getElementById('finTitle').value.trim();
+      const amount = parseFloat(document.getElementById('finAmount').value);
+      const type = document.getElementById('finType').value;
+
+      if(!title || isNaN(amount)) { alert(i18n[currentLang].alert_fill_all); return; }
+
+      const list = getFinance();
+      list.push({ id: Date.now(), title, amount, type });
+      localStorage.setItem('lifepulse_fin', JSON.stringify(list));
+
+      document.getElementById('finTitle').value = '';
+      document.getElementById('finAmount').value = '';
+      renderFinance();
+    }
+
+    function renderFinance() {
+      const list = getFinance();
+      let balance = 0;
+      const listDiv = document.getElementById('financeList');
+
+      if(list.length === 0) {
+        listDiv.innerHTML = `<span style="color:var(--text-muted);">${i18n[currentLang].fin_no_items}</span>`;
+      } else {
+        listDiv.innerHTML = list.map(item => {
+          if(item.type === 'income') balance += item.amount;
+          else balance -= item.amount;
+
+          return `
+            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border-color);">
+              <span>${escapeHtml(item.title)}</span>
+              <strong style="color:${item.type === 'income' ? 'var(--green)' : 'var(--red)'}">
+                ${item.type === 'income' ? '+' : '-'}${item.amount.toLocaleString()} ฿
+              </strong>
+            </div>
+          `;
+        }).join('');
+      }
+      document.getElementById('financeBalance').innerText = `฿${balance.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+    }
+
+    // --- UTILS ---
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    }
+
+    function clearAllData() {
+      if(confirm(i18n[currentLang].alert_confirm_clear)) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    // --- INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', () => {
-      // ตั้งค่าใส่วันที่ปัจจุบันในหน้า Header
-      const options = { weekday: 'short', day: 'numeric', month: 'short' };
-      document.getElementById('currentDate').innerText = new Date().toLocaleDateString('th-TH', options);
-
-      // วันที่สั่งการบ้านให้ตั้งเป็นวันนี้โดยอัตโนมัติ
+      setTheme(currentTheme);
+      setLanguage(currentLang);
+      checkAuth();
       document.getElementById('hwAssignDate').value = new Date().toISOString().split('T')[0];
-
-      renderHomeworks();
       checkDueDateNotifications();
     });
   </script>
