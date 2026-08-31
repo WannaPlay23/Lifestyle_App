@@ -310,7 +310,6 @@
 
     <!-- TAB 3: HOMEWORK -->
     <section id="tab-homework" class="tab-content">
-      <!-- 📌 สรุปจำนวนการบ้านที่ยังไม่ได้ส่ง -->
       <div class="card" style="text-align: center; background: var(--card-bg); border: 1px solid var(--border-color); padding: 16px;">
         <span style="font-size: 14px; color: var(--text-muted);" data-i18n="hw_pending_banner">📌 การบ้านที่ยังไม่ได้ส่ง: </span>
         <strong id="pendingCountHW" style="font-size: 26px; color: var(--red); margin: 0 6px;">0</strong>
@@ -387,8 +386,27 @@
       </div>
     </section>
 
-    <!-- TAB 5: SETTINGS -->
+    <!-- TAB 5: SETTINGS & NOTIFICATIONS -->
     <section id="tab-settings" class="tab-content">
+      <!-- 🔔 notification control CARD -->
+      <div class="card">
+        <div class="card-title" data-i18n="set_noti_title">🔔 ระบบแจ้งเตือน (Notifications)</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+          <span data-i18n="set_noti_status_label">สถานะการแจ้งเตือน:</span> <strong id="notiStatusText" style="color:var(--cyan);">-</strong>
+        </p>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <button type="button" class="btn btn-primary" style="flex: 2;" onclick="requestNotificationPermission()">
+            <span data-i18n="set_noti_enable_btn">🔔 เปิดใช้งานแจ้งเตือน</span>
+          </button>
+          <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="sendTestNotification()">
+            <span data-i18n="set_noti_test_btn">🧪 ทดสอบ</span>
+          </button>
+        </div>
+        <p style="font-size: 11px; color: var(--text-muted);" data-i18n="set_noti_tip">
+          * แจ้งเตือนจะเตือนการบ้านกำหนดส่งวันนี้ และเป้าหมายวินัยประจำคนที่ยังทำไม่เสร็จ
+        </p>
+      </div>
+
       <div class="card">
         <div class="card-title" data-i18n="set_title">⚙️ ตั้งค่าแอปพลิเคชัน</div>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
@@ -495,13 +513,25 @@
         fin_date_label: "วันที่ทำรายการ",
         fin_save_btn: "+ บันทึกรายการ",
         fin_history_title: "ประวัติการเงินทั้งหมด",
+        set_noti_title: "🔔 ระบบแจ้งเตือน (Notifications)",
+        set_noti_status_label: "สถานะการแจ้งเตือน:",
+        set_noti_enable_btn: "🔔 เปิดใช้งานแจ้งเตือน",
+        set_noti_test_btn: "🧪 ทดสอบ",
+        set_noti_tip: "* แจ้งเตือนจะเตือนการบ้านกำหนดส่งวันนี้ และเป้าหมายวินัยประจำคนที่ยังทำไม่เสร็จ",
         set_title: "⚙️ ตั้งค่าแอปพลิเคชัน",
         set_user_label: "อีเมลผู้ใช้ปัจจุบัน:",
         set_logout: "🚪 ออกจากระบบ (Logout)",
         set_clear: "🗑️ ล้างข้อมูลแอปทั้งหมด",
         modal_hw_sec: "📚 กำหนดส่งการบ้าน (Deadline)",
         modal_fin_sec: "💰 รายการการเงินประจำวัน",
-        modal_close: "ปิดหน้าต่าง"
+        modal_close: "ปิดหน้าต่าง",
+        noti_perm_default: "ยังไม่ได้เปิดใช้งาน",
+        noti_perm_granted: "เปิดใช้งานแล้ว ✅",
+        noti_perm_denied: "ถูกปฏิเสธในเบราว์เซอร์ ❌",
+        noti_unsupported: "เบราว์เซอร์ไม่รองรับ",
+        noti_test_title: "LifePulse แจ้งเตือน 🎉",
+        noti_test_body: "ระบบแจ้งเตือนของ LifePulse พร้อมใช้งานแล้ว!",
+        noti_summary_title: "📋 สรุปรายการประจำวันนี้"
       },
       en: {
         login_subtitle: "Log in to manage your daily life",
@@ -546,13 +576,25 @@
         fin_date_label: "Transaction Date",
         fin_save_btn: "+ Save Record",
         fin_history_title: "All Financial Records",
+        set_noti_title: "🔔 Notifications System",
+        set_noti_status_label: "Notification Status:",
+        set_noti_enable_btn: "🔔 Enable Notifications",
+        set_noti_test_btn: "🧪 Test",
+        set_noti_tip: "* Notifications alert you about today's homework deadlines and incomplete habits.",
         set_title: "⚙️ Application Settings",
         set_user_label: "Current User Email:",
         set_logout: "🚪 Log Out",
         set_clear: "🗑️ Clear All App Data",
         modal_hw_sec: "📚 Homework Deadlines",
         modal_fin_sec: "💰 Daily Financial Summary",
-        modal_close: "Close Window"
+        modal_close: "Close Window",
+        noti_perm_default: "Not Enabled",
+        noti_perm_granted: "Enabled ✅",
+        noti_perm_denied: "Denied in Browser ❌",
+        noti_unsupported: "Unsupported Browser",
+        noti_test_title: "LifePulse Notification 🎉",
+        noti_test_body: "LifePulse notifications are active!",
+        noti_summary_title: "📋 Daily Reminders Summary"
       }
     };
 
@@ -587,6 +629,7 @@
       renderHomework();
       renderFinance();
       renderCalendar();
+      updateNotiStatusUI();
     }
 
     // 🔑 1. FIREBASE CONFIGURATION
@@ -624,6 +667,7 @@
         if (ls) ls.style.display = 'none';
         const ut = document.getElementById('settingsUserTag');
         if (ut) ut.innerText = user.email || 'ผู้ใช้งาน';
+        checkAndTriggerDailyNotifications();
       } else if (ls) ls.style.display = 'flex';
     });
 
@@ -672,7 +716,82 @@
       }
     }
 
-    // 🎯 3. HABITS + GAMIFICATION
+    // 🔔 3. NOTIFICATION SYSTEM
+    function updateNotiStatusUI() {
+      const statusEl = document.getElementById('notiStatusText');
+      if (!statusEl) return;
+      const langData = translations[currentLang] || translations.th;
+
+      if (!("Notification" in window)) {
+        statusEl.innerText = langData.noti_unsupported;
+        statusEl.style.color = "var(--red)";
+      } else if (Notification.permission === "granted") {
+        statusEl.innerText = langData.noti_perm_granted;
+        statusEl.style.color = "var(--green)";
+      } else if (Notification.permission === "denied") {
+        statusEl.innerText = langData.noti_perm_denied;
+        statusEl.style.color = "var(--red)";
+      } else {
+        statusEl.innerText = langData.noti_perm_default;
+        statusEl.style.color = "var(--amber)";
+      }
+    }
+
+    function requestNotificationPermission() {
+      if (!("Notification" in window)) {
+        alert(currentLang === 'en' ? 'Your browser does not support Web Notifications.' : 'เบราว์เซอร์ของคุณไม่รองรับการแจ้งเตือน');
+        return;
+      }
+
+      Notification.requestPermission().then(permission => {
+        updateNotiStatusUI();
+        if (permission === "granted") {
+          sendTestNotification();
+        } else if (permission === "denied") {
+          alert(currentLang === 'en' ? 'Notification permission was denied.' : 'การแจ้งเตือนถูกปฏิเสธ กรุณาเปิดสิทธิ์ในตั้งค่าเบราว์เซอร์');
+        }
+      });
+    }
+
+    function sendTestNotification() {
+      if (!("Notification" in window) || Notification.permission !== "granted") {
+        requestNotificationPermission();
+        return;
+      }
+      const langData = translations[currentLang] || translations.th;
+      new Notification(langData.noti_test_title, {
+        body: langData.noti_test_body,
+        icon: 'icon.png'
+      });
+    }
+
+    function checkAndTriggerDailyNotifications() {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      const pendingHw = homeworks.filter(h => h.dueDate === todayStr && !h.done);
+      const pendingHabits = habits.filter(h => h.lastDoneDate !== todayStr);
+
+      if (pendingHw.length > 0 || pendingHabits.length > 0) {
+        const langData = translations[currentLang] || translations.th;
+        const isEn = currentLang === 'en';
+        
+        let bodyMsg = '';
+        if (pendingHw.length > 0) {
+          bodyMsg += isEn ? `📚 ${pendingHw.length} homework item(s) due today!\n` : `📚 มีการบ้านกำหนดส่งวันนี้ ${pendingHw.length} รายการ!\n`;
+        }
+        if (pendingHabits.length > 0) {
+          bodyMsg += isEn ? `🎯 ${pendingHabits.length} habit goal(s) left for today!` : `🎯 มีนิสัยประจำวันที่ยังไม่ได้ทำ ${pendingHabits.length} รายการ`;
+        }
+
+        new Notification(langData.noti_summary_title, {
+          body: bodyMsg.trim(),
+          icon: 'icon.png'
+        });
+      }
+    }
+
+    // 🎯 4. HABITS + GAMIFICATION
     function getRankTitle(lvl) {
       if (lvl < 3) return "Habit Master";
       if (lvl < 5) return "Discipline Pro";
@@ -780,7 +899,7 @@
       }
     }
 
-    // 📅 4. CALENDAR
+    // 📅 5. CALENDAR
     let currentDate = new Date(), currentYear = currentDate.getFullYear(), currentMonth = currentDate.getMonth();
     const monthNamesTh = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -907,7 +1026,7 @@
       document.getElementById('dayDetailModal').style.display = 'none';
     }
 
-    // 📚 5. HOMEWORK LOGIC
+    // 📚 6. HOMEWORK LOGIC
     function renderHomework() {
       const list = document.getElementById('homeworkList');
       if (!list) return;
@@ -1006,7 +1125,7 @@
       if (pendingHW) pendingHW.innerText = pendingCount;
     }
 
-    // 💰 6. FINANCE LOGIC
+    // 💰 7. FINANCE LOGIC
     function renderFinance() {
       const list = document.getElementById('financeList');
       if (!list) return;
@@ -1085,7 +1204,7 @@
       }
     }
 
-    // ⚙️ 7. CLEAR DATA
+    // ⚙️ 8. CLEAR DATA
     function clearAllData() {
       const msg = currentLang === 'en' ? 'Are you sure you want to clear all app data?' : 'คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?';
       if (confirm(msg)) {
