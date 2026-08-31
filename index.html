@@ -160,10 +160,6 @@
     .streak-tag { font-size: 13px; font-weight: 700; color: var(--amber); white-space: nowrap; }
     .habit-note-input { width: 100%; background: transparent; border: none; border-bottom: 1px dashed var(--border-color); color: var(--text-muted); font-size: 12px; padding: 4px 0; margin-top: 6px; outline: none; }
 
-    /* --- PROGRESS BAR --- */
-    .progress-bar-bg { background: var(--input-bg); height: 10px; border-radius: 10px; overflow: hidden; margin-top: 6px; border: 1px solid var(--border-color); }
-    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan)); width: 0%; transition: width 0.4s ease; }
-
     /* --- CALENDAR --- */
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
@@ -207,9 +203,9 @@
       background: var(--nav-bg); border-top: 1px solid var(--border-color);
       display: flex; justify-content: space-around; padding: 8px 0; z-index: 100;
     }
-    .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 10px; background: none; border: none; cursor: pointer; width: 16%; }
+    .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 11px; background: none; border: none; cursor: pointer; width: 20%; }
     .nav-tab.active { color: var(--cyan); font-weight: 600; }
-    .nav-icon { font-size: 17px; }
+    .nav-icon { font-size: 18px; }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -222,29 +218,29 @@
     <div class="login-card">
       <img src="icon.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/64/6366f1/fff?text=LP'">
       <h2 style="font-size: 22px; margin-bottom: 4px; background: linear-gradient(45deg, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">LifePulse</h2>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน</p>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;" data-i18n="login_subtitle">เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน</p>
       
       <button type="button" class="btn btn-google" onclick="handleGoogleLogin()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-        เข้าสู่ระบบด้วย Google
+        <span data-i18n="login_google">เข้าสู่ระบบด้วย Google</span>
       </button>
 
-      <div class="divider"><span>หรือใช้อีเมล</span></div>
+      <div class="divider"><span data-i18n="login_or_email">หรือใช้อีเมล</span></div>
 
       <div class="form-group">
-        <label>อีเมล (Email)</label>
+        <label data-i18n="email_label">อีเมล (Email)</label>
         <input type="email" id="authEmail" placeholder="yourname@example.com">
       </div>
       <div class="form-group">
-        <label>รหัสผ่าน (Password)</label>
+        <label data-i18n="password_label">รหัสผ่าน (Password)</label>
         <input type="password" id="authPassword" placeholder="••••••••">
       </div>
 
       <div id="authError" class="auth-error"></div>
 
       <div style="display: flex; gap: 8px; margin-top: 14px;">
-        <button type="button" class="btn btn-primary" onclick="handleEmailLogin()">เข้าสู่ระบบ 🚀</button>
-        <button type="button" class="btn btn-secondary" onclick="handleEmailSignUp()">สมัครสมาชิก</button>
+        <button type="button" class="btn btn-primary" onclick="handleEmailLogin()"><span data-i18n="login_btn">เข้าสู่ระบบ 🚀</span></button>
+        <button type="button" class="btn btn-secondary" onclick="handleEmailSignUp()"><span data-i18n="signup_btn">สมัครสมาชิก</span></button>
       </div>
     </div>
   </div>
@@ -256,7 +252,7 @@
     </div>
 
     <div class="header-controls">
-      <select id="langSelect" class="control-select">
+      <select id="langSelect" class="control-select" onchange="changeLanguage(this.value)">
         <option value="th">🇹🇭 TH</option>
         <option value="en">🇬🇧 EN</option>
       </select>
@@ -268,37 +264,8 @@
 
   <div class="container">
 
-    <!-- TAB 1: STATS -->
-    <section id="tab-stats" class="tab-content active">
-      <div class="card" style="background: linear-gradient(135deg, var(--card-accent), var(--card-bg));">
-        <h3 style="font-size: 17px;">📊 สถิติกิจกรรมประจำวัน</h3>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">ภาพรวมความก้าวหน้าของคุณ</p>
-        
-        <div style="margin-top: 14px;">
-          <div style="display:flex; justify-content:space-between; font-size:12px;">
-            <span>ความสำเร็จการบ้าน</span>
-            <span id="statHwPercent">0%</span>
-          </div>
-          <div class="progress-bar-bg">
-            <div id="statHwBar" class="progress-bar-fill"></div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-        <div class="card" style="margin:0; text-align:center;">
-          <div style="font-size: 24px; font-weight: 600; color: var(--cyan);" id="statPendingCount">0</div>
-          <div style="font-size: 12px; color: var(--text-muted);">งานที่ค้างอยู่</div>
-        </div>
-        <div class="card" style="margin:0; text-align:center;">
-          <div style="font-size: 24px; font-weight: 600; color: var(--green);" id="statDoneCount">0</div>
-          <div style="font-size: 12px; color: var(--text-muted);">ส่งเรียบร้อยแล้ว</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 2: DISCIPLINE -->
-    <section id="tab-discipline" class="tab-content">
+    <!-- TAB 1: DISCIPLINE -->
+    <section id="tab-discipline" class="tab-content active">
       <div class="gamification-card">
         <div>
           <span class="lvl-badge" id="lvlBadge">LVL 1</span>
@@ -307,132 +274,132 @@
         </div>
         <div class="total-streak-box">
           <div class="total-streak-num"><span id="totalStreakVal">0</span> 🔥</div>
-          <div style="font-size:11px; opacity:0.8;">วันติดต่อกัน</div>
+          <div style="font-size:11px; opacity:0.8;" data-i18n="streak_days_label">วันติดต่อกัน</div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">🎯 เพิ่มเป้าหมายวินัยประจำวัน</div>
+        <div class="card-title" data-i18n="habits_title">🎯 เพิ่มเป้าหมายวินัยประจำวัน</div>
         <div class="form-group">
-          <input type="text" id="habitInput" placeholder="เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที" onkeypress="if(event.key==='Enter') addHabit()">
+          <input type="text" id="habitInput" data-i18n-ph="habits_input_ph" placeholder="เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที" onkeypress="if(event.key==='Enter') addHabit()">
         </div>
-        <button type="button" class="btn btn-primary" onclick="addHabit()">+ เพิ่มเป้าหมาย</button>
+        <button type="button" class="btn btn-primary" onclick="addHabit()"><span data-i18n="habits_add_btn">+ เพิ่มเป้าหมาย</span></button>
       </div>
 
-      <h4 style="font-size: 14px; margin-bottom: 10px;">นิสัยประจำวันนี้</h4>
+      <h4 style="font-size: 14px; margin-bottom: 10px;" data-i18n="habits_header">นิสัยประจำวันนี้</h4>
       <div id="habitList"></div>
     </section>
 
-    <!-- TAB 3: CALENDAR -->
+    <!-- TAB 2: CALENDAR -->
     <section id="tab-calendar" class="tab-content">
       <div class="card">
         <div class="calendar-header">
-          <button type="button" class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(-1)">◀ ก่อนหน้า</button>
+          <button type="button" class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(-1)" data-i18n="cal_prev">◀ ก่อนหน้า</button>
           <strong id="calMonthYear" style="font-size: 15px;">มกราคม 2026</strong>
-          <button type="button" class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(1)">ถัดไป ▶</button>
+          <button type="button" class="btn-sm" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color);" onclick="changeMonth(1)" data-i18n="cal_next">ถัดไป ▶</button>
         </div>
 
         <div class="calendar-grid" id="calendarDaysHeader"></div>
         <div class="calendar-grid" id="calendarDays" style="margin-top:6px;"></div>
       </div>
 
-      <div style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 0 8px;">
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 0 8px;" data-i18n="cal_tip">
         💡 <em>คลิกที่ช่องวันที่ในปฏิทินเพื่อดูการบ้านกำหนดส่ง และสรุปรายรับ-รายจ่ายของวันนั้น</em>
       </div>
     </section>
 
-    <!-- TAB 4: HOMEWORK -->
+    <!-- TAB 3: HOMEWORK -->
     <section id="tab-homework" class="tab-content">
-      <!-- 📌 สรุปจำนวนการบ้านที่ยังไม่ได้ส่ง (วางอยู่บนสุดของแท็บการบ้าน) -->
+      <!-- 📌 สรุปจำนวนการบ้านที่ยังไม่ได้ส่ง -->
       <div class="card" style="text-align: center; background: var(--card-bg); border: 1px solid var(--border-color); padding: 16px;">
-        <span style="font-size: 14px; color: var(--text-muted);">📌 การบ้านที่ยังไม่ได้ส่ง: </span>
+        <span style="font-size: 14px; color: var(--text-muted);" data-i18n="hw_pending_banner">📌 การบ้านที่ยังไม่ได้ส่ง: </span>
         <strong id="pendingCountHW" style="font-size: 26px; color: var(--red); margin: 0 6px;">0</strong>
-        <span style="font-size: 14px; color: var(--text-muted);">รายการ</span>
+        <span style="font-size: 14px; color: var(--text-muted);" data-i18n="hw_items_unit">รายการ</span>
       </div>
 
       <div class="card">
-        <div class="card-title">📚 เพิ่มรายการการบ้าน</div>
+        <div class="card-title" data-i18n="hw_add_title">📚 เพิ่มรายการการบ้าน</div>
 
         <div class="form-group">
-          <label>ชื่อวิชา / หัวข้อ</label>
-          <input type="text" id="hwSubject" placeholder="เช่น คณิตศาสตร์, รายงานภาษาไทย">
+          <label data-i18n="hw_subj_label">ชื่อวิชา / หัวข้อ</label>
+          <input type="text" id="hwSubject" data-i18n-ph="hw_subj_ph" placeholder="เช่น คณิตศาสตร์, รายงานภาษาไทย">
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>วันที่สั่ง</label>
+            <label data-i18n="hw_assign_label">วันที่สั่ง</label>
             <input type="date" id="hwAssignDate">
           </div>
           <div class="form-group">
-            <label>กำหนดส่ง (Deadline)</label>
+            <label data-i18n="hw_due_label">กำหนดส่ง (Deadline)</label>
             <input type="date" id="hwDueDate">
           </div>
         </div>
 
         <div class="form-group">
-          <label>รายละเอียดเพิ่มเติม</label>
-          <textarea id="hwDetail" rows="2" placeholder="รายละเอียดการบ้าน..."></textarea>
+          <label data-i18n="hw_detail_label">รายละเอียดเพิ่มเติม</label>
+          <textarea id="hwDetail" rows="2" data-i18n-ph="hw_detail_ph" placeholder="รายละเอียดการบ้าน..."></textarea>
         </div>
 
-        <button type="button" class="btn btn-primary" onclick="addHomework()">+ บันทึกการบ้าน</button>
+        <button type="button" class="btn btn-primary" onclick="addHomework()"><span data-i18n="hw_save_btn">+ บันทึกการบ้าน</span></button>
       </div>
 
-      <h4 style="font-size: 14px; margin-bottom: 10px;">รายการการบ้านทั้งหมด</h4>
+      <h4 style="font-size: 14px; margin-bottom: 10px;" data-i18n="hw_list_title">รายการการบ้านทั้งหมด</h4>
       <div id="homeworkList"></div>
     </section>
 
-    <!-- TAB 5: FINANCE -->
+    <!-- TAB 4: FINANCE -->
     <section id="tab-finance" class="tab-content">
       <div class="card" style="background: linear-gradient(135deg, #064e3b, var(--card-bg)); border-color: #059669;">
-        <div style="font-size: 12px; color: #a7f3d0;">ยอดเงินคงเหลือรวม</div>
+        <div style="font-size: 12px; color: #a7f3d0;" data-i18n="fin_bal_label">ยอดเงินคงเหลือรวม</div>
         <div style="font-size: 28px; font-weight: 600; color: #fff;" id="financeBalance">฿0.00</div>
       </div>
 
       <div class="card">
-        <div class="card-title">💰 บันทึก รายรับ - รายจ่าย</div>
+        <div class="card-title" data-i18n="fin_add_title">💰 บันทึก รายรับ - รายจ่าย</div>
         <div class="form-group">
-          <label>รายการ</label>
-          <input type="text" id="finTitle" placeholder="เช่น ค่าอาหาร, ค่าขนม">
+          <label data-i18n="fin_title_label">รายการ</label>
+          <input type="text" id="finTitle" data-i18n-ph="fin_title_ph" placeholder="เช่น ค่าอาหาร, ค่าขนม">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>จำนวนเงิน (บาท)</label>
+            <label data-i18n="fin_amount_label">จำนวนเงิน (บาท)</label>
             <input type="number" id="finAmount" placeholder="0.00">
           </div>
           <div class="form-group">
-            <label>ประเภท</label>
+            <label data-i18n="fin_type_label">ประเภท</label>
             <select id="finType">
-              <option value="expense">รายจ่าย (-)</option>
-              <option value="income">รายรับ (+)</option>
+              <option value="expense" data-i18n="fin_type_exp">รายจ่าย (-)</option>
+              <option value="income" data-i18n="fin_type_inc">รายรับ (+)</option>
             </select>
           </div>
         </div>
         <div class="form-group">
-          <label>วันที่ทำรายการ</label>
+          <label data-i18n="fin_date_label">วันที่ทำรายการ</label>
           <input type="date" id="finDate">
         </div>
-        <button type="button" class="btn btn-primary" onclick="addFinanceTransaction()">+ บันทึกรายการ</button>
+        <button type="button" class="btn btn-primary" onclick="addFinanceTransaction()"><span data-i18n="fin_save_btn">+ บันทึกรายการ</span></button>
       </div>
 
       <div class="card">
-        <div class="card-title">ประวัติการเงินทั้งหมด</div>
+        <div class="card-title" data-i18n="fin_history_title">ประวัติการเงินทั้งหมด</div>
         <div id="financeList"></div>
       </div>
     </section>
 
-    <!-- TAB 6: SETTINGS -->
+    <!-- TAB 5: SETTINGS -->
     <section id="tab-settings" class="tab-content">
       <div class="card">
-        <div class="card-title">⚙️ ตั้งค่าแอปพลิเคชัน</div>
+        <div class="card-title" data-i18n="set_title">⚙️ ตั้งค่าแอปพลิเคชัน</div>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
-          อีเมลผู้ใช้ปัจจุบัน: <strong id="settingsUserTag" style="color:var(--text-main);">-</strong>
+          <span data-i18n="set_user_label">อีเมลผู้ใช้ปัจจุบัน:</span> <strong id="settingsUserTag" style="color:var(--text-main);">-</strong>
         </p>
         
         <button type="button" class="btn" style="background:var(--input-bg); color:var(--text-main); border:1px solid var(--border-color); margin-bottom:10px;" onclick="handleLogout()">
-          🚪 ออกจากระบบ (Logout)
+          <span data-i18n="set_logout">🚪 ออกจากระบบ (Logout)</span>
         </button>
         <button type="button" class="btn btn-del" style="width:100%; font-size:14px; padding:10px;" onclick="clearAllData()">
-          🗑️ ล้างข้อมูลแอปทั้งหมด
+          <span data-i18n="set_clear">🗑️ ล้างข้อมูลแอปทั้งหมด</span>
         </button>
       </div>
     </section>
@@ -448,44 +415,180 @@
       </div>
 
       <div class="modal-section">
-        <div class="modal-section-title">📚 กำหนดส่งการบ้าน (Deadline)</div>
+        <div class="modal-section-title" data-i18n="modal_hw_sec">📚 กำหนดส่งการบ้าน (Deadline)</div>
         <div id="modalHwList"></div>
       </div>
 
       <div class="modal-section">
-        <div class="modal-section-title">💰 รายการการเงินประจำวัน</div>
+        <div class="modal-section-title" data-i18n="modal_fin_sec">💰 รายการการเงินประจำวัน</div>
         <div id="modalFinSummary" style="font-size:12px; margin-bottom:6px; color:var(--text-muted);"></div>
         <div id="modalFinList"></div>
       </div>
 
-      <button type="button" class="btn btn-secondary" style="margin-top: 10px;" onclick="closeDayModal()">ปิดหน้าต่าง</button>
+      <button type="button" class="btn btn-secondary" style="margin-top: 10px;" onclick="closeDayModal()"><span data-i18n="modal_close">ปิดหน้าต่าง</span></button>
     </div>
   </div>
 
   <!-- BOTTOM NAV BAR -->
   <nav class="bottom-nav">
-    <button type="button" class="nav-tab active" onclick="switchTab('stats', this)">
-      <span class="nav-icon">📊</span><span>สถิติ</span>
-    </button>
-    <button type="button" class="nav-tab" onclick="switchTab('discipline', this)">
-      <span class="nav-icon">🎯</span><span>วินัย</span>
+    <button type="button" class="nav-tab active" onclick="switchTab('discipline', this)">
+      <span class="nav-icon">🎯</span><span data-i18n="nav_discipline">วินัย</span>
     </button>
     <button type="button" class="nav-tab" onclick="switchTab('calendar', this)">
-      <span class="nav-icon">📅</span><span>ปฏิทิน</span>
+      <span class="nav-icon">📅</span><span data-i18n="nav_calendar">ปฏิทิน</span>
     </button>
     <button type="button" class="nav-tab" onclick="switchTab('homework', this)">
-      <span class="nav-icon">📚</span><span>การบ้าน</span>
+      <span class="nav-icon">📚</span><span data-i18n="nav_homework">การบ้าน</span>
     </button>
     <button type="button" class="nav-tab" onclick="switchTab('finance', this)">
-      <span class="nav-icon">💰</span><span>การเงิน</span>
+      <span class="nav-icon">💰</span><span data-i18n="nav_finance">การเงิน</span>
     </button>
     <button type="button" class="nav-tab" onclick="switchTab('settings', this)">
-      <span class="nav-icon">⚙️</span><span>ตั้งค่า</span>
+      <span class="nav-icon">⚙️</span><span data-i18n="nav_settings">ตั้งค่า</span>
     </button>
   </nav>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    // 🌐 DICTIONARY FOR I18N (TH / EN)
+    const translations = {
+      th: {
+        login_subtitle: "เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน",
+        login_google: "เข้าสู่ระบบด้วย Google",
+        login_or_email: "หรือใช้อีเมล",
+        email_label: "อีเมล (Email)",
+        password_label: "รหัสผ่าน (Password)",
+        login_btn: "เข้าสู่ระบบ 🚀",
+        signup_btn: "สมัครสมาชิก",
+        nav_discipline: "วินัย",
+        nav_calendar: "ปฏิทิน",
+        nav_homework: "การบ้าน",
+        nav_finance: "การเงิน",
+        nav_settings: "ตั้งค่า",
+        streak_days_label: "วันติดต่อกัน",
+        habits_title: "🎯 เพิ่มเป้าหมายวินัยประจำวัน",
+        habits_input_ph: "เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที",
+        habits_add_btn: "+ เพิ่มเป้าหมาย",
+        habits_header: "นิสัยประจำวันนี้",
+        cal_prev: "◀ ก่อนหน้า",
+        cal_next: "ถัดไป ▶",
+        cal_tip: "💡 คลิกที่ช่องวันที่ในปฏิทินเพื่อดูการบ้านกำหนดส่ง และสรุปรายรับ-รายจ่ายของวันนั้น",
+        hw_pending_banner: "📌 การบ้านที่ยังไม่ได้ส่ง: ",
+        hw_items_unit: "รายการ",
+        hw_add_title: "📚 เพิ่มรายการการบ้าน",
+        hw_subj_label: "ชื่อวิชา / หัวข้อ",
+        hw_subj_ph: "เช่น คณิตศาสตร์, รายงานภาษาไทย",
+        hw_assign_label: "วันที่สั่ง",
+        hw_due_label: "กำหนดส่ง (Deadline)",
+        hw_detail_label: "รายละเอียดเพิ่มเติม",
+        hw_detail_ph: "รายละเอียดการบ้าน...",
+        hw_save_btn: "+ บันทึกการบ้าน",
+        hw_list_title: "รายการการบ้านทั้งหมด",
+        fin_bal_label: "ยอดเงินคงเหลือรวม",
+        fin_add_title: "💰 บันทึก รายรับ - รายจ่าย",
+        fin_title_label: "รายการ",
+        fin_title_ph: "เช่น ค่าอาหาร, ค่าขนม",
+        fin_amount_label: "จำนวนเงิน (บาท)",
+        fin_type_label: "ประเภท",
+        fin_type_exp: "รายจ่าย (-)",
+        fin_type_inc: "รายรับ (+)",
+        fin_date_label: "วันที่ทำรายการ",
+        fin_save_btn: "+ บันทึกรายการ",
+        fin_history_title: "ประวัติการเงินทั้งหมด",
+        set_title: "⚙️ ตั้งค่าแอปพลิเคชัน",
+        set_user_label: "อีเมลผู้ใช้ปัจจุบัน:",
+        set_logout: "🚪 ออกจากระบบ (Logout)",
+        set_clear: "🗑️ ล้างข้อมูลแอปทั้งหมด",
+        modal_hw_sec: "📚 กำหนดส่งการบ้าน (Deadline)",
+        modal_fin_sec: "💰 รายการการเงินประจำวัน",
+        modal_close: "ปิดหน้าต่าง"
+      },
+      en: {
+        login_subtitle: "Log in to manage your daily life",
+        login_google: "Sign in with Google",
+        login_or_email: "or use email",
+        email_label: "Email Address",
+        password_label: "Password",
+        login_btn: "Log In 🚀",
+        signup_btn: "Sign Up",
+        nav_discipline: "Discipline",
+        nav_calendar: "Calendar",
+        nav_homework: "Homework",
+        nav_finance: "Finance",
+        nav_settings: "Settings",
+        streak_days_label: "Streak Days",
+        habits_title: "🎯 Add Daily Habit Goal",
+        habits_input_ph: "Add habit e.g. Read books for 20 mins",
+        habits_add_btn: "+ Add Goal",
+        habits_header: "Today's Habits",
+        cal_prev: "◀ Prev",
+        cal_next: "Next ▶",
+        cal_tip: "💡 Click on any calendar date to view due homework and financial summary.",
+        hw_pending_banner: "📌 Pending Homework: ",
+        hw_items_unit: "items",
+        hw_add_title: "📚 Add Homework Item",
+        hw_subj_label: "Subject / Topic",
+        hw_subj_ph: "e.g. Mathematics, Science Report",
+        hw_assign_label: "Assigned Date",
+        hw_due_label: "Due Date (Deadline)",
+        hw_detail_label: "Additional Details",
+        hw_detail_ph: "Homework details...",
+        hw_save_btn: "+ Save Homework",
+        hw_list_title: "All Homework List",
+        fin_bal_label: "Total Net Balance",
+        fin_add_title: "💰 Income / Expense Record",
+        fin_title_label: "Item Title",
+        fin_title_ph: "e.g. Lunch, Snacks",
+        fin_amount_label: "Amount (THB)",
+        fin_type_label: "Type",
+        fin_type_exp: "Expense (-)",
+        fin_type_inc: "Income (+)",
+        fin_date_label: "Transaction Date",
+        fin_save_btn: "+ Save Record",
+        fin_history_title: "All Financial Records",
+        set_title: "⚙️ Application Settings",
+        set_user_label: "Current User Email:",
+        set_logout: "🚪 Log Out",
+        set_clear: "🗑️ Clear All App Data",
+        modal_hw_sec: "📚 Homework Deadlines",
+        modal_fin_sec: "💰 Daily Financial Summary",
+        modal_close: "Close Window"
+      }
+    };
+
+    let currentLang = localStorage.getItem('user_lang') || 'th';
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('user_lang', lang);
+      applyLanguage();
+    }
+
+    function applyLanguage() {
+      const langSel = document.getElementById('langSelect');
+      if (langSel) langSel.value = currentLang;
+
+      const langData = translations[currentLang] || translations.th;
+
+      // Update [data-i18n] text nodes
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (langData[key]) el.innerText = langData[key];
+      });
+
+      // Update [data-i18n-ph] placeholders
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (langData[key]) el.placeholder = langData[key];
+      });
+
+      // Refresh dynamic UI components
+      renderHabits();
+      renderHomework();
+      renderFinance();
+      renderCalendar();
+    }
+
     // 🔑 1. FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyALRDLXx5alOIl-PikR4bSg06MZaUg5avI",
@@ -541,7 +644,7 @@
       document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
     }
 
-    // 💾 STORAGE SYSTEM WITH ERROR HANDLING
+    // 💾 STORAGE SYSTEM
     let habits = [];
     let userStats = { level: 1, xp: 0 };
     let homeworks = [];
@@ -591,8 +694,11 @@
       const list = document.getElementById('habitList');
       if (!list) return;
 
+      const isEn = currentLang === 'en';
+
       if (habits.length === 0) {
-        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">ยังไม่มีเป้าหมาย เพิ่มรายการด้านบนได้เลย!</p>`;
+        const emptyMsg = isEn ? "No goals yet. Add one above!" : "ยังไม่มีเป้าหมาย เพิ่มรายการด้านบนได้เลย!";
+        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">${emptyMsg}</p>`;
         updateGamificationUI();
         return;
       }
@@ -600,20 +706,24 @@
       const todayStr = new Date().toISOString().split('T')[0];
       list.innerHTML = habits.map((h) => {
         const isDoneToday = h.lastDoneDate === todayStr;
+        const streakLabel = isEn ? 'days' : 'วัน';
+        const checkBtnText = isDoneToday ? (isEn ? 'Checked In' : 'เช็คอินแล้ว') : (isEn ? '✓ Check In' : '✓ เช็คอิน');
+        const notePh = isEn ? '+ Add short note' : '+ แนบโน้ตสั้นๆ';
+
         return `
           <div class="habit-card-item" style="opacity: ${isDoneToday ? '0.8' : '1'};">
             <div class="habit-top-row">
               <div class="habit-title-text" style="text-decoration: ${isDoneToday ? 'line-through' : 'none'};">
                 ${escapeHtml(h.text)}
               </div>
-              <div class="streak-tag">🔥 ${h.streak || 0} วัน</div>
+              <div class="streak-tag">🔥 ${h.streak || 0} ${streakLabel}</div>
               <button type="button" class="btn-sm ${isDoneToday ? 'btn-undo' : 'btn-done'}" onclick="toggleHabit(${h.id})">
-                ${isDoneToday ? 'เช็คอินแล้ว' : '✓ เช็คอิน'}
+                ${checkBtnText}
               </button>
               <button type="button" class="btn-sm btn-del" onclick="deleteHabit(${h.id})">✕</button>
             </div>
             <div>
-              <input type="text" class="habit-note-input" placeholder="+ แนบโน้ตสั้นๆ" 
+              <input type="text" class="habit-note-input" placeholder="${notePh}" 
                 value="${escapeHtml(h.note || '')}" 
                 onchange="updateNote(${h.id}, this.value)">
             </div>
@@ -650,7 +760,8 @@
         if (userStats.xp >= maxXp) {
           userStats.xp -= maxXp;
           userStats.level++;
-          alert(`🎉 เลเวลอัป! คุณบรรลุ Level ${userStats.level} แล้ว!`);
+          const alertMsg = currentLang === 'en' ? `🎉 Level Up! You reached Level ${userStats.level}!` : `🎉 เลเวลอัป! คุณบรรลุ Level ${userStats.level} แล้ว!`;
+          alert(alertMsg);
         }
       }
       saveData(); renderHabits();
@@ -662,7 +773,8 @@
     }
 
     function deleteHabit(id) {
-      if (confirm('คุณต้องการลบเป้าหมายนี้หรือไม่?')) {
+      const msg = currentLang === 'en' ? 'Do you want to delete this habit?' : 'คุณต้องการลบเป้าหมายนี้หรือไม่?';
+      if (confirm(msg)) {
         habits = habits.filter(h => h.id !== id);
         saveData(); renderHabits();
       }
@@ -671,13 +783,18 @@
     // 📅 4. CALENDAR
     let currentDate = new Date(), currentYear = currentDate.getFullYear(), currentMonth = currentDate.getMonth();
     const monthNamesTh = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     function renderCalendar() {
       const header = document.getElementById('calendarDaysHeader'), grid = document.getElementById('calendarDays'), label = document.getElementById('calMonthYear');
       if (!header || !grid || !label) return;
 
-      label.innerText = `${monthNamesTh[currentMonth]} ${currentYear}`;
-      header.innerHTML = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'].map(d => `<div class="cal-day-name">${d}</div>`).join('');
+      const isEn = currentLang === 'en';
+      const monthText = isEn ? monthNamesEn[currentMonth] : monthNamesTh[currentMonth];
+      label.innerText = `${monthText} ${currentYear}`;
+
+      const dayNames = isEn ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
+      header.innerHTML = dayNames.map(d => `<div class="cal-day-name">${d}</div>`).join('');
 
       const firstDay = new Date(currentYear, currentMonth, 1).getDay();
       const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -698,13 +815,16 @@
 
         let badges = '';
         if (dueHwList.length > 0) {
-          badges += `<div class="cal-badge-dot badge-hw">📚 ${dueHwList.length} งาน</div>`;
+          const hwUnit = isEn ? 'tasks' : 'งาน';
+          badges += `<div class="cal-badge-dot badge-hw">📚 ${dueHwList.length} ${hwUnit}</div>`;
         }
         if (dayFinList.length > 0) {
           const inc = dayFinList.filter(t => t.type === 'income').length;
           const exp = dayFinList.filter(t => t.type === 'expense').length;
-          if (inc > 0) badges += `<div class="cal-badge-dot badge-fin-in">+รับ</div>`;
-          if (exp > 0) badges += `<div class="cal-badge-dot badge-fin-ex">-จ่าย</div>`;
+          const incText = isEn ? '+Inc' : '+รับ';
+          const expText = isEn ? '-Exp' : '-จ่าย';
+          if (inc > 0) badges += `<div class="cal-badge-dot badge-fin-in">${incText}</div>`;
+          if (exp > 0) badges += `<div class="cal-badge-dot badge-fin-ex">${expText}</div>`;
         }
 
         html += `
@@ -725,24 +845,31 @@
     }
 
     function openDayModal(dateStr, dayNum) {
-      document.getElementById('modalDateTitle').innerText = `📅 รายละเอียดวันที่ ${dayNum} ${monthNamesTh[currentMonth]} ${currentYear}`;
+      const isEn = currentLang === 'en';
+      const monthText = isEn ? monthNamesEn[currentMonth] : monthNamesTh[currentMonth];
+      const titlePrefix = isEn ? `📅 Daily Details - ${monthText} ${dayNum}, ${currentYear}` : `📅 รายละเอียดวันที่ ${dayNum} ${monthText} ${currentYear}`;
+      document.getElementById('modalDateTitle').innerText = titlePrefix;
       
       const dayHw = homeworks.filter(h => h.dueDate === dateStr);
       const hwContainer = document.getElementById('modalHwList');
       if (dayHw.length === 0) {
-        hwContainer.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">ไม่มีกำหนดส่งการบ้านในวันนี้</p>`;
+        const noHwMsg = isEn ? 'No homework due today' : 'ไม่มีกำหนดส่งการบ้านในวันนี้';
+        hwContainer.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">${noHwMsg}</p>`;
       } else {
-        hwContainer.innerHTML = dayHw.map(h => `
-          <div class="hw-item" style="border: 2px solid ${h.done ? 'var(--green)' : 'var(--red)'}; border-left: 5px solid ${h.done ? 'var(--green)' : 'var(--red)'}; background-color: ${h.done ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)'};">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong>${escapeHtml(h.subject)}</strong>
-              <span style="font-size:11px; padding:2px 6px; border-radius:4px; background:${h.done ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color:${h.done ? 'var(--green)' : 'var(--red)'}">
-                ${h.done ? 'ส่งแล้ว' : 'ยังไม่ส่ง'}
-              </span>
+        hwContainer.innerHTML = dayHw.map(h => {
+          const statusText = h.done ? (isEn ? 'Submitted' : 'ส่งแล้ว') : (isEn ? 'Pending' : 'ยังไม่ส่ง');
+          return `
+            <div class="hw-item" style="border: 2px solid ${h.done ? 'var(--green)' : 'var(--red)'}; border-left: 5px solid ${h.done ? 'var(--green)' : 'var(--red)'}; background-color: ${h.done ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)'};">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong>${escapeHtml(h.subject)}</strong>
+                <span style="font-size:11px; padding:2px 6px; border-radius:4px; background:${h.done ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color:${h.done ? 'var(--green)' : 'var(--red)'}">
+                  ${statusText}
+                </span>
+              </div>
+              ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(h.detail)}</p>` : ''}
             </div>
-            ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(h.detail)}</p>` : ''}
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
 
       const dayFin = transactions.filter(t => t.date === dateStr);
@@ -751,7 +878,8 @@
 
       if (dayFin.length === 0) {
         finSummary.innerText = '';
-        finContainer.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">ไม่มีรายการทางการเงินในวันนี้</p>`;
+        const noFinMsg = isEn ? 'No financial transactions today' : 'ไม่มีรายการทางการเงินในวันนี้';
+        finContainer.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">${noFinMsg}</p>`;
       } else {
         let incTotal = 0, expTotal = 0;
         dayFin.forEach(t => {
@@ -759,7 +887,8 @@
           else expTotal += t.amount;
         });
         
-        finSummary.innerHTML = `สรุปประจำวัน: <span style="color:var(--green)">+฿${incTotal.toFixed(2)}</span> | <span style="color:var(--red)">-฿${expTotal.toFixed(2)}</span>`;
+        const sumLabel = isEn ? 'Daily Summary:' : 'สรุปประจำวัน:';
+        finSummary.innerHTML = `${sumLabel} <span style="color:var(--green)">+฿${incTotal.toFixed(2)}</span> | <span style="color:var(--red)">-฿${expTotal.toFixed(2)}</span>`;
         
         finContainer.innerHTML = dayFin.map(t => `
           <div class="fin-item">
@@ -778,33 +907,38 @@
       document.getElementById('dayDetailModal').style.display = 'none';
     }
 
-    // 📚 5. HOMEWORK LOGIC (ปรับขอบแดง/เขียว + ตัวเลขนับงานค้าง)
+    // 📚 5. HOMEWORK LOGIC
     function renderHomework() {
       const list = document.getElementById('homeworkList');
       if (!list) return;
 
+      const isEn = currentLang === 'en';
+
       if (homeworks.length === 0) {
-        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">ไม่มีการบ้านที่บันทึกไว้</p>`;
+        const emptyMsg = isEn ? 'No homework items saved.' : 'ไม่มีการบ้านที่บันทึกไว้';
+        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">${emptyMsg}</p>`;
         updateHwStats();
         return;
       }
 
-      // แสดงการ์ดการบ้าน โดยขอบแดง = ยังไม่ส่ง (#ef4444) / ขอบเขียว = ส่งแล้ว (#22c55e)
       list.innerHTML = homeworks.map((h) => {
         const borderColor = h.done ? 'var(--green)' : 'var(--red)';
         const bgColor = h.done ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)';
+        const dueText = isEn ? '⏱️ Due:' : '⏱️ กำหนดส่ง:';
+        const unspecText = isEn ? 'Unspecified' : 'ไม่ระบุ';
+        const actionText = h.done ? (isEn ? 'Undo' : 'ยกเลิก') : (isEn ? '✓ Submit' : '✓ ส่งงาน');
 
         return `
           <div class="hw-item" style="border: 2px solid ${borderColor}; border-left: 6px solid ${borderColor}; background-color: ${bgColor}; border-radius: 12px; padding: 12px; margin-bottom: 10px; opacity: ${h.done ? '0.75' : '1'};">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <div>
                 <strong style="text-decoration: ${h.done ? 'line-through' : 'none'}; font-size: 15px;">${escapeHtml(h.subject)}</strong>
-                <div style="font-size:11px; color:var(--cyan); margin-top:2px;">⏱️ กำหนดส่ง: ${h.dueDate || 'ไม่ระบุ'}</div>
+                <div style="font-size:11px; color:var(--cyan); margin-top:2px;">${dueText} ${h.dueDate || unspecText}</div>
                 ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${escapeHtml(h.detail)}</p>` : ''}
               </div>
               <div style="display:flex; gap:6px;">
                 <button type="button" class="btn-sm ${h.done ? 'btn-undo' : 'btn-done'}" onclick="toggleHomework(${h.id})">
-                  ${h.done ? 'ยกเลิก' : '✓ ส่งงาน'}
+                  ${actionText}
                 </button>
                 <button type="button" class="btn-sm btn-del" onclick="deleteHomework(${h.id})">✕</button>
               </div>
@@ -822,7 +956,10 @@
       const dueDate = document.getElementById('hwDueDate').value;
       const detail = document.getElementById('hwDetail').value.trim();
 
-      if (!subj) { alert('กรุณาระบุชื่อวิชาหรือหัวข้อการบ้าน'); return; }
+      if (!subj) { 
+        alert(currentLang === 'en' ? 'Please specify homework subject/topic' : 'กรุณาระบุชื่อวิชาหรือหัวข้อการบ้าน'); 
+        return; 
+      }
 
       homeworks.push({
         id: Date.now() + Math.random(),
@@ -852,7 +989,8 @@
     }
 
     function deleteHomework(id) {
-      if (confirm('ต้องการลบรายการการบ้านนี้หรือไม่?')) {
+      const msg = currentLang === 'en' ? 'Do you want to delete this homework item?' : 'ต้องการลบรายการการบ้านนี้หรือไม่?';
+      if (confirm(msg)) {
         homeworks = homeworks.filter(h => h.id !== id);
         saveData();
         renderHomework();
@@ -864,27 +1002,16 @@
       const doneCount = homeworks.filter(h => h.done).length;
       const pendingCount = homeworks.length - doneCount;
 
-      // อัปเดตตัวเลขในแท็บสถิติ
-      const statPending = document.getElementById('statPendingCount');
-      if (statPending) statPending.innerText = pendingCount;
-      const statDone = document.getElementById('statDoneCount');
-      if (statDone) statDone.innerText = doneCount;
-
-      // อัปเดตตัวเลขสรุปในแท็บการบ้าน (แบนเนอร์ด้านบน)
       const pendingHW = document.getElementById('pendingCountHW');
       if (pendingHW) pendingHW.innerText = pendingCount;
-
-      const percent = homeworks.length > 0 ? Math.round((doneCount / homeworks.length) * 100) : 0;
-      const statPercent = document.getElementById('statHwPercent');
-      if (statPercent) statPercent.innerText = `${percent}%`;
-      const statBar = document.getElementById('statHwBar');
-      if (statBar) statBar.style.width = `${percent}%`;
     }
 
     // 💰 6. FINANCE LOGIC
     function renderFinance() {
       const list = document.getElementById('financeList');
       if (!list) return;
+
+      const isEn = currentLang === 'en';
 
       let balance = 0;
       transactions.forEach(t => {
@@ -893,18 +1020,20 @@
       });
 
       if (transactions.length === 0) {
-        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">ยังไม่มีบันทึกรายรับ-รายจ่าย</p>`;
+        const emptyMsg = isEn ? 'No financial records yet.' : 'ยังไม่มีบันทึกรายรับ-รายจ่าย';
+        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">${emptyMsg}</p>`;
         document.getElementById('financeBalance').innerText = '฿0.00';
         return;
       }
 
       const reversedList = [...transactions].reverse();
+      const unspecDate = isEn ? 'No date' : 'ไม่ระบุวันที่';
 
       list.innerHTML = reversedList.map((t) => `
         <div class="fin-item">
           <div>
             <div style="font-weight:500;">${escapeHtml(t.title)}</div>
-            <div style="font-size:10px; color:var(--text-muted);">${t.date || 'ไม่ระบุวันที่'}</div>
+            <div style="font-size:10px; color:var(--text-muted);">${t.date || unspecDate}</div>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
             <strong style="color: ${t.type === 'income' ? 'var(--green)' : 'var(--red)'};">
@@ -924,7 +1053,10 @@
       const type = document.getElementById('finType').value;
       let date = document.getElementById('finDate').value;
 
-      if (!title || isNaN(amount)) { alert('กรุณากรอกข้อมูลรายการและจำนวนเงินให้ถูกต้อง'); return; }
+      if (!title || isNaN(amount)) { 
+        alert(currentLang === 'en' ? 'Please fill in item title and valid amount' : 'กรุณากรอกข้อมูลรายการและจำนวนเงินให้ถูกต้อง'); 
+        return; 
+      }
       if (!date) date = new Date().toISOString().split('T')[0];
 
       transactions.push({
@@ -944,7 +1076,8 @@
     }
 
     function deleteTransaction(id) {
-      if (confirm('ต้องการลบรายการนี้หรือไม่?')) {
+      const msg = currentLang === 'en' ? 'Do you want to delete this transaction?' : 'ต้องการลบรายการนี้หรือไม่?';
+      if (confirm(msg)) {
         transactions = transactions.filter(t => t.id !== id);
         saveData();
         renderFinance();
@@ -954,12 +1087,13 @@
 
     // ⚙️ 7. CLEAR DATA
     function clearAllData() {
-      if (confirm('คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?')) {
+      const msg = currentLang === 'en' ? 'Are you sure you want to clear all app data?' : 'คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?';
+      if (confirm(msg)) {
         localStorage.clear();
         habits = []; userStats = { level: 1, xp: 0 }; homeworks = []; transactions = [];
         saveData();
-        renderHabits(); renderHomework(); renderFinance(); renderCalendar();
-        alert('ล้างข้อมูลเรียบร้อย');
+        applyLanguage();
+        alert(currentLang === 'en' ? 'All data cleared successfully.' : 'ล้างข้อมูลเรียบร้อย');
       }
     }
 
@@ -976,10 +1110,7 @@
       document.getElementById('hwDueDate').value = todayStr;
       document.getElementById('finDate').value = todayStr;
 
-      renderHabits();
-      renderHomework();
-      renderFinance();
-      renderCalendar();
+      applyLanguage();
     });
   </script>
 </body>
