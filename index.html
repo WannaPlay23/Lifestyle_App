@@ -70,6 +70,52 @@
       min-height: 100vh;
     }
 
+    /* --- IN-APP BANNER NOTIFICATION --- */
+    .notification-banner {
+      position: fixed;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 500px;
+      background: var(--card-bg);
+      border: 1px solid var(--primary);
+      border-left: 6px solid var(--cyan);
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      z-index: 9999;
+      transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .notification-banner.show {
+      top: 16px;
+    }
+
+    .banner-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .banner-icon {
+      font-size: 24px;
+    }
+
+    .banner-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .banner-body {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
     /* --- LOGIN OVERLAY --- */
     #loginScreen {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -212,6 +258,18 @@
   </style>
 </head>
 <body>
+
+  <!-- IN-APP BANNER ELEMENT -->
+  <div id="appNotiBanner" class="notification-banner">
+    <div class="banner-content">
+      <span class="banner-icon" id="bannerIcon">🔔</span>
+      <div>
+        <div class="banner-title" id="bannerTitle">แจ้งเตือน</div>
+        <div class="banner-body" id="bannerBody">ข้อความแจ้งเตือน...</div>
+      </div>
+    </div>
+    <button type="button" class="btn-sm btn-del" onclick="hideAppBanner()">✕</button>
+  </div>
 
   <!-- LOGIN OVERLAY -->
   <div id="loginScreen">
@@ -537,7 +595,7 @@
         noti_perm_denied: "ถูกปฏิเสธในเบราว์เซอร์ ❌",
         noti_unsupported: "เบราว์เซอร์ไม่รองรับ",
         noti_test_title: "LifePulse แจ้งเตือน 🎉",
-        noti_test_body: "ระบบแจ้งเตือนของ LifePulse พร้อมใช้งานแล้ว!",
+        noti_test_body: "ระบบแบนเนอร์แจ้งเตือนของ LifePulse พร้อมใช้งานแล้ว!",
         noti_summary_title: "📋 สรุปรายการประจำวันนี้"
       },
       en: {
@@ -600,7 +658,7 @@
         noti_perm_denied: "Denied in Browser ❌",
         noti_unsupported: "Unsupported Browser",
         noti_test_title: "LifePulse Notification 🎉",
-        noti_test_body: "LifePulse notifications are active!",
+        noti_test_body: "LifePulse banner notifications are active!",
         noti_summary_title: "📋 Daily Reminders Summary"
       }
     };
@@ -727,7 +785,7 @@
       }
     }
 
-    // 🔔 3. NOTIFICATION SYSTEM (HYBRID: DESKTOP + MOBILE SERVICE WORKER)
+    // 🔔 3. NOTIFICATION & BANNER SYSTEM
     let swRegistration = null;
 
     if ('serviceWorker' in navigator) {
@@ -777,53 +835,71 @@
       });
     }
 
-    async function triggerPushNotification(title, body) {
-      if (!("Notification" in window) || Notification.permission !== "granted") return;
-      
-      const options = {
-        body: body,
-        icon: 'icon.png',
-        badge: 'icon.png'
-      };
+    async function showNotificationBanner(title, body, icon = '🔔') {
+      showInAppBanner(title, body, icon);
 
-      try {
-        if (swRegistration && swRegistration.showNotification) {
-          await swRegistration.showNotification(title, options);
-        } else if ('serviceWorker' in navigator) {
-          const reg = await navigator.serviceWorker.ready;
-          if (reg && reg.showNotification) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        const options = {
+          body: body,
+          icon: 'icon.png',
+          badge: 'icon.png',
+          tag: 'lifepulse-notification',
+          renotify: true,
+          vibrate: [200, 100, 200],
+          silent: false
+        };
+
+        try {
+          if (swRegistration && swRegistration.showNotification) {
+            await swRegistration.showNotification(title, options);
+          } else if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.ready;
             await reg.showNotification(title, options);
           } else {
             new Notification(title, options);
           }
-        } else {
-          new Notification(title, options);
-        }
-      } catch (err) {
-        try {
-          new Notification(title, options);
-        } catch (e) {
-          alert(`แจ้งเตือน: ${title}\n${body}`);
+        } catch (err) {
+          console.warn("ไม่สามารถเรียก System Notification ได้:", err);
         }
       }
+    }
+
+    let bannerTimeout = null;
+    function showInAppBanner(title, body, icon) {
+      const banner = document.getElementById('appNotiBanner');
+      const titleEl = document.getElementById('bannerTitle');
+      const bodyEl = document.getElementById('bannerBody');
+      const iconEl = document.getElementById('bannerIcon');
+
+      if (!banner) return;
+
+      titleEl.innerText = title;
+      bodyEl.innerText = body;
+      iconEl.innerText = icon;
+
+      banner.classList.add('show');
+
+      clearTimeout(bannerTimeout);
+      bannerTimeout = setTimeout(() => {
+        hideAppBanner();
+      }, 5000);
+    }
+
+    function hideAppBanner() {
+      const banner = document.getElementById('appNotiBanner');
+      if (banner) banner.classList.remove('show');
     }
 
     function sendTestNotification() {
-      if (!("Notification" in window)) {
-        alert("เบราว์เซอร์ไม่รองรับระบบแจ้งเตือน");
-        return;
-      }
-      if (Notification.permission !== "granted") {
-        requestNotificationPermission();
-        return;
-      }
       const langData = translations[currentLang] || translations.th;
-      triggerPushNotification(langData.noti_test_title, langData.noti_test_body);
+      showNotificationBanner(
+        langData.noti_test_title || "LifePulse แจ้งเตือน 🎉", 
+        langData.noti_test_body || "ระบบแบนเนอร์แจ้งเตือนของ LifePulse พร้อมใช้งานแล้ว!",
+        "🚀"
+      );
     }
 
     function checkAndTriggerDailyNotifications() {
-      if (!("Notification" in window) || Notification.permission !== "granted") return;
-
       const todayStr = getLocalDateStr();
       const pendingHw = homeworks.filter(h => h.dueDate === todayStr && !h.done);
       const pendingHabits = habits.filter(h => h.lastDoneDate !== todayStr);
@@ -834,13 +910,13 @@
         
         let bodyMsg = '';
         if (pendingHw.length > 0) {
-          bodyMsg += isEn ? `📚 ${pendingHw.length} homework item(s) due today!\n` : `📚 มีการบ้านกำหนดส่งวันนี้ ${pendingHw.length} รายการ!\n`;
+          bodyMsg += isEn ? `📚 ${pendingHw.length} homework due today!\n` : `📚 มีการบ้านกำหนดส่งวันนี้ ${pendingHw.length} รายการ!\n`;
         }
         if (pendingHabits.length > 0) {
-          bodyMsg += isEn ? `🎯 ${pendingHabits.length} habit goal(s) left for today!` : `🎯 มีนิสัยประจำวันที่ยังไม่ได้ทำ ${pendingHabits.length} รายการ`;
+          bodyMsg += isEn ? `🎯 ${pendingHabits.length} daily habits left.` : `🎯 มีเป้าหมายที่ยังไม่ได้ทำ ${pendingHabits.length} รายการ`;
         }
 
-        triggerPushNotification(langData.noti_summary_title, bodyMsg.trim());
+        showNotificationBanner(langData.noti_summary_title || "📋 สรุปรายการประจำวันนี้", bodyMsg.trim(), "📌");
       }
     }
 
