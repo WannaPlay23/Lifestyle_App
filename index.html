@@ -201,7 +201,7 @@
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0;
       background: var(--nav-bg); border-top: 1px solid var(--border-color);
-      display: flex; justify-content: space-around; padding: 8px 0; z-index: 100;
+      display: flex; justify-around: space-around; padding: 8px 0; z-index: 100;
     }
     .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 11px; background: none; border: none; cursor: pointer; width: 20%; }
     .nav-tab.active { color: var(--cyan); font-weight: 600; }
@@ -388,7 +388,6 @@
 
     <!-- TAB 5: SETTINGS & NOTIFICATIONS -->
     <section id="tab-settings" class="tab-content">
-      <!-- 🔔 notification control CARD -->
       <div class="card">
         <div class="card-title" data-i18n="set_noti_title">🔔 ระบบแจ้งเตือน (Notifications)</div>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
@@ -468,7 +467,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // 🌐 DICTIONARY FOR I18N (TH / EN)
+    // 🌐 DICTIONARY FOR I18N
     const translations = {
       th: {
         login_subtitle: "เข้าสู่ระบบเพื่อจัดการชีวิตประจำวัน",
@@ -612,19 +611,16 @@
 
       const langData = translations[currentLang] || translations.th;
 
-      // Update [data-i18n] text nodes
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (langData[key]) el.innerText = langData[key];
       });
 
-      // Update [data-i18n-ph] placeholders
       document.querySelectorAll('[data-i18n-ph]').forEach(el => {
         const key = el.getAttribute('data-i18n-ph');
         if (langData[key]) el.placeholder = langData[key];
       });
 
-      // Refresh dynamic UI components
       renderHabits();
       renderHomework();
       renderFinance();
@@ -716,7 +712,17 @@
       }
     }
 
-    // 🔔 3. NOTIFICATION SYSTEM
+    // 🔔 3. NOTIFICATION SYSTEM (HYBRID: DESKTOP + MOBILE SERVICE WORKER)
+    let swRegistration = null;
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(reg => {
+        swRegistration = reg;
+      }).catch(err => {
+        console.warn('Service Worker registration skipped/failed:', err);
+      });
+    }
+
     function updateNotiStatusUI() {
       const statusEl = document.getElementById('notiStatusText');
       if (!statusEl) return;
@@ -748,21 +754,56 @@
         if (permission === "granted") {
           sendTestNotification();
         } else if (permission === "denied") {
-          alert(currentLang === 'en' ? 'Notification permission was denied.' : 'การแจ้งเตือนถูกปฏิเสธ กรุณาเปิดสิทธิ์ในตั้งค่าเบราว์เซอร์');
+          const isEn = currentLang === 'en';
+          alert(isEn 
+            ? 'Notification permission was denied. Please allow notifications for wannaplay23.github.io in browser site settings.' 
+            : 'การแจ้งเตือนถูกปฏิเสธ กรุณาเข้าไปเปิดอนุญาตการแจ้งเตือนสำหรับเว็บ wannaplay23.github.io ในการตั้งค่าเบราว์เซอร์');
         }
       });
     }
 
+    async function triggerPushNotification(title, body) {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      
+      const options = {
+        body: body,
+        icon: 'icon.png',
+        badge: 'icon.png'
+      };
+
+      try {
+        if (swRegistration && swRegistration.showNotification) {
+          await swRegistration.showNotification(title, options);
+        } else if ('serviceWorker' in navigator) {
+          const reg = await navigator.serviceWorker.ready;
+          if (reg && reg.showNotification) {
+            await reg.showNotification(title, options);
+          } else {
+            new Notification(title, options);
+          }
+        } else {
+          new Notification(title, options);
+        }
+      } catch (err) {
+        try {
+          new Notification(title, options);
+        } catch (e) {
+          alert(`แจ้งเตือน: ${title}\n${body}`);
+        }
+      }
+    }
+
     function sendTestNotification() {
-      if (!("Notification" in window) || Notification.permission !== "granted") {
+      if (!("Notification" in window)) {
+        alert("เบราว์เซอร์ไม่รองรับระบบแจ้งเตือน");
+        return;
+      }
+      if (Notification.permission !== "granted") {
         requestNotificationPermission();
         return;
       }
       const langData = translations[currentLang] || translations.th;
-      new Notification(langData.noti_test_title, {
-        body: langData.noti_test_body,
-        icon: 'icon.png'
-      });
+      triggerPushNotification(langData.noti_test_title, langData.noti_test_body);
     }
 
     function checkAndTriggerDailyNotifications() {
@@ -784,10 +825,7 @@
           bodyMsg += isEn ? `🎯 ${pendingHabits.length} habit goal(s) left for today!` : `🎯 มีนิสัยประจำวันที่ยังไม่ได้ทำ ${pendingHabits.length} รายการ`;
         }
 
-        new Notification(langData.noti_summary_title, {
-          body: bodyMsg.trim(),
-          icon: 'icon.png'
-        });
+        triggerPushNotification(langData.noti_summary_title, bodyMsg.trim());
       }
     }
 
