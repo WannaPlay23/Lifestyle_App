@@ -57,9 +57,7 @@
     }
 
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      box-sizing: border-box; margin: 0; padding: 0;
       font-family: 'Kanit', sans-serif;
       -webkit-tap-highlight-color: transparent;
       transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
@@ -74,61 +72,33 @@
 
     /* --- LOGIN OVERLAY --- */
     #loginScreen {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--bg-dark);
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg-dark); z-index: 999;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
     }
-
     .login-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 28px 20px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 28px 20px; width: 100%; max-width: 380px; text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
-
-    .login-logo {
-      width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px;
-    }
-
-    .auth-error {
-      color: var(--red); font-size: 12px; margin-top: 10px; display: none; word-break: break-word;
-    }
-
-    .divider {
-      display: flex; align-items: center; text-align: center; margin: 16px 0; color: var(--text-muted); font-size: 12px;
-    }
+    .login-logo { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px; }
+    .auth-error { color: var(--red); font-size: 12px; margin-top: 10px; display: none; word-break: break-word; }
+    .divider { display: flex; align-items: center; text-align: center; margin: 16px 0; color: var(--text-muted); font-size: 12px; }
     .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); }
     .divider span { padding: 0 10px; }
 
     /* --- HEADER --- */
     .app-header {
-      background: var(--card-bg);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: var(--card-bg); padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
     }
-
     .logo-container { display: flex; align-items: center; gap: 8px; }
     .logo-title {
       font-size: 18px; font-weight: 600;
       background: linear-gradient(45deg, var(--purple), var(--cyan));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
     .header-controls { display: flex; align-items: center; gap: 8px; }
     .control-select, .control-btn {
       background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color);
@@ -145,17 +115,14 @@
     }
     .card-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 
-    /* --- LEVEL & EXP GAMIFICATION CARD --- */
+    /* --- GAMIFICATION CARD --- */
     .gamification-card {
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
       color: white; border-radius: 16px; padding: 18px; margin-bottom: 16px;
       display: flex; justify-content: space-between; align-items: center;
       box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
     }
-    .lvl-badge {
-      background: rgba(255,255,255,0.2); font-size: 11px; font-weight: 700;
-      padding: 2px 8px; border-radius: 6px; letter-spacing: 0.5px;
-    }
+    .lvl-badge { background: rgba(255,255,255,0.2); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
     .rank-title { font-size: 20px; font-weight: 700; margin: 4px 0 2px 0; }
     .xp-text { font-size: 12px; opacity: 0.9; }
     .total-streak-box { text-align: right; }
@@ -181,71 +148,66 @@
     .btn-primary { background: linear-gradient(45deg, var(--primary), var(--purple)); color: white; }
     .btn-secondary { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); }
     .btn-google { background: #ffffff; color: #1f2937; font-weight: 600; border: 1px solid #e5e7eb; }
-    .btn-sm { padding: 6px 12px; border-radius: 8px; font-size: 12px; border: none; cursor: pointer; font-weight: 500; }
+    .btn-sm { padding: 5px 10px; border-radius: 8px; font-size: 12px; border: none; cursor: pointer; font-weight: 500; }
     .btn-done { background: var(--green); color: white; }
     .btn-undo { background: #475569; color: white; }
-    .btn-del { background: rgba(239, 68, 68, 0.15); color: var(--red); padding: 6px 10px; }
+    .btn-del { background: rgba(239, 68, 68, 0.15); color: var(--red); padding: 5px 8px; }
 
-    /* --- HABIT CARD WITH SHORT NOTE --- */
-    .habit-card-item {
-      background: var(--input-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-    .habit-top-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
+    /* --- HABIT ITEM --- */
+    .habit-card-item { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+    .habit-top-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .habit-title-text { font-size: 14px; font-weight: 500; flex: 1; }
     .streak-tag { font-size: 13px; font-weight: 700; color: var(--amber); white-space: nowrap; }
-    .habit-note-input {
-      width: 100%; background: transparent; border: none;
-      border-bottom: 1px dashed var(--border-color);
-      color: var(--text-muted); font-size: 12px; padding: 4px 0; margin-top: 6px; outline: none;
-    }
-    .habit-note-input:focus { border-bottom-color: var(--cyan); color: var(--text-main); }
+    .habit-note-input { width: 100%; background: transparent; border: none; border-bottom: 1px dashed var(--border-color); color: var(--text-muted); font-size: 12px; padding: 4px 0; margin-top: 6px; outline: none; }
 
     /* --- PROGRESS BAR --- */
-    .progress-bar-bg {
-      background: var(--input-bg); height: 10px; border-radius: 10px;
-      overflow: hidden; margin-top: 6px; border: 1px solid var(--border-color);
-    }
-    .progress-bar-fill {
-      height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan));
-      width: 0%; transition: width 0.4s ease;
-    }
+    .progress-bar-bg { background: var(--input-bg); height: 10px; border-radius: 10px; overflow: hidden; margin-top: 6px; border: 1px solid var(--border-color); }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan)); width: 0%; transition: width 0.4s ease; }
 
-    /* --- CALENDAR GRID --- */
+    /* --- CALENDAR ENHANCED --- */
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
     .cal-day-name { font-size: 11px; color: var(--text-muted); font-weight: 500; padding-bottom: 4px; }
     .cal-date {
-      padding: 10px 0; background: var(--input-bg); border-radius: 8px; font-size: 13px;
-      border: 1px solid transparent; cursor: pointer;
+      min-height: 54px; padding: 4px; background: var(--input-bg); border-radius: 8px; font-size: 12px;
+      border: 1px solid transparent; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+      position: relative; overflow: hidden;
     }
-    .cal-date.today { border-color: var(--cyan); color: var(--cyan); font-weight: bold; background: rgba(56, 189, 248, 0.12); }
+    .cal-date:hover { border-color: var(--primary); }
+    .cal-date.today { border-color: var(--cyan); background: rgba(56, 189, 248, 0.08); font-weight: bold; }
+    .cal-num { font-size: 12px; margin-bottom: 2px; }
+    .cal-badges { display: flex; flex-direction: column; gap: 2px; width: 100%; align-items: center; }
+    .cal-badge-dot { font-size: 9px; padding: 1px 4px; border-radius: 4px; line-height: 1; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .badge-hw { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-fin-in { background: rgba(34, 197, 94, 0.2); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.4); }
+    .badge-fin-ex { background: rgba(245, 158, 11, 0.2); color: #fde047; border: 1px solid rgba(245, 158, 11, 0.4); }
 
-    /* --- HOMEWORK LIST --- */
-    .hw-item {
-      background: var(--input-bg); border-left: 4px solid var(--primary);
-      border-radius: 10px; padding: 12px; margin-bottom: 10px;
+    /* --- MODAL DAY DETAIL --- */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(3px);
+      z-index: 500; display: flex; align-items: center; justify-content: center; padding: 16px;
     }
+    .modal-card {
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 20px; width: 100%; max-width: 440px;
+      max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+    .modal-section { margin-bottom: 14px; }
+    .modal-section-title { font-size: 13px; font-weight: 600; color: var(--cyan); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
 
-    /* --- BOTTOM NAVIGATION --- */
+    /* --- LIST ITEMS --- */
+    .hw-item { background: var(--input-bg); border-left: 4px solid var(--primary); border-radius: 10px; padding: 10px; margin-bottom: 8px; }
+    .fin-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--input-bg); border-radius: 8px; margin-bottom: 6px; font-size: 13px; }
+
+    /* --- BOTTOM NAV --- */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0;
       background: var(--nav-bg); border-top: 1px solid var(--border-color);
       display: flex; justify-content: space-around; padding: 8px 0; z-index: 100;
     }
-    .nav-tab {
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-      color: var(--text-muted); font-size: 10px; background: none; border: none;
-      cursor: pointer; width: 16%;
-    }
+    .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 10px; background: none; border: none; cursor: pointer; width: 16%; }
     .nav-tab.active { color: var(--cyan); font-weight: 600; }
     .nav-icon { font-size: 17px; }
 
@@ -335,10 +297,8 @@
       </div>
     </section>
 
-    <!-- TAB 2: DISCIPLINE & STREAK + GAMIFICATION -->
+    <!-- TAB 2: DISCIPLINE -->
     <section id="tab-discipline" class="tab-content">
-      
-      <!-- LVL / EXP / RANK CARD -->
       <div class="gamification-card">
         <div>
           <span class="lvl-badge" id="lvlBadge">LVL 1</span>
@@ -363,7 +323,7 @@
       <div id="habitList"></div>
     </section>
 
-    <!-- TAB 3: CALENDAR -->
+    <!-- TAB 3: CALENDAR (ENHANCED) -->
     <section id="tab-calendar" class="tab-content">
       <div class="card">
         <div class="calendar-header">
@@ -374,6 +334,11 @@
 
         <div class="calendar-grid" id="calendarDaysHeader"></div>
         <div class="calendar-grid" id="calendarDays" style="margin-top:6px;"></div>
+      </div>
+
+      <!-- TIP BOX -->
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 0 8px;">
+        💡 <em>คลิกที่ช่องวันที่ในปฏิทินเพื่อดูการบ้านกำหนดส่ง และสรุปรายรับ-รายจ่ายของวันนั้น</em>
       </div>
     </section>
 
@@ -393,7 +358,7 @@
             <input type="date" id="hwAssignDate">
           </div>
           <div class="form-group">
-            <label>กำหนดส่ง</label>
+            <label>กำหนดส่ง (Deadline)</label>
             <input type="date" id="hwDueDate">
           </div>
         </div>
@@ -413,7 +378,7 @@
     <!-- TAB 5: FINANCE -->
     <section id="tab-finance" class="tab-content">
       <div class="card" style="background: linear-gradient(135deg, #064e3b, var(--card-bg)); border-color: #059669;">
-        <div style="font-size: 12px; color: #a7f3d0;">ยอดเงินคงเหลือ</div>
+        <div style="font-size: 12px; color: #a7f3d0;">ยอดเงินคงเหลือรวม</div>
         <div style="font-size: 28px; font-weight: 600; color: #fff;" id="financeBalance">฿0.00</div>
       </div>
 
@@ -436,12 +401,16 @@
             </select>
           </div>
         </div>
+        <div class="form-group">
+          <label>วันที่ทำรายการ</label>
+          <input type="date" id="finDate">
+        </div>
         <button class="btn btn-primary" onclick="addFinanceTransaction()">+ บันทึกรายการ</button>
       </div>
 
       <div class="card">
-        <div class="card-title">ประวัติการเงิน</div>
-        <div id="financeList" style="font-size: 13px;"></div>
+        <div class="card-title">ประวัติการเงินทั้งหมด</div>
+        <div id="financeList"></div>
       </div>
     </section>
 
@@ -462,6 +431,31 @@
       </div>
     </section>
 
+  </div>
+
+  <!-- MODAL: DAY DETAIL -->
+  <div id="dayDetailModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeDayModal()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 16px; color: var(--text-main);" id="modalDateTitle">รายละเอียดประจำวัน</h3>
+        <button class="btn-sm btn-del" onclick="closeDayModal()">✕</button>
+      </div>
+
+      <!-- HOMEWORK SECTION -->
+      <div class="modal-section">
+        <div class="modal-section-title">📚 กำหนดส่งการบ้าน (Deadline)</div>
+        <div id="modalHwList"></div>
+      </div>
+
+      <!-- FINANCE SECTION -->
+      <div class="modal-section">
+        <div class="modal-section-title">💰 รายการการเงินประจำวัน</div>
+        <div id="modalFinSummary" style="font-size:12px; margin-bottom:6px; color:var(--text-muted);"></div>
+        <div id="modalFinList"></div>
+      </div>
+
+      <button class="btn btn-secondary" style="margin-top: 10px;" onclick="closeDayModal()">ปิดหน้าต่าง</button>
+    </div>
   </div>
 
   <!-- BOTTOM NAV BAR -->
@@ -533,6 +527,7 @@
       const target = document.getElementById('tab-' + tabId);
       if (target) target.classList.add('active');
       if (btn) btn.classList.add('active');
+      if (tabId === 'calendar') renderCalendar();
     }
 
     function toggleTheme() {
@@ -542,15 +537,20 @@
       document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
     }
 
-    // 🎯 3. HABITS + GAMIFICATION (LVL, XP, STREAK & NOTES)
+    // 💾 STORAGE DATA STORES
     let habits = JSON.parse(localStorage.getItem('user_habits')) || [];
     let userStats = JSON.parse(localStorage.getItem('user_stats')) || { level: 1, xp: 0 };
+    let homeworks = JSON.parse(localStorage.getItem('user_hw_list')) || [];
+    let transactions = JSON.parse(localStorage.getItem('user_fin_list')) || [];
 
     function saveData() {
       localStorage.setItem('user_habits', JSON.stringify(habits));
       localStorage.setItem('user_stats', JSON.stringify(userStats));
+      localStorage.setItem('user_hw_list', JSON.stringify(homeworks));
+      localStorage.setItem('user_fin_list', JSON.stringify(transactions));
     }
 
+    // 🎯 3. HABITS + GAMIFICATION
     function getRankTitle(lvl) {
       if (lvl < 3) return "Habit Master";
       if (lvl < 5) return "Discipline Pro";
@@ -579,7 +579,6 @@
       }
 
       const todayStr = new Date().toISOString().split('T')[0];
-
       list.innerHTML = habits.map((h, i) => {
         const isDoneToday = h.lastDoneDate === todayStr;
         return `
@@ -602,7 +601,6 @@
           </div>
         `;
       }).join('');
-
       updateGamificationUI();
     }
 
@@ -610,35 +608,23 @@
       const input = document.getElementById('habitInput');
       const val = input.value.trim();
       if (!val) return;
-
       habits.push({ text: val, streak: 0, lastDoneDate: '', note: '' });
-      saveData();
-      renderHabits();
-      input.value = '';
+      saveData(); renderHabits(); input.value = '';
     }
 
     function toggleHabit(index) {
       const h = habits[index];
       const todayStr = new Date().toISOString().split('T')[0];
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayStr = yesterday.toISOString().split('T')[0];
 
       if (h.lastDoneDate === todayStr) {
-        // Uncheck
         h.lastDoneDate = '';
         if (h.streak > 0) h.streak--;
         userStats.xp = Math.max(0, userStats.xp - 25);
       } else {
-        // Checkin
-        if (h.lastDoneDate === yesterdayStr) {
-          h.streak = (h.streak || 0) + 1;
-        } else {
-          h.streak = 1;
-        }
+        h.streak = (h.lastDoneDate === yesterdayStr) ? (h.streak || 0) + 1 : 1;
         h.lastDoneDate = todayStr;
-
-        // Add EXP
         userStats.xp += 25;
         const maxXp = userStats.level * 100;
         if (userStats.xp >= maxXp) {
@@ -647,29 +633,17 @@
           alert(`🎉 เลเวลอัป! คุณบรรลุ Level ${userStats.level} แล้ว!`);
         }
       }
-
-      saveData();
-      renderHabits();
+      saveData(); renderHabits();
     }
 
-    function updateNote(index, text) {
-      habits[index].note = text;
-      saveData();
-    }
-
+    function updateNote(index, text) { habits[index].note = text; saveData(); }
     function deleteHabit(index) {
       if (confirm('คุณต้องการลบเป้าหมายนี้หรือไม่?')) {
-        habits.splice(index, 1);
-        saveData();
-        renderHabits();
+        habits.splice(index, 1); saveData(); renderHabits();
       }
     }
 
-    function escapeHtml(str) {
-      return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-    }
-
-    // 📅 4. CALENDAR
+    // 📅 4. ENHANCED CALENDAR LOGIC
     let currentDate = new Date(), currentYear = currentDate.getFullYear(), currentMonth = currentDate.getMonth();
     const monthNamesTh = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
@@ -685,10 +659,37 @@
       let html = '';
 
       for (let i = 0; i < firstDay; i++) html += `<div></div>`;
+
       const today = new Date();
       for (let day = 1; day <= totalDays; day++) {
         const isToday = (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) ? 'today' : '';
-        html += `<div class="cal-date ${isToday}">${day}</div>`;
+        
+        // Format ISO Date String: YYYY-MM-DD
+        const monthStr = String(currentMonth + 1).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+        const formattedDate = `${currentYear}-${monthStr}-${dayStr}`;
+
+        // Filter Homework & Finance for this date
+        const dueHwList = homeworks.filter(h => h.dueDate === formattedDate);
+        const dayFinList = transactions.filter(t => t.date === formattedDate);
+
+        let badges = '';
+        if (dueHwList.length > 0) {
+          badges += `<div class="cal-badge-dot badge-hw">📚 ${dueHwList.length} งาน</div>`;
+        }
+        if (dayFinList.length > 0) {
+          const inc = dayFinList.filter(t => t.type === 'income').length;
+          const exp = dayFinList.filter(t => t.type === 'expense').length;
+          if (inc > 0) badges += `<div class="cal-badge-dot badge-fin-in">+รับ</div>`;
+          if (exp > 0) badges += `<div class="cal-badge-dot badge-fin-ex">-จ่าย</div>`;
+        }
+
+        html += `
+          <div class="cal-date ${isToday}" onclick="openDayModal('${formattedDate}', ${day})">
+            <span class="cal-num">${day}</span>
+            <div class="cal-badges">${badges}</div>
+          </div>
+        `;
       }
       grid.innerHTML = html;
     }
@@ -700,97 +701,242 @@
       renderCalendar();
     }
 
-    // 📚 5. HOMEWORK
-    let hwPending = 0, hwDone = 0;
-    function addHomework() {
-      const subj = document.getElementById('hwSubject').value.trim();
-      const detail = document.getElementById('hwDetail').value;
-      if (!subj) return;
-
-      const list = document.getElementById('homeworkList');
-      const item = document.createElement('div');
-      item.className = 'hw-item';
-      item.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <strong>${escapeHtml(subj)}</strong>
-            <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(detail)}</p>
+    // 🔍 MODAL DAY DETAIL
+    function openDayModal(dateStr, dayNum) {
+      document.getElementById('modalDateTitle').innerText = `📅 รายละเอียดวันที่ ${dayNum} ${monthNamesTh[currentMonth]} ${currentYear}`;
+      
+      // Filter HW
+      const dayHw = homeworks.filter(h => h.dueDate === dateStr);
+      const hwContainer = document.getElementById('modalHwList');
+      if (dayHw.length === 0) {
+        hwContainer.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">ไม่มีกำหนดส่งการบ้านในวันนี้</p>`;
+      } else {
+        hwContainer.innerHTML = dayHw.map(h => `
+          <div class="hw-item" style="border-left-color: ${h.done ? 'var(--green)' : 'var(--red)'};">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>${escapeHtml(h.subject)}</strong>
+              <span style="font-size:11px; padding:2px 6px; border-radius:4px; background:${h.done ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color:${h.done ? 'var(--green)' : 'var(--red)'}">
+                ${h.done ? 'ส่งแล้ว' : 'ยังไม่ส่ง'}
+              </span>
+            </div>
+            ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(h.detail)}</p>` : ''}
           </div>
-          <button class="btn-sm btn-done" onclick="toggleHomework(this)">ส่งงาน</button>
+        `).join('');
+      }
+
+      // Filter Finance
+      const dayFin = transactions.filter(t => t.date === dateStr);
+      const finContainer = document.getElementById('modalFinList');
+      const finSummary = document.getElementById('modalFinSummary');
+
+      if (dayFin.length === 0) {
+        finSummary.innerText = '';
+        finContainer.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">ไม่มีรายการทางการเงินในวันนี้</p>`;
+      } else {
+        let incTotal = 0, expTotal = 0;
+        dayFin.forEach(t => {
+          if (t.type === 'income') incTotal += t.amount;
+          else expTotal += t.amount;
+        });
+        
+        finSummary.innerHTML = `สรุปประจำวัน: <span style="color:var(--green)">+฿${incTotal.toFixed(2)}</span> | <span style="color:var(--red)">-฿${expTotal.toFixed(2)}</span>`;
+        
+        finContainer.innerHTML = dayFin.map(t => `
+          <div class="fin-item">
+            <span>${escapeHtml(t.title)}</span>
+            <strong style="color:${t.type === 'income' ? 'var(--green)' : 'var(--red)'}">
+              ${t.type === 'income' ? '+' : '-'}฿${t.amount.toFixed(2)}
+            </strong>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('dayDetailModal').style.display = 'flex';
+    }
+
+    function closeDayModal() {
+      document.getElementById('dayDetailModal').style.display = 'none';
+    }
+
+    // 📚 5. HOMEWORK LOGIC
+    function renderHomework() {
+      const list = document.getElementById('homeworkList');
+      if (!list) return;
+
+      if (homeworks.length === 0) {
+        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">ไม่มีการบ้านที่บันทึกไว้</p>`;
+        updateHwStats();
+        return;
+      }
+
+      list.innerHTML = homeworks.map((h, i) => `
+        <div class="hw-item" style="border-left-color: ${h.done ? 'var(--green)' : 'var(--primary)'}; opacity: ${h.done ? '0.6' : '1'};">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <strong style="text-decoration: ${h.done ? 'line-through' : 'none'}">${escapeHtml(h.subject)}</strong>
+              <div style="font-size:11px; color:var(--cyan); margin-top:2px;">⏱️ ส่งวันที่: ${h.dueDate || 'ไม่ระบุ'}</div>
+              ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(h.detail)}</p>` : ''}
+            </div>
+            <div style="display:flex; gap:4px;">
+              <button class="btn-sm ${h.done ? 'btn-undo' : 'btn-done'}" onclick="toggleHomework(${i})">
+                ${h.done ? 'ยกเลิก' : 'ส่งงาน'}
+              </button>
+              <button class="btn-sm btn-del" onclick="deleteHomework(${i})">✕</button>
+            </div>
+          </div>
         </div>
-      `;
-      list.appendChild(item);
-      document.getElementById('hwSubject').value = '';
-      document.getElementById('hwDetail').value = '';
-      hwPending++;
+      `).join('');
+
       updateHwStats();
     }
 
-    function toggleHomework(btn) {
-      const item = btn.parentElement.parentElement;
-      if (btn.classList.contains('btn-done')) {
-        btn.className = 'btn-sm btn-undo'; btn.innerText = 'ยกเลิก';
-        item.style.opacity = '0.5'; item.style.textDecoration = 'line-through';
-        hwPending--; hwDone++;
-      } else {
-        btn.className = 'btn-sm btn-done'; btn.innerText = 'ส่งงาน';
-        item.style.opacity = '1'; item.style.textDecoration = 'none';
-        hwPending++; hwDone--;
+    function addHomework() {
+      const subj = document.getElementById('hwSubject').value.trim();
+      const assignDate = document.getElementById('hwAssignDate').value;
+      const dueDate = document.getElementById('hwDueDate').value;
+      const detail = document.getElementById('hwDetail').value.trim();
+
+      if (!subj) { alert('กรุณาระบุชื่อวิชาหรือหัวข้อการบ้าน'); return; }
+
+      homeworks.push({
+        id: Date.now(),
+        subject: subj,
+        assignDate: assignDate,
+        dueDate: dueDate,
+        detail: detail,
+        done: false
+      });
+
+      saveData();
+      renderHomework();
+      renderCalendar();
+
+      document.getElementById('hwSubject').value = '';
+      document.getElementById('hwDetail').value = '';
+    }
+
+    function toggleHomework(index) {
+      homeworks[index].done = !homeworks[index].done;
+      saveData();
+      renderHomework();
+      renderCalendar();
+    }
+
+    function deleteHomework(index) {
+      if (confirm('ต้องการลบรายการการบ้านนี้หรือไม่?')) {
+        homeworks.splice(index, 1);
+        saveData();
+        renderHomework();
+        renderCalendar();
       }
-      updateHwStats();
     }
 
     function updateHwStats() {
-      document.getElementById('statPendingCount').innerText = hwPending;
-      document.getElementById('statDoneCount').innerText = hwDone;
-      const total = hwPending + hwDone;
-      const percent = total > 0 ? Math.round((hwDone / total) * 100) : 0;
+      const doneCount = homeworks.filter(h => h.done).length;
+      const pendingCount = homeworks.length - doneCount;
+
+      document.getElementById('statPendingCount').innerText = pendingCount;
+      document.getElementById('statDoneCount').innerText = doneCount;
+
+      const percent = homeworks.length > 0 ? Math.round((doneCount / homeworks.length) * 100) : 0;
       document.getElementById('statHwPercent').innerText = `${percent}%`;
       document.getElementById('statHwBar').style.width = `${percent}%`;
     }
 
-    // 💰 6. FINANCE
-    let totalBalance = 0;
+    // 💰 6. FINANCE LOGIC
+    function renderFinance() {
+      const list = document.getElementById('financeList');
+      if (!list) return;
+
+      let balance = 0;
+      if (transactions.length === 0) {
+        list.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:16px;">ยังไม่มีบันทึกรายรับ-รายจ่าย</p>`;
+        document.getElementById('financeBalance').innerText = '฿0.00';
+        return;
+      }
+
+      list.innerHTML = transactions.map((t, i) => {
+        if (t.type === 'income') balance += t.amount;
+        else balance -= t.amount;
+
+        return `
+          <div class="fin-item">
+            <div>
+              <div style="font-weight:500;">${escapeHtml(t.title)}</div>
+              <div style="font-size:10px; color:var(--text-muted);">${t.date || 'ไม่ระบุวันที่'}</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <strong style="color: ${t.type === 'income' ? 'var(--green)' : 'var(--red)'};">
+                ${t.type === 'income' ? '+' : '-'}฿${t.amount.toFixed(2)}
+              </strong>
+              <button class="btn-sm btn-del" onclick="deleteTransaction(${i})">✕</button>
+            </div>
+          </div>
+        `;
+      }).reverse().join('');
+
+      document.getElementById('financeBalance').innerText = `฿${balance.toFixed(2)}`;
+    }
+
     function addFinanceTransaction() {
       const title = document.getElementById('finTitle').value.trim();
       const amount = parseFloat(document.getElementById('finAmount').value);
       const type = document.getElementById('finType').value;
-      if (!title || isNaN(amount)) return;
+      let date = document.getElementById('finDate').value;
 
-      totalBalance += (type === 'income' ? amount : -amount);
-      const color = type === 'income' ? 'var(--green)' : 'var(--red)';
-      const sign = type === 'income' ? '+' : '-';
+      if (!title || isNaN(amount)) { alert('กรุณากรอกข้อมูลรายการและจำนวนเงินให้ถูกต้อง'); return; }
+      if (!date) date = new Date().toISOString().split('T')[0];
 
-      document.getElementById('financeList').innerHTML += `
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px; padding-bottom:4px; border-bottom:1px solid var(--border-color);">
-          <span>${escapeHtml(title)}</span>
-          <strong style="color:${color}">${sign}฿${amount.toFixed(2)}</strong>
-        </div>
-      `;
-      document.getElementById('financeBalance').innerText = `฿${totalBalance.toFixed(2)}`;
+      transactions.push({
+        id: Date.now(),
+        title: title,
+        amount: amount,
+        type: type,
+        date: date
+      });
+
+      saveData();
+      renderFinance();
+      renderCalendar();
+
       document.getElementById('finTitle').value = '';
       document.getElementById('finAmount').value = '';
     }
 
-    // ⚙️ 7. CLEAR ALL DATA
+    function deleteTransaction(index) {
+      if (confirm('ต้องการลบรายการนี้หรือไม่?')) {
+        transactions.splice(transactions.length - 1 - index, 1);
+        saveData();
+        renderFinance();
+        renderCalendar();
+      }
+    }
+
+    // ⚙️ 7. CLEAR DATA
     function clearAllData() {
       if (confirm('คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?')) {
         localStorage.clear();
-        habits = []; userStats = { level: 1, xp: 0 };
-        totalBalance = 0; hwPending = 0; hwDone = 0;
-        document.getElementById('homeworkList').innerHTML = '';
-        document.getElementById('financeList').innerHTML = '';
-        document.getElementById('financeBalance').innerText = '฿0.00';
-        updateHwStats();
-        renderHabits();
+        habits = []; userStats = { level: 1, xp: 0 }; homeworks = []; transactions = [];
+        renderHabits(); renderHomework(); renderFinance(); renderCalendar();
         alert('ล้างข้อมูลเรียบร้อย');
       }
     }
 
-    // INIT
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    }
+
+    // INITIALIZATION
     document.addEventListener("DOMContentLoaded", () => {
-      renderCalendar();
+      const todayStr = new Date().toISOString().split('T')[0];
+      document.getElementById('hwAssignDate').value = todayStr;
+      document.getElementById('hwDueDate').value = todayStr;
+      document.getElementById('finDate').value = todayStr;
+
       renderHabits();
+      renderHomework();
+      renderFinance();
+      renderCalendar();
     });
   </script>
 </body>
