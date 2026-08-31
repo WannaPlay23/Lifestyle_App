@@ -343,6 +343,13 @@
 
     <!-- TAB 4: HOMEWORK -->
     <section id="tab-homework" class="tab-content">
+      <!-- 📌 สรุปจำนวนการบ้านที่ยังไม่ได้ส่ง (วางอยู่บนสุดของแท็บการบ้าน) -->
+      <div class="card" style="text-align: center; background: var(--card-bg); border: 1px solid var(--border-color); padding: 16px;">
+        <span style="font-size: 14px; color: var(--text-muted);">📌 การบ้านที่ยังไม่ได้ส่ง: </span>
+        <strong id="pendingCountHW" style="font-size: 26px; color: var(--red); margin: 0 6px;">0</strong>
+        <span style="font-size: 14px; color: var(--text-muted);">รายการ</span>
+      </div>
+
       <div class="card">
         <div class="card-title">📚 เพิ่มรายการการบ้าน</div>
 
@@ -726,7 +733,7 @@
         hwContainer.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">ไม่มีกำหนดส่งการบ้านในวันนี้</p>`;
       } else {
         hwContainer.innerHTML = dayHw.map(h => `
-          <div class="hw-item" style="border-left-color: ${h.done ? 'var(--green)' : 'var(--red)'};">
+          <div class="hw-item" style="border: 2px solid ${h.done ? 'var(--green)' : 'var(--red)'}; border-left: 5px solid ${h.done ? 'var(--green)' : 'var(--red)'}; background-color: ${h.done ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)'};">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <strong>${escapeHtml(h.subject)}</strong>
               <span style="font-size:11px; padding:2px 6px; border-radius:4px; background:${h.done ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color:${h.done ? 'var(--green)' : 'var(--red)'}">
@@ -771,7 +778,7 @@
       document.getElementById('dayDetailModal').style.display = 'none';
     }
 
-    // 📚 5. HOMEWORK LOGIC
+    // 📚 5. HOMEWORK LOGIC (ปรับขอบแดง/เขียว + ตัวเลขนับงานค้าง)
     function renderHomework() {
       const list = document.getElementById('homeworkList');
       if (!list) return;
@@ -782,23 +789,29 @@
         return;
       }
 
-      list.innerHTML = homeworks.map((h) => `
-        <div class="hw-item" style="border-left-color: ${h.done ? 'var(--green)' : 'var(--primary)'}; opacity: ${h.done ? '0.6' : '1'};">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <strong style="text-decoration: ${h.done ? 'line-through' : 'none'}">${escapeHtml(h.subject)}</strong>
-              <div style="font-size:11px; color:var(--cyan); margin-top:2px;">⏱️ กำหนดส่ง: ${h.dueDate || 'ไม่ระบุ'}</div>
-              ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:2px;">${escapeHtml(h.detail)}</p>` : ''}
-            </div>
-            <div style="display:flex; gap:4px;">
-              <button type="button" class="btn-sm ${h.done ? 'btn-undo' : 'btn-done'}" onclick="toggleHomework(${h.id})">
-                ${h.done ? 'ยกเลิก' : 'ส่งงาน'}
-              </button>
-              <button type="button" class="btn-sm btn-del" onclick="deleteHomework(${h.id})">✕</button>
+      // แสดงการ์ดการบ้าน โดยขอบแดง = ยังไม่ส่ง (#ef4444) / ขอบเขียว = ส่งแล้ว (#22c55e)
+      list.innerHTML = homeworks.map((h) => {
+        const borderColor = h.done ? 'var(--green)' : 'var(--red)';
+        const bgColor = h.done ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)';
+
+        return `
+          <div class="hw-item" style="border: 2px solid ${borderColor}; border-left: 6px solid ${borderColor}; background-color: ${bgColor}; border-radius: 12px; padding: 12px; margin-bottom: 10px; opacity: ${h.done ? '0.75' : '1'};">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                <strong style="text-decoration: ${h.done ? 'line-through' : 'none'}; font-size: 15px;">${escapeHtml(h.subject)}</strong>
+                <div style="font-size:11px; color:var(--cyan); margin-top:2px;">⏱️ กำหนดส่ง: ${h.dueDate || 'ไม่ระบุ'}</div>
+                ${h.detail ? `<p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${escapeHtml(h.detail)}</p>` : ''}
+              </div>
+              <div style="display:flex; gap:6px;">
+                <button type="button" class="btn-sm ${h.done ? 'btn-undo' : 'btn-done'}" onclick="toggleHomework(${h.id})">
+                  ${h.done ? 'ยกเลิก' : '✓ ส่งงาน'}
+                </button>
+                <button type="button" class="btn-sm btn-del" onclick="deleteHomework(${h.id})">✕</button>
+              </div>
             </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
       updateHwStats();
     }
@@ -851,12 +864,21 @@
       const doneCount = homeworks.filter(h => h.done).length;
       const pendingCount = homeworks.length - doneCount;
 
-      document.getElementById('statPendingCount').innerText = pendingCount;
-      document.getElementById('statDoneCount').innerText = doneCount;
+      // อัปเดตตัวเลขในแท็บสถิติ
+      const statPending = document.getElementById('statPendingCount');
+      if (statPending) statPending.innerText = pendingCount;
+      const statDone = document.getElementById('statDoneCount');
+      if (statDone) statDone.innerText = doneCount;
+
+      // อัปเดตตัวเลขสรุปในแท็บการบ้าน (แบนเนอร์ด้านบน)
+      const pendingHW = document.getElementById('pendingCountHW');
+      if (pendingHW) pendingHW.innerText = pendingCount;
 
       const percent = homeworks.length > 0 ? Math.round((doneCount / homeworks.length) * 100) : 0;
-      document.getElementById('statHwPercent').innerText = `${percent}%`;
-      document.getElementById('statHwBar').style.width = `${percent}%`;
+      const statPercent = document.getElementById('statHwPercent');
+      if (statPercent) statPercent.innerText = `${percent}%`;
+      const statBar = document.getElementById('statHwBar');
+      if (statBar) statBar.style.width = `${percent}%`;
     }
 
     // 💰 6. FINANCE LOGIC
