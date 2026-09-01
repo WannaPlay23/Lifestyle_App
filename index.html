@@ -161,15 +161,29 @@
     }
     .card-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 
-    /* --- GAMIFICATION CARD --- */
+    /* --- GAMIFICATION CARD & RANK LOGO --- */
     .gamification-card {
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
       color: white; border-radius: 16px; padding: 18px; margin-bottom: 16px;
       display: flex; justify-content: space-between; align-items: center;
       box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
     }
-    .lvl-badge { background: rgba(255,255,255,0.2); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
-    .rank-title { font-size: 20px; font-weight: 700; margin: 4px 0 2px 0; }
+    .rank-logo-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+    }
+    .lvl-badge { background: rgba(255,255,255,0.25); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+    .rank-title { font-size: 18px; font-weight: 700; margin: 3px 0 1px 0; }
     .xp-text { font-size: 12px; opacity: 0.9; }
     .total-streak-box { text-align: right; }
     .total-streak-num { font-size: 30px; font-weight: 800; line-height: 1; }
@@ -247,7 +261,7 @@
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0;
       background: var(--nav-bg); border-top: 1px solid var(--border-color);
-      display: flex; justify-content: space-around; padding: 8px 0; z-index: 100;
+      display: flex; justify-around: space-around; padding: 8px 0; z-index: 100;
     }
     .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 11px; background: none; border: none; cursor: pointer; width: 20%; }
     .nav-tab.active { color: var(--cyan); font-weight: 600; }
@@ -325,10 +339,14 @@
     <!-- TAB 1: DISCIPLINE -->
     <section id="tab-discipline" class="tab-content active">
       <div class="gamification-card">
-        <div>
-          <span class="lvl-badge" id="lvlBadge">LVL 1</span>
-          <div class="rank-title" id="rankTitle">Habit Master</div>
-          <div class="xp-text" id="xpText">XP: 0 / 100</div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <!-- RANK LOGO BADGE -->
+          <div class="rank-logo-badge" id="rankLogo">🌱</div>
+          <div>
+            <span class="lvl-badge" id="lvlBadge">LVL 1</span>
+            <div class="rank-title" id="rankTitle">Novice (ผู้เริ่มต้น)</div>
+            <div class="xp-text" id="xpText">XP: 0 / 100</div>
+          </div>
         </div>
         <div class="total-streak-box">
           <div class="total-streak-num"><span id="totalStreakVal">0</span> 🔥</div>
@@ -920,18 +938,29 @@
       }
     }
 
-    // 🎯 4. HABITS + GAMIFICATION
+    // 🎯 4. HABITS + GAMIFICATION LEVEL SYSTEM (5 TIERS WITH LOGOS)
     function getRankTitle(lvl) {
-      if (lvl < 3) return "Habit Master";
-      if (lvl < 5) return "Discipline Pro";
-      if (lvl < 10) return "Routine Legend";
-      return "Life Pulse God";
+      const isEn = currentLang === 'en';
+      if (lvl <= 5) return isEn ? "Novice" : "Novice (ผู้เริ่มต้น)";
+      if (lvl <= 15) return isEn ? "Apprentice" : "Apprentice (ผู้ฝึกฝน)";
+      if (lvl <= 30) return isEn ? "Disciplined" : "Disciplined (ผู้มีวินัย)";
+      if (lvl <= 50) return isEn ? "Master" : "Master (ผู้เชี่ยวชาญ)";
+      return isEn ? "Legend" : "Legend (ตำนาน)";
+    }
+
+    function getRankIcon(lvl) {
+      if (lvl <= 5) return "🌱";   // Novice Badge
+      if (lvl <= 15) return "⚔️";  // Apprentice Badge
+      if (lvl <= 30) return "🛡️";  // Disciplined Badge
+      if (lvl <= 50) return "👑";  // Master Badge
+      return "🏆";                 // Legend Badge
     }
 
     function updateGamificationUI() {
       const maxXp = userStats.level * 100;
       document.getElementById('lvlBadge').innerText = `LVL ${userStats.level}`;
       document.getElementById('rankTitle').innerText = getRankTitle(userStats.level);
+      document.getElementById('rankLogo').innerText = getRankIcon(userStats.level);
       document.getElementById('xpText').innerText = `XP: ${userStats.xp} / ${maxXp}`;
 
       const maxStreak = habits.length > 0 ? Math.max(...habits.map(h => h.streak || 0)) : 0;
@@ -1010,7 +1039,9 @@
         if (userStats.xp >= maxXp) {
           userStats.xp -= maxXp;
           userStats.level++;
-          const alertMsg = currentLang === 'en' ? `🎉 Level Up! You reached Level ${userStats.level}!` : `🎉 เลเวลอัป! คุณบรรลุ Level ${userStats.level} แล้ว!`;
+          const alertMsg = currentLang === 'en' 
+            ? `🎉 Level Up! You reached Level ${userStats.level} (${getRankIcon(userStats.level)} ${getRankTitle(userStats.level)})!` 
+            : `🎉 เลเวลอัป! คุณบรรลุ Level ${userStats.level} (${getRankIcon(userStats.level)} ${getRankTitle(userStats.level)}) แล้ว!`;
           alert(alertMsg);
         }
       }
