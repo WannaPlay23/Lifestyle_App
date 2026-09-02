@@ -119,8 +119,11 @@
     .gamification-card {
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
       color: white; border-radius: 16px; padding: 18px; margin-bottom: 16px;
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex; flex-direction: column; gap: 14px;
       box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+    }
+    .gamification-top {
+      display: flex; justify-content: space-between; align-items: center;
     }
     .rank-logo-badge {
       width: 52px;
@@ -141,6 +144,13 @@
     .xp-text { font-size: 12px; opacity: 0.9; }
     .total-streak-box { text-align: right; }
     .total-streak-num { font-size: 30px; font-weight: 800; line-height: 1; }
+
+    /* --- SHIELD & REPAIR SHOP BAR --- */
+    .shop-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 12px; border-radius: 12px; font-size: 12px; gap: 8px; flex-wrap: wrap;
+    }
 
     /* --- INPUTS & BUTTONS --- */
     .form-group { margin-bottom: 12px; text-align: left; }
@@ -281,18 +291,36 @@
     <!-- TAB 1: DISCIPLINE -->
     <section id="tab-discipline" class="tab-content active">
       <div class="gamification-card">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <!-- RANK LOGO BADGE -->
-          <div class="rank-logo-badge" id="rankLogo">🌱</div>
-          <div>
-            <span class="lvl-badge" id="lvlBadge">LVL 1</span>
-            <div class="rank-title" id="rankTitle">Novice (ผู้เริ่มต้น)</div>
-            <div class="xp-text" id="xpText">XP: 0 / 100</div>
+        <div class="gamification-top">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <!-- RANK LOGO BADGE -->
+            <div class="rank-logo-badge" id="rankLogo">🌱</div>
+            <div>
+              <span class="lvl-badge" id="lvlBadge">LVL 1</span>
+              <div class="rank-title" id="rankTitle">Novice (ผู้เริ่มต้น)</div>
+              <div class="xp-text" id="xpText">XP: 0 / 100</div>
+            </div>
+          </div>
+          <div class="total-streak-box">
+            <div class="total-streak-num"><span id="totalStreakVal">0</span> 🔥</div>
+            <div style="font-size:11px; opacity:0.8;" data-i18n="streak_days_label">วันติดต่อกัน</div>
           </div>
         </div>
-        <div class="total-streak-box">
-          <div class="total-streak-num"><span id="totalStreakVal">0</span> 🔥</div>
-          <div style="font-size:11px; opacity:0.8;" data-i18n="streak_days_label">วันติดต่อกัน</div>
+
+        <!-- SHIELD & GAMIFICATION SHOP BAR -->
+        <div class="shop-bar">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span data-i18n="shield_label">🛡️ โล่ป้องกัน:</span>
+            <strong id="shieldCount">0/3</strong>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="btn-sm" style="background: #eab308; color: #000; font-weight: 600;" onclick="buyStreakShield()">
+              <span data-i18n="buy_shield_btn">🛒 ซื้อโล่ (100 XP)</span>
+            </button>
+            <button type="button" class="btn-sm" id="repairBtn" style="background: #06b6d4; color: #fff; font-weight: 600; display: none;" onclick="repairStreak()">
+              <span data-i18n="repair_streak_btn">🔧 กู้คืน Streak (50 XP)</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -475,6 +503,14 @@
       return `${year}-${month}-${day}`;
     }
 
+    function _getDaysDifference(dateStr1, dateStr2) {
+      if (!dateStr1 || !dateStr2) return 0;
+      const d1 = new Date(dateStr1);
+      const d2 = new Date(dateStr2);
+      const diffTime = d2 - d1;
+      return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+
     // 🌐 DICTIONARY FOR I18N
     const translations = {
       th: {
@@ -491,6 +527,9 @@
         nav_finance: "การเงิน",
         nav_settings: "ตั้งค่า",
         streak_days_label: "วันติดต่อกัน",
+        shield_label: "🛡️ โล่ป้องกัน:",
+        buy_shield_btn: "🛒 ซื้อโล่ (100 XP)",
+        repair_streak_btn: "🔧 กู้คืน Streak (50 XP)",
         habits_title: "🎯 เพิ่มเป้าหมายวินัยประจำวัน",
         habits_input_ph: "เพิ่มนิสัยใหม่ เช่น อ่านหนังสือ 20 นาที",
         habits_add_btn: "+ เพิ่มเป้าหมาย",
@@ -542,6 +581,9 @@
         nav_finance: "Finance",
         nav_settings: "Settings",
         streak_days_label: "Streak Days",
+        shield_label: "🛡️ Shields:",
+        buy_shield_btn: "🛒 Buy Shield (100 XP)",
+        repair_streak_btn: "🔧 Repair Streak (50 XP)",
         habits_title: "🎯 Add Daily Habit Goal",
         habits_input_ph: "Add habit e.g. Read books for 20 mins",
         habits_add_btn: "+ Add Goal",
@@ -675,14 +717,22 @@
 
     // 💾 STORAGE SYSTEM
     let habits = [];
-    let userStats = { level: 1, xp: 0 };
+    let userStats = { 
+      level: 1, 
+      xp: 0, 
+      shields: 0, 
+      savedStreakBeforeBreak: 0, 
+      canGracePeriod: false, 
+      lastAppCheckDate: '' 
+    };
     let homeworks = [];
     let transactions = [];
 
     function loadData() {
       try {
         habits = JSON.parse(localStorage.getItem('user_habits')) || [];
-        userStats = JSON.parse(localStorage.getItem('user_stats')) || { level: 1, xp: 0 };
+        const defaultStats = { level: 1, xp: 0, shields: 0, savedStreakBeforeBreak: 0, canGracePeriod: false, lastAppCheckDate: '' };
+        userStats = Object.assign(defaultStats, JSON.parse(localStorage.getItem('user_stats')) || {});
         homeworks = JSON.parse(localStorage.getItem('user_hw_list')) || [];
         transactions = JSON.parse(localStorage.getItem('user_fin_list')) || [];
       } catch (e) {
@@ -701,7 +751,7 @@
       }
     }
 
-    // 🎯 3. HABITS + GAMIFICATION LEVEL SYSTEM (5 TIERS WITH LOGOS)
+    // 🎯 3. HABITS + GAMIFICATION LEVEL SYSTEM (5 TIERS WITH LOGOS & PENALTIES)
     function getRankTitle(lvl) {
       const isEn = currentLang === 'en';
       if (lvl <= 5) return isEn ? "Novice" : "Novice (ผู้เริ่มต้น)";
@@ -719,6 +769,122 @@
       return "🏆";                 // Legend Badge
     }
 
+    function deductXP(amount) {
+      userStats.xp -= amount;
+      while (userStats.xp < 0) {
+        if (userStats.level > 1) {
+          userStats.level -= 1;
+          const prevMaxXp = userStats.level * 100;
+          userStats.xp += prevMaxXp;
+          const isEn = currentLang === 'en';
+          alert(isEn ? `🔻 Level Down! You dropped to Level ${userStats.level}` : `🔻 เลเวลลดลง! คุณลดเหลือ Level ${userStats.level}`);
+        } else {
+          userStats.xp = 0;
+          break;
+        }
+      }
+    }
+
+    function getTotalAvailableXP() {
+      let total = userStats.xp;
+      for (let l = 1; l < userStats.level; l++) {
+        total += l * 100;
+      }
+      return total;
+    }
+
+    function checkDailyStreakPenalties() {
+      const todayStr = getLocalDateStr();
+      if (!userStats.lastAppCheckDate) {
+        userStats.lastAppCheckDate = todayStr;
+        saveData();
+        return;
+      }
+
+      if (userStats.lastAppCheckDate === todayStr) return;
+
+      let notifications = [];
+
+      habits.forEach(h => {
+        if (h.lastDoneDate) {
+          const daysMissed = _getDaysDifference(h.lastDoneDate, todayStr);
+          if (daysMissed > 1 && h.streak > 0) {
+            // Missed streak penalty triggered!
+            if (userStats.shields > 0) {
+              userStats.shields -= 1;
+              const yesterday = new Date();
+              yesterday.setDate(yesterday.getDate() - 1);
+              h.lastDoneDate = getLocalDateStr(yesterday);
+              const isEn = currentLang === 'en';
+              notifications.push(isEn ? `🛡️ Shield protected streak for "${h.text}"!` : `🛡️ โล่ป้องกันทำงาน! ปกป้อง Streak ของ "${h.text}" ไว้ได้`);
+            } else {
+              userStats.savedStreakBeforeBreak = Math.max(userStats.savedStreakBeforeBreak, h.streak);
+              userStats.canGracePeriod = true;
+              const penaltyXP = 30 * (daysMissed - 1);
+              h.streak = 0;
+              deductXP(penaltyXP);
+              const isEn = currentLang === 'en';
+              notifications.push(isEn ? `❌ Missed check-in for "${h.text}"! Streak reset & -${penaltyXP} XP penalty.` : `❌ ขาดเช็คอิน "${h.text}"! Streak หลุดเหลือ 0 และโดนหัก ${penaltyXP} XP`);
+            }
+          }
+        }
+      });
+
+      userStats.lastAppCheckDate = todayStr;
+      saveData();
+
+      if (notifications.length > 0) {
+        setTimeout(() => alert(notifications.join('\n')), 400);
+      }
+    }
+
+    function buyStreakShield() {
+      const isEn = currentLang === 'en';
+      if (userStats.shields >= 3) {
+        alert(isEn ? 'Maximum shields reached (3/3)!' : 'คุณมีโล่ป้องกันสูงสุดแล้ว (3/3 ชิ้น)!');
+        return;
+      }
+
+      const totalXp = getTotalAvailableXP();
+      if (totalXp < 100) {
+        alert(isEn ? 'Not enough XP! Requires 100 XP.' : 'XP ไม่พอ! ต้องการ 100 XP');
+        return;
+      }
+
+      deductXP(100);
+      userStats.shields += 1;
+      saveData();
+      renderHabits();
+      alert(isEn ? '🛡️ Successfully bought 1 Streak Shield!' : '🛡️ ซื้อโล่ป้องกัน 1 ชิ้นสำเร็จ!');
+    }
+
+    function repairStreak() {
+      const isEn = currentLang === 'en';
+      if (!userStats.canGracePeriod || userStats.savedStreakBeforeBreak === 0) {
+        alert(isEn ? 'No streak available to repair.' : 'ไม่มี Streak ที่สามารถกู้คืนได้');
+        return;
+      }
+
+      const totalXp = getTotalAvailableXP();
+      if (totalXp < 50) {
+        alert(isEn ? 'Not enough XP! Requires 50 XP to repair.' : 'XP ไม่พอ! ต้องการ 50 XP สำหรับกู้คืน');
+        return;
+      }
+
+      deductXP(50);
+      habits.forEach(h => {
+        if (h.streak === 0 && userStats.savedStreakBeforeBreak > 0) {
+          h.streak = userStats.savedStreakBeforeBreak;
+        }
+      });
+
+      userStats.canGracePeriod = false;
+      userStats.savedStreakBeforeBreak = 0;
+      saveData();
+      renderHabits();
+      alert(isEn ? '✨ Streak repaired successfully!' : '✨ กู้คืน Streak สำเร็จ!');
+    }
+
     function updateGamificationUI() {
       const maxXp = userStats.level * 100;
       document.getElementById('lvlBadge').innerText = `LVL ${userStats.level}`;
@@ -728,6 +894,18 @@
 
       const maxStreak = habits.length > 0 ? Math.max(...habits.map(h => h.streak || 0)) : 0;
       document.getElementById('totalStreakVal').innerText = maxStreak;
+
+      const shieldElem = document.getElementById('shieldCount');
+      if (shieldElem) shieldElem.innerText = `${userStats.shields || 0}/3`;
+
+      const repairBtn = document.getElementById('repairBtn');
+      if (repairBtn) {
+        if (userStats.canGracePeriod && userStats.savedStreakBeforeBreak > 0) {
+          repairBtn.style.display = 'inline-block';
+        } else {
+          repairBtn.style.display = 'none';
+        }
+      }
     }
 
     function renderHabits() {
@@ -793,15 +971,16 @@
       if (h.lastDoneDate === todayStr) {
         h.lastDoneDate = '';
         if (h.streak > 0) h.streak--;
-        userStats.xp = Math.max(0, userStats.xp - 25);
+        deductXP(25);
       } else {
         h.streak = (h.lastDoneDate === yesterdayStr) ? (h.streak || 0) + 1 : 1;
         h.lastDoneDate = todayStr;
         userStats.xp += 25;
-        const maxXp = userStats.level * 100;
-        if (userStats.xp >= maxXp) {
+        let maxXp = userStats.level * 100;
+        while (userStats.xp >= maxXp) {
           userStats.xp -= maxXp;
           userStats.level++;
+          maxXp = userStats.level * 100;
           const alertMsg = currentLang === 'en' 
             ? `🎉 Level Up! You reached Level ${userStats.level} (${getRankIcon(userStats.level)} ${getRankTitle(userStats.level)})!` 
             : `🎉 เลเวลอัป! คุณบรรลุ Level ${userStats.level} (${getRankIcon(userStats.level)} ${getRankTitle(userStats.level)}) แล้ว!`;
@@ -1137,7 +1316,10 @@
       const msg = currentLang === 'en' ? 'Are you sure you want to clear all app data?' : 'คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?';
       if (confirm(msg)) {
         localStorage.clear();
-        habits = []; userStats = { level: 1, xp: 0 }; homeworks = []; transactions = [];
+        habits = []; 
+        userStats = { level: 1, xp: 0, shields: 0, savedStreakBeforeBreak: 0, canGracePeriod: false, lastAppCheckDate: '' };
+        homeworks = []; 
+        transactions = [];
         saveData();
         applyLanguage();
         initTheme();
@@ -1153,6 +1335,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       initTheme();
       loadData();
+      checkDailyStreakPenalties();
 
       const todayStr = getLocalDateStr();
       document.getElementById('hwAssignDate').value = todayStr;
